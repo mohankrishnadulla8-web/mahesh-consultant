@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahesh Consultant – Intelligent Education Guidance System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --light-blue: #eff6ff;
+            --accent-blue: #3b82f6;
+            --success-green: #10b981;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background-color: var(--light-blue);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            background-color: var(--accent-blue);
+            z-index: 2;
+            transition: var(--transition);
+            width: 0%;
+        }
+
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            background-color: var(--card-bg);
+            border: 4px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            z-index: 3;
+            transition: var(--transition);
+        }
+
+        .step-indicator.active {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .step-indicator.completed {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 2rem;
+            position: relative;
+            min-height: 350px;
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #fafafa;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background-color: #fff;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .input-icon-wrapper input {
+            padding-left: 2.5rem;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-prev {
+            background-color: white;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-prev:hover {
+            background-color: var(--bg-color);
+        }
+
+        .btn-next, .btn-submit {
+            background-color: var(--primary-blue);
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-next:hover, .btn-submit:hover {
+            background-color: #1e3a8a;
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Range Slider */
+        .slider-container {
+            margin-top: 2rem;
+        }
+        
+        .budget-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        /* Results Page */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .college-card {
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .college-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+        }
+
+        .college-info h3 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .college-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .college-fee {
+            text-align: right;
+        }
+
+        .fee-amount {
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+
+        .best-match {
+            background-color: var(--success-green);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .over-budget .fee-amount {
+            color: #ef4444;
+        }
+
+        /* Loading */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: var(--accent-blue);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 1rem;
+            background-color: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 0.5rem;
+            color: #065f46;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+        }
+
+        .cta-banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .cta-banner h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .cta-banner p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                border-radius: 0.5rem;
+            }
+            .form-content {
+                padding: 1.5rem;
+            }
+            .btn-container {
+                padding: 0 1.5rem 1.5rem 1.5rem;
+            }
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+        
+        /* Admin Additions */
+        .admin-login-btn {
+            background: none; border: none; color: var(--text-light); font-size: 1.25rem;
+            cursor: pointer; transition: var(--transition); margin-left: auto; display: block;
+        }
+        .admin-login-btn:hover { transform: scale(1.1); color: var(--primary-blue); }
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 0.5rem; width: 90%; max-width: 400px;
+        }
+        .admin-view {
+            display: none; width: 100%; max-width: 800px; margin: 2rem auto;
+            background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.85rem; }
+        .admin-table th, .admin-table td { border: 1px solid var(--border-color); padding: 0.5rem; }
+        .admin-table th { background-color: var(--light-blue); color: var(--primary-blue); }
+        .admin-table input { width: 100px; padding: 0.25rem; border: 1px solid var(--border-color); border-radius: 4px; }
+
+        .application-view {
+            display: none; width: 100%; max-width: 800px; margin: 2rem auto;
+            background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;
+        }
+        @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        .file-upload-group {
+            border: 1px dashed var(--border-color); padding: 1rem; border-radius: 0.5rem; text-align: center; background: #fafafa;
+        }
+        .file-upload-group input { display: none; }
+        .file-upload-label { cursor: pointer; color: var(--accent-blue); font-weight: 600; display: block; margin-top: 0.5rem; }
+        .preview-img { max-width: 100px; max-height: 100px; margin-top: 0.5rem; display: none; border-radius: 0.25rem; }
+
+        .admin-app-modal-content {
+            background: white; padding: 2rem; border-radius: 0.5rem; width: 95%; max-width: 800px; max-height: 90vh; overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 2; text-align: center;">
+            <h1><i class="fa-solid fa-user-graduate"></i> Mahesh Consultant</h1>
+            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Intelligent Education Guidance System</p>
+        </div>
+        <div style="flex: 1; text-align: right;">
+            <button class="admin-login-btn" onclick="openAdminLogin()"><i class="fa-solid fa-user-shield"></i></button>
+        </div>
+    </header>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">Admin Login</h2>
+            <input type="text" id="adminUser" placeholder="Enter username" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+            <input type="password" id="adminPwd" placeholder="Enter password" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+            <div class="error-message" id="err-admin" style="margin-bottom: 1rem;">Incorrect username or password</div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button class="btn btn-prev" onclick="closeAdminLogin()">Cancel</button>
+                <button class="btn btn-next" onclick="verifyAdmin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminView" class="admin-view">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-gear"></i> Admin Dashboard</h2>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-prev" onclick="viewCollectedData()"><i class="fa-solid fa-users"></i> Collected</button>
+                <button class="btn btn-prev" onclick="logoutAdmin()">Logout</button>
+            </div>
+        </div>
+        
+        <div id="adminCollectedView" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="margin-bottom: 0;">Collected Leads (Last 24 Hours)</h3>
+                <button class="btn btn-prev" onclick="backToAdminMain()" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="admin-table" id="collectedLeadsTable">
+                    <tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th></tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="adminMainContent">
+            <div style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                <label style="font-weight:600; margin-right: 1rem;">Select University to Edit:</label>
+                <select id="adminUniSelect" style="padding: 0.5rem; border-radius: 0.25rem; border: 1px solid var(--border-color);" onchange="renderAdminPanel()">
+                    <option value="bharath">Bharath University</option>
+                    <option value="mgr">Mgr University</option>
+                    <option value="ganpat">Ganpat University</option>
+                </select>
+            </div>
+
+            <div style="max-height: 60vh; overflow-y: auto;">
+            
+            <div id="adminBharathView">
+                <h3>CSE Core (Tuition Fee)</h3>
+            <table class="admin-table">
+                <tr><th>PCM %</th><th>Fee Amount</th></tr>
+                <tr><td>90% Above</td><td><input type="number" id="a_cse_90"></td></tr>
+                <tr><td>70% - 89.9%</td><td><input type="number" id="a_cse_70"></td></tr>
+                <tr><td>60% - 69.9%</td><td><input type="number" id="a_cse_60"></td></tr>
+                <tr><td>50% - 59.9%</td><td><input type="number" id="a_cse_50"></td></tr>
+                <tr><td>50% Below</td><td><input type="number" id="a_cse_below"></td></tr>
+            </table>
+
+            <h3>CSE Specializations (Tuition Fee)</h3>
+            <table class="admin-table">
+                <tr><th>PCM %</th><th>Fee Amount</th></tr>
+                <tr><td>90% Above</td><td><input type="number" id="a_cses_90"></td></tr>
+                <tr><td>70% - 89.9%</td><td><input type="number" id="a_cses_70"></td></tr>
+                <tr><td>60% - 69.9%</td><td><input type="number" id="a_cses_60"></td></tr>
+                <tr><td>50% - 59.9%</td><td><input type="number" id="a_cses_50"></td></tr>
+                <tr><td>50% Below</td><td><input type="number" id="a_cses_below"></td></tr>
+            </table>
+
+            <h3>Other B.Tech Courses (Tuition Fee)</h3>
+            <table class="admin-table" id="otherCoursesTable">
+                <!-- Injected via JS -->
+            </table>
+
+            </div> <!-- End Bharath View -->
+
+            <div id="adminMgrView" style="display: none;">
+                <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Leave fields empty to not offer that slot/scholarship.</p>
+                <div id="adminMgrTableContainer"></div>
+            </div>
+
+            <div id="adminGanpatView" style="display: none;">
+                <h3>Set 1 Courses Yearly Fee</h3>
+                <table class="admin-table">
+                    <tr><th>Condition</th><th>Fee Amount</th></tr>
+                    <tr><td>PCM >= 75%</td><td><input type="number" id="a_g_set1_75"></td></tr>
+                    <tr><td>PCM < 75%</td><td><input type="number" id="a_g_set1_below"></td></tr>
+                </table>
+
+                <h3>Set 2 Courses Yearly Fee</h3>
+                <table class="admin-table">
+                    <tr><th>Condition</th><th>Fee Amount</th></tr>
+                    <tr><td>PCM >= 75%</td><td><input type="number" id="a_g_set2_75"></td></tr>
+                    <tr><td>PCM < 75%</td><td><input type="number" id="a_g_set2_below"></td></tr>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 1rem;">Consultant Contact</h3>
+            <table class="admin-table">
+                <tr><th>Setting</th><th>Value</th></tr>
+                <tr><td>WhatsApp Number (with country code)</td><td><input type="text" id="a_whatsapp" placeholder="e.g. 919876543210" style="width: 150px;"></td></tr>
+            </table>
+
+            <h3 style="margin-top: 2rem; border-top: 2px solid var(--border-color); padding-top: 1rem;">Submitted Applications</h3>
+            <table class="admin-table" id="applicationsTable">
+                <tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>
+                <!-- Injected via JS -->
+            </table>
+        </div>
+        
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button class="btn btn-next" onclick="saveAdminFees()"><i class="fa-solid fa-save"></i> Save Changes</button>
+            </div>
+            <div class="success-message" id="adminSuccessMsg" style="margin-top: 1rem; display: none;">Changes saved successfully!</div>
+        </div> <!-- End adminMainContent -->
+    </div>
+
+    <!-- Admin Application Details Modal -->
+    <div id="appDetailsModal" class="modal">
+        <div class="admin-app-modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Application Details</h2>
+                <button class="btn btn-prev" onclick="closeAppDetails()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="appDetailsContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+                <!-- Injected via JS -->
+            </div>
+            <h3 style="margin-top: 1.5rem;">Certificates</h3>
+            <div id="appDetailsCerts" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <!-- Injected via JS -->
+            </div>
+            
+            <h3 style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">Admin Remarks</h3>
+            <div style="margin-top: 1rem;">
+                <label style="font-weight: 500; font-size: 0.9rem;">Remark 1</label>
+                <textarea id="app_remark1" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 1rem; resize: vertical;" rows="3"></textarea>
+                
+                <label style="font-weight: 500; font-size: 0.9rem;">Remark 2</label>
+                <textarea id="app_remark2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 1rem; resize: vertical;" rows="3"></textarea>
+                
+                <input type="hidden" id="current_app_id">
+                <button class="btn btn-next" onclick="saveAppRemarks()"><i class="fa-solid fa-save"></i> Save Remarks</button>
+                <span id="appRemarkSuccess" style="color: var(--success-green); font-size: 0.85rem; margin-left: 1rem; display: none;"><i class="fa-solid fa-check"></i> Remarks saved!</span>
+            </div>
+        </div>
+    </div>
+
+    <main id="mainContainer">
+        <div class="container">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="progress-line" id="progress-line"></div>
+                    <div class="step-indicator active" data-step="1">1</div>
+                    <div class="step-indicator" data-step="2">2</div>
+                    <div class="step-indicator" data-step="3">3</div>
+                    <div class="step-indicator" data-step="4">4</div>
+                    <div class="step-indicator" data-step="5"><i class="fa-solid fa-check"></i></div>
+                </div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-content">
+                
+                <!-- Step 1: Selection -->
+                <div class="step-content active" id="step-1">
+                    <h2><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Academic Preferences</h2>
+                    
+                    <div class="form-group">
+                        <label for="state">Select State <span style="color:red">*</span></label>
+                        <select id="state" required>
+                            <option value="">-- Choose State --</option>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="error-message" id="err-state">Please select a state.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="university">Select University <span style="color:red">*</span></label>
+                        <select id="university" required onchange="handleUniversityChange()">
+                            <option value="">-- Choose University --</option>
+                            <option value="Bharath University">Bharath University</option>
+                            <option value="Mgr University">Mgr University</option>
+                            <option value="Ganpat University">Ganpat University</option>
+                        </select>
+                        <div class="error-message" id="err-university">Please select a university.</div>
+                    </div>
+
+                    <div class="form-group" id="slot-group" style="display: none;">
+                        <label for="slot">Select Slot <span style="color:red">*</span></label>
+                        <select id="slot">
+                            <option value="">-- Choose Slot --</option>
+                            <option value="Slot A">Slot A</option>
+                            <option value="Slot B">Slot B</option>
+                        </select>
+                        <div class="error-message" id="err-slot">Please select a slot.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Select Course <span style="color:red">*</span></label>
+                        <select id="course" required onchange="handleCourseChange()">
+                            <option value="">-- Choose Course --</option>
+                            <option value="Engineering (B.Tech)">Engineering (B.Tech)</option>
+                            <option value="Medical (MBBS)">Medical (MBBS)</option>
+                            <option value="Pharmacy (B.Pharm)">Pharmacy (B.Pharm)</option>
+                            <option value="Arts & Science (B.Sc/B.A)">Arts & Science (B.Sc/B.A)</option>
+                            <option value="Management (BBA)">Management (BBA)</option>
+                        </select>
+                        <div class="error-message" id="err-course">Please select a course.</div>
+                    </div>
+
+                    <div class="form-group" id="specialization-group" style="display: none;">
+                        <label for="specialization">Select Specialization <span style="color:red">*</span></label>
+                        <select id="specialization">
+                            <option value="">-- Choose Specialization --</option>
+                            <option value="CSE">Computer Science Engineering (CSE)</option>
+                            <option value="CSE with AI">CSE with AI</option>
+                            <option value="CSE with AIML">CSE with AIML</option>
+                            <option value="CSE with Cyber security">CSE with Cyber security</option>
+                            <option value="CSE with Data Science">CSE with Data Science</option>
+                            <option value="CSE with IOT">CSE with IOT (Block chain Technology)</option>
+                            <option value="CSE with AIML (IOA UK)">CSE with AIML (IOA UK)</option>
+                            <option value="CSE with AI & DS">CSE with AI & DS</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                            <option value="Aeronautical Engineering">Aeronautical Engineering</option>
+                            <option value="Aerospace Engineering">Aerospace Engineering</option>
+                            <option value="Industrial Biotechnology">Industrial Biotechnology</option>
+                            <option value="Biotechnology (Agricultural)">Biotech (Agricultural)</option>
+                            <option value="Bio medical Engineering">Bio medical Engineering</option>
+                            <option value="Biotechnology (Genetic)">Biotech (Genetic)</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+                            <option value="Electrical & Electronics Engineering">Electrical & Electronics Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Automobile Engineering">Automobile Engineering</option>
+                            <option value="B.Arch">B.Arch</option>
+                            <option value="B.Design">B.Design</option>
+                        </select>
+                        <div class="error-message" id="err-specialization">Please select a specialization.</div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Student Information -->
+                <div class="step-content" id="step-2">
+                    <h2><i class="fa-solid fa-id-card" style="margin-right: 8px;"></i> Personal Details</h2>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span style="color:red">*</span></label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="error-message" id="err-name">Name is required.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span style="color:red">*</span></label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" id="phone" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+                        </div>
+                        <div class="error-message" id="err-phone">Please enter a valid 10-digit phone number.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hallTicket">Hall Ticket Number <span style="color:red">*</span></label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-hashtag"></i>
+                            <input type="text" id="hallTicket" placeholder="E.g., 123456789" required>
+                        </div>
+                        <div class="error-message" id="err-hallticket">Hall Ticket is required.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address (Optional)</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="email" placeholder="example@email.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Marks Entry -->
+                <div class="step-content" id="step-3">
+                    <h2><i class="fa-solid fa-calculator" style="margin-right: 8px;"></i> Academic Performance</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Enter your marks (Total 600) to calculate your percentage.</p>
+                    
+                    <div style="display: flex; justify-content: space-between; font-weight: 600; padding: 0.5rem 0; border-bottom: 2px solid var(--border-color); margin-bottom: 1rem; color: var(--primary-blue);">
+                        <span>Subject Name</span>
+                        <span>Enter Marks</span>
+                    </div>
+
+                    <!-- List of subjects -->
+                    <div style="max-height: 280px; overflow-y: auto; padding-right: 0.5rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_maths1a" style="margin-bottom: 0; font-size: 0.85rem;">1. Maths 1A (Max 75)</label>
+                            <input type="number" id="m_maths1a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_maths1b" style="margin-bottom: 0; font-size: 0.85rem;">2. Maths 1B (Max 75)</label>
+                            <input type="number" id="m_maths1b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_phy1" style="margin-bottom: 0; font-size: 0.85rem;">3. Physics 1 (Max 60)</label>
+                            <input type="number" id="m_phy1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_chem1" style="margin-bottom: 0; font-size: 0.85rem;">4. Chemistry 1 (Max 60)</label>
+                            <input type="number" id="m_chem1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_maths2a" style="margin-bottom: 0; font-size: 0.85rem;">5. Maths 2A (Max 75)</label>
+                            <input type="number" id="m_maths2a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_maths2b" style="margin-bottom: 0; font-size: 0.85rem;">6. Maths 2B (Max 75)</label>
+                            <input type="number" id="m_maths2b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_phy2" style="margin-bottom: 0; font-size: 0.85rem;">7. Physics 2 (Max 60)</label>
+                            <input type="number" id="m_phy2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_chem2" style="margin-bottom: 0; font-size: 0.85rem;">8. Chemistry 2 (Max 60)</label>
+                            <input type="number" id="m_chem2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_phyp" style="margin-bottom: 0; font-size: 0.85rem;">9. Physics Practical (Max 30)</label>
+                            <input type="number" id="m_phyp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <label for="m_chemp" style="margin-bottom: 0; font-size: 0.85rem;">10. Chemistry Practical (Max 30)</label>
+                            <input type="number" id="m_chemp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="background-color: var(--light-blue); padding: 1rem; border-radius: 0.5rem; text-align: center; margin-top: 1.5rem;">
+                        <span style="font-size: 0.9rem; color: var(--text-light);">Total: <span id="totalMarksDisplay">0</span> / 600</span><br>
+                        <span style="font-size: 0.9rem; color: var(--text-light);">Percentage</span>
+                        <div id="percentageDisplay" style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">0.0000%</div>
+                    </div>
+                    <div class="error-message" id="err-marks">Please enter valid marks for all subjects based on their max limit.</div>
+                </div>
+
+                <!-- Step 4: Fee Structure -->
+                <div class="step-content" id="step-4">
+                    <h2><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 8px;"></i> Fee Structure</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem;">Estimated fee structure for your selected course (Updated by Admin).</p>
+
+                    <div id="feeNotification" style="display: none; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; text-align: center;"></div>
+
+                    <div style="border: 1px solid var(--border-color); border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead style="background-color: var(--light-blue); color: var(--primary-blue);">
+                                <tr>
+                                    <th style="padding: 0.75rem 1rem; font-weight: 600; font-size: 0.9rem;">Fee Component</th>
+                                    <th style="padding: 0.75rem 1rem; font-weight: 600; font-size: 0.9rem; text-align: right;">Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem;" id="lblTuitionFee">Tuition Fee (Per Year)</td>
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem; text-align: right;" id="calcTuitionFee">0</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem;" id="lblAdmissionFee">Admission Fee (Non-Refundable)</td>
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem; text-align: right;" id="calcAdmissionFee">10,000</td>
+                                </tr>
+                                <tr id="bookingNoteRow" style="display: none; background-color: #ecfdf5;">
+                                    <td colspan="2" style="padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--success-green); font-weight: 600; text-align: right;" id="bookingNoteCell"></td>
+                                </tr>
+                                <tr style="background-color: #fafafa; font-weight: 700;">
+                                    <td style="padding: 0.75rem 1rem; color: var(--text-dark);">Total Estimated Fee</td>
+                                    <td style="padding: 0.75rem 1rem; text-align: right; color: var(--primary-blue);" id="calcTotalFee">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; color: var(--primary-blue); margin-bottom: 1rem;"><i class="fa-solid fa-user" style="margin-right: 8px;"></i> Student Details</h3>
+                    <div style="background-color: var(--light-blue); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Name:</strong> <span id="dispName">-</span></p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Phone:</strong> <span id="dispPhone">-</span></p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Hall Ticket:</strong> <span id="dispHallTicket">-</span></p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>Email:</strong> <span id="dispEmail">-</span></p>
+                    </div>
+
+                    <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 1rem; text-align: center;"><i class="fa-solid fa-circle-info"></i> This fee structure is subject to change based on university guidelines.</p>
+                </div>
+
+                <!-- Step 5: Results -->
+                <div class="step-content" id="step-5">
+                    
+                    <div id="loader" class="loader">
+                        <div class="spinner"></div>
+                        <p style="color: var(--text-light); margin-top: 1rem;">Submitting application...</p>
+                    </div>
+
+                    <div id="results-view" style="display: none;">
+                        <div class="success-message" id="successMsg">
+                            <i class="fa-solid fa-circle-check" style="margin-right: 5px;"></i> Details saved! Our consultant will contact you soon.
+                        </div>
+
+                        <h2><i class="fa-solid fa-ranking-star" style="margin-right: 8px;"></i> Recommended Colleges</h2>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem;">Based on your <span id="res-percentage" style="font-weight: 600;"></span> score.</p>
+
+                        <div class="results-container" id="college-list">
+                            <!-- Colleges will be injected here via JS -->
+                        </div>
+
+                        <div class="cta-banner">
+                            <h4>Ready to secure your admission?</h4>
+                            <p>Seats are filling fast. Complete your profile!</p>
+                            <button onclick="openApplicationForm()" class="btn" style="background-color: white; color: var(--primary-blue); margin: 1rem auto 0 auto;">
+                                <i class="fa-solid fa-file-signature"></i> Fill the Application Form
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="btn-container" id="btn-container">
+                <button type="button" class="btn btn-prev" id="btnPrev" style="display: none;" onclick="changeStep(-1)">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+                <button type="button" class="btn btn-next" id="btnNext" onclick="changeStep(1)">
+                    Next <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Application Form View -->
+    <div id="applicationFormView" class="application-view">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-file-signature"></i> Student Application Form</h2>
+            <button class="btn btn-prev" onclick="closeApplicationForm()">Cancel</button>
+        </div>
+        
+        <form id="studentAppForm" onsubmit="submitApplication(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>NAME OF THE STUDENT <span style="color:red">*</span></label>
+                    <input type="text" id="app_name" required>
+                </div>
+                <div class="form-group">
+                    <label>FATHER'S NAME <span style="color:red">*</span></label>
+                    <input type="text" id="app_fname" required>
+                </div>
+                <div class="form-group">
+                    <label>MOTHER'S NAME <span style="color:red">*</span></label>
+                    <input type="text" id="app_mname" required>
+                </div>
+                <div class="form-group">
+                    <label>BLOOD GROUP</label>
+                    <input type="text" id="app_blood">
+                </div>
+                <div class="form-group">
+                    <label>DATE OF BIRTH <span style="color:red">*</span></label>
+                    <input type="date" id="app_dob" required>
+                </div>
+                <div class="form-group">
+                    <label>STREAM/BRANCH <span style="color:red">*</span></label>
+                    <input type="text" id="app_stream" required>
+                </div>
+                <div class="form-group">
+                    <label>STUDENT CONTACT <span style="color:red">*</span></label>
+                    <input type="tel" id="app_scontact" required>
+                </div>
+                <div class="form-group">
+                    <label>PARENT CONTACT <span style="color:red">*</span></label>
+                    <input type="tel" id="app_pcontact" required>
+                </div>
+                <div class="form-group">
+                    <label>EMAIL ID</label>
+                    <input type="email" id="app_email">
+                </div>
+                <div class="form-group">
+                    <label>AADHAR NO <span style="color:red">*</span></label>
+                    <input type="text" id="app_aadhar" required>
+                </div>
+                <div class="form-group">
+                    <label>COMMUNITY</label>
+                    <input type="text" id="app_community">
+                </div>
+                <div class="form-group">
+                    <label>PINCODE <span style="color:red">*</span></label>
+                    <input type="text" id="app_pincode" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>FULL ADDRESS <span style="color:red">*</span></label>
+                <input type="text" id="app_address" required>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-blue); font-size: 1.1rem;">Certificates Required (Images)</h3>
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="file-upload-group">
+                    <i class="fa-solid fa-id-card" style="font-size: 2rem; color: var(--text-light);"></i>
+                    <label class="file-upload-label" for="app_cert_aadhar">Aadhar Card Photo</label>
+                    <input type="file" id="app_cert_aadhar" accept="image/*" onchange="previewImage(this, 'prev_aadhar')">
+                    <img id="prev_aadhar" class="preview-img" alt="Preview">
+                </div>
+                <div class="file-upload-group">
+                    <i class="fa-solid fa-file-lines" style="font-size: 2rem; color: var(--text-light);"></i>
+                    <label class="file-upload-label" for="app_cert_ssc">SSC (10th) Memo</label>
+                    <input type="file" id="app_cert_ssc" accept="image/*" onchange="previewImage(this, 'prev_ssc')">
+                    <img id="prev_ssc" class="preview-img" alt="Preview">
+                </div>
+                <div class="file-upload-group">
+                    <i class="fa-solid fa-file-contract" style="font-size: 2rem; color: var(--text-light);"></i>
+                    <label class="file-upload-label" for="app_cert_inter">Inter (12th) Memo</label>
+                    <input type="file" id="app_cert_inter" accept="image/*" onchange="previewImage(this, 'prev_inter')">
+                    <img id="prev_inter" class="preview-img" alt="Preview">
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: right;">
+                <button type="submit" class="btn btn-next"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+            </div>
+            <div class="success-message" id="appSuccessMsg" style="margin-top: 1rem; display: none;">Application Submitted Successfully!</div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 2rem 1rem; color: var(--text-light); font-size: 0.85rem; margin-top: 2rem; border-top: 1px solid var(--border-color);">
+        <p style="margin: 0;">&copy; <span id="currentYear"></span> Mahesh Consultant. All rights reserved.</p>
+        <p style="margin: 0.5rem 0 0 0; font-weight: 500;">Provided by Mohan krishna.Dulla</p>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/910000000000" target="_blank" class="whatsapp-float" id="waFloat">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Data & State
+        let currentStep = 1;
+        const totalSteps = 5;
+        let userData = {};
+
+        const mgrFeeData = {
+            "DS & AI(IBM)": { "Slot A": { i: 135000, ii: 100000, schlI: null, schlII: null }, "Slot B": { i: 125000, ii: 90000, schlI: null, schlII: null } },
+            "CFIS": { "Slot A": { i: 110000, ii: 75000, schlI: null, schlII: null }, "Slot B": { i: 95000, ii: 70000, schlI: null, schlII: null } },
+            "CSE": { "Slot A": { i: 135000, ii: 100000, schlI: 94500, schlII: 70000 }, "Slot B": { i: 125000, ii: 80000, schlI: 87500, schlII: 56000 } },
+            "CSE - AI": { "Slot A": { i: 135000, ii: 100000, schlI: 94500, schlII: 70000 }, "Slot B": { i: 125000, ii: 80000, schlI: 87500, schlII: 56000 } },
+            "CSE - DS": { "Slot A": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 }, "Slot B": { i: 80000, ii: 70000, schlI: 56000, schlII: 49000 } },
+            "AI&ML": { "Slot A": { i: 108000, ii: 98000, schlI: 75600, schlII: 68600 }, "Slot B": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 } },
+            "CSE-CYBER SECURITY": { "Slot A": { i: 108000, ii: 98000, schlI: 75600, schlII: 68600 }, "Slot B": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 } },
+            "CSE- BUSINESS SYSTEM": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 100000, ii: 65000, schlI: 70000, schlII: 45500 } },
+            "IT": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 95000, ii: 70000, schlI: 66500, schlII: 49000 } },
+            "IT (CYBER PHYSICAL SYSTEM WITH IMARTICUS LEARNING)": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 100000, ii: 65000, schlI: 70000, schlII: 45500 } },
+            "ECE": { "Slot A": { i: 100000, ii: 75000, schlI: 70000, schlII: 52500 }, "Slot B": { i: 80000, ii: 65000, schlI: 56000, schlII: 45500 } },
+            "EEE": { "Slot A": { i: 100000, ii: 50000, schlI: 70000, schlII: 35000 }, "Slot B": { i: 65000, ii: 45000, schlI: 45500, schlII: 31500 } },
+            "CIVIL": { "Slot A": { i: 100000, ii: 50000, schlI: 70000, schlII: 35000 }, "Slot B": { i: 65000, ii: 45000, schlI: 45500, schlII: 31500 } },
+            "BIO-TECH": { "Slot A": { i: 85000, ii: 70000, schlI: 59500, schlII: 49000 }, "Slot B": { i: 75000, ii: 65000, schlI: 52500, schlII: 45500 } },
+            "BIO- MEDICAL": { "Slot A": { i: 85000, ii: 70000, schlI: 59500, schlII: 49000 }, "Slot B": { i: 75000, ii: 65000, schlI: 52500, schlII: 45500 } },
+            "MECH": { "Slot A": { i: 85000, ii: 60000, schlI: 59500, schlII: 42000 }, "Slot B": { i: 75000, ii: 50000, schlI: 52500, schlII: 35000 } },
+            "CSE(HONS)AI & ML": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "CSE(HONS)QUANTUM COMPUTING": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "CSE(HONS)CYBER SECURITY": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "MECH(HONS)ROBOTICS": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "BIO-TECH(HONS)NUTRITION TECHNOLOGY": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "ECE-(HONS)IOT&AI(IBM)": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "ECE-(HONS)AI&ML(IMARTICUS LEARNING)": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
+            "ECE(HONS)CYBER SECURITY": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } }
+        };
+
+        const ganpatFeeData = {
+            set1: [
+                "B. Tech. CSE with IBM", "B. Tech. CSE (AI&ML) with IBM", "B. Tech. CSE (Cyber Security) with IBM", "B. Tech. CSE (Big Data and Analytics) with IBM"
+            ],
+            set2: [
+                "B. Tech. CSBS with TCS", "B. Tech. ECE (VLSI System Design) with E-Info Chips", "B. Tech. Civil with L&T Edutech", 
+                "B. Tech. Computer Engineering", "B. Tech. CE Artificial Intelligence", "B. Tech. IT", "B. Tech. Automobile", 
+                "B. Tech. Biomedical", "B. Tech. EEE", "B. Tech. Mechanical", "B. Tech. Mechatronics", "B. Tech. Petrochemical", 
+                "B. Tech. Biotechnology", "B. Tech. Chemical", "B. Tech. Agricultural Engineering", "B. Tech. Food Technology"
+            ]
+        };
+
+        const defaultFeeData = {
+            cse: { "90": 125000, "70": 150000, "60": 175000, "50": 200000, "below": 225000 },
+            cse_spec: { "90": 150000, "70": 175000, "60": 200000, "50": 225000, "below": 250000 },
+            other: {
+                "Information Technology": 100000,
+                "Electronics & Communication Engineering": 125000,
+                "Aeronautical Engineering": 100000,
+                "Aerospace Engineering": 100000,
+                "Industrial Biotechnology": 100000,
+                "Biotechnology (Agricultural)": 100000,
+                "Bio medical Engineering": 100000,
+                "Biotechnology (Genetic)": 100000,
+                "Mechanical Engineering": 75000,
+                "Mechatronics Engineering": 75000,
+                "Electrical & Electronics Engineering": 75000,
+                "Civil Engineering": 75000,
+                "Automobile Engineering": 75000,
+                "B.Arch": 125000,
+                "B.Design": 125000
+            },
+            whatsapp: "910000000000"
+        };
+
+        const defaultGlobalFeeData = {
+            bharath: defaultFeeData,
+            mgr: mgrFeeData,
+            ganpat: { set1Yearly75: 250000, set1YearlyBelow: 275000, set2Yearly75: 225000, set2YearlyBelow: 250000 }
+        };
+
+        // Migrate old logic to globalFeeData
+        let storedFees = JSON.parse(localStorage.getItem('adminFeeData'));
+        let globalFeeData;
+        
+        if (storedFees && storedFees.bharath) {
+            globalFeeData = storedFees; // already new structure
+            globalFeeData.mgr = JSON.parse(JSON.stringify(mgrFeeData)); // Force latest MGR fees
+            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
+        } else if (storedFees && storedFees.cse) {
+            // Migrate old structure
+            globalFeeData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
+            globalFeeData.bharath = storedFees;
+            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
+        } else {
+            globalFeeData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
+        }
+
+        let currentFees = globalFeeData.bharath;
+        if (!currentFees.whatsapp) currentFees.whatsapp = "910000000000";
+
+        const mockColleges = [
+            { name: "Bharath University", location: "Chennai, Tamil Nadu", rating: 4.2 },
+            { name: "Mgr University", location: "Chennai, Tamil Nadu", rating: 4.0 },
+            { name: "Ganpat University", location: "Mehsana, Gujarat", rating: 4.1 }
+        ];
+
+        // Initialization
+        let defaultSpecOptions = '';
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            defaultSpecOptions = document.getElementById('specialization').innerHTML;
+            updateUI();
+            updateWhatsAppLinks();
+        });
+
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.tagName.toLowerCase() === 'textarea' || activeElement.tagName.toLowerCase() === 'button')) {
+                    return; // let default behavior handle
+                }
+                
+                if (document.getElementById('adminModal').style.display === 'flex') {
+                    e.preventDefault();
+                    verifyAdmin();
+                } else if (document.getElementById('mainContainer').style.display !== 'none') {
+                    if (currentStep < totalSteps) {
+                        e.preventDefault();
+                        changeStep(1);
+                    }
+                }
+            }
+        });
+
+        function handleUniversityChange() {
+            const uni = document.getElementById('university').value;
+            const slotGroup = document.getElementById('slot-group');
+            const specDropdown = document.getElementById('specialization');
+            const courseDropdown = document.getElementById('course');
+            
+            if (uni) {
+                courseDropdown.innerHTML = '<option value="Engineering (B.Tech)">Engineering (B.Tech)</option>';
+            } else {
+                courseDropdown.innerHTML = '<option value="">-- Choose Course --</option><option value="Engineering (B.Tech)">Engineering (B.Tech)</option><option value="Medical (MBBS)">Medical (MBBS)</option><option value="Pharmacy (B.Pharm)">Pharmacy (B.Pharm)</option><option value="Arts & Science (B.Sc/B.A)">Arts & Science (B.Sc/B.A)</option><option value="Management (BBA)">Management (BBA)</option>';
+            }
+            handleCourseChange();
+            
+            if (uni === 'Mgr University') {
+                slotGroup.style.display = 'block';
+                let opts = '<option value="">-- Choose MGR Course --</option>';
+                Object.keys(globalFeeData.mgr).forEach(course => {
+                    opts += `<option value="${course}">${course}</option>`;
+                });
+                specDropdown.innerHTML = opts;
+            } else if (uni === 'Ganpat University') {
+                slotGroup.style.display = 'none';
+                document.getElementById('slot').value = '';
+                let opts = '<option value="">-- Choose Ganpat Course --</option>';
+                ganpatFeeData.set1.concat(ganpatFeeData.set2).forEach(course => {
+                    opts += `<option value="${course}">${course}</option>`;
+                });
+                specDropdown.innerHTML = opts;
+            } else {
+                slotGroup.style.display = 'none';
+                document.getElementById('slot').value = '';
+                specDropdown.innerHTML = defaultSpecOptions;
+            }
+        }
+
+        // --- Admin Functions ---
+        function openAdminLogin() { document.getElementById('adminModal').style.display = 'flex'; }
+        function closeAdminLogin() { document.getElementById('adminModal').style.display = 'none'; document.getElementById('err-admin').style.display = 'none'; }
+        function verifyAdmin() {
+            if (document.getElementById('adminUser').value === 'Nanimk@270504' && document.getElementById('adminPwd').value === '270504Nanimk') {
+                closeAdminLogin();
+                document.getElementById('mainContainer').style.display = 'none';
+                const appForm = document.getElementById('applicationFormView');
+                if (appForm) appForm.style.display = 'none';
+                document.getElementById('adminView').style.display = 'block';
+                document.getElementById('adminMainContent').style.display = 'block';
+                document.getElementById('adminCollectedView').style.display = 'none';
+                renderAdminPanel();
+                renderAdminApplications();
+            } else {
+                document.getElementById('err-admin').style.display = 'block';
+            }
+        }
+        function logoutAdmin() {
+            document.getElementById('adminView').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            document.getElementById('adminPwd').value = '';
+            document.getElementById('adminUser').value = '';
+        }
+        
+        function viewCollectedData() {
+            document.getElementById('adminMainContent').style.display = 'none';
+            document.getElementById('adminCollectedView').style.display = 'block';
+            
+            let leads = JSON.parse(localStorage.getItem('collectedLeads') || '[]');
+            const now = new Date().getTime();
+            const oneDay = 24 * 60 * 60 * 1000;
+            leads = leads.filter(l => (now - l.timestamp) < oneDay);
+            localStorage.setItem('collectedLeads', JSON.stringify(leads));
+
+            const table = document.getElementById('collectedLeadsTable');
+            table.innerHTML = '<tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th></tr>';
+            
+            leads.sort((a,b) => b.timestamp - a.timestamp).forEach(lead => {
+                const dateStr = new Date(lead.timestamp).toLocaleString('en-IN');
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dateStr}</td>
+                    <td>${lead.name || '-'}</td>
+                    <td>${lead.phone || '-'}</td>
+                    <td>${lead.hallTicket || '-'}</td>
+                    <td>${lead.percentage || '-'}%</td>
+                    <td>${lead.university || '-'}</td>
+                    <td>${lead.course || '-'}<br><span style="font-size:0.8rem;color:var(--text-light);">${lead.specialization || ''}</span></td>
+                `;
+                table.appendChild(tr);
+            });
+        }
+        
+        function backToAdminMain() {
+            document.getElementById('adminCollectedView').style.display = 'none';
+            document.getElementById('adminMainContent').style.display = 'block';
+        }
+        function renderAdminPanel() {
+            const uni = document.getElementById('adminUniSelect').value;
+            document.getElementById('adminBharathView').style.display = 'none';
+            document.getElementById('adminMgrView').style.display = 'none';
+            document.getElementById('adminGanpatView').style.display = 'none';
+
+            if (uni === 'bharath') {
+                document.getElementById('adminBharathView').style.display = 'block';
+                document.getElementById('a_cse_90').value = globalFeeData.bharath.cse["90"];
+                document.getElementById('a_cse_70').value = globalFeeData.bharath.cse["70"];
+                document.getElementById('a_cse_60').value = globalFeeData.bharath.cse["60"];
+                document.getElementById('a_cse_50').value = globalFeeData.bharath.cse["50"];
+                document.getElementById('a_cse_below').value = globalFeeData.bharath.cse["below"];
+                
+                document.getElementById('a_cses_90').value = globalFeeData.bharath.cse_spec["90"];
+                document.getElementById('a_cses_70').value = globalFeeData.bharath.cse_spec["70"];
+                document.getElementById('a_cses_60').value = globalFeeData.bharath.cse_spec["60"];
+                document.getElementById('a_cses_50').value = globalFeeData.bharath.cse_spec["50"];
+                document.getElementById('a_cses_below').value = globalFeeData.bharath.cse_spec["below"];
+
+                const otherTbl = document.getElementById('otherCoursesTable');
+                otherTbl.innerHTML = '<tr><th>Course Name</th><th>Fee Amount</th></tr>';
+                Object.keys(globalFeeData.bharath.other).forEach((course, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${course}</td><td><input type="number" id="a_other_${index}" value="${globalFeeData.bharath.other[course]}"></td>`;
+                    otherTbl.appendChild(tr);
+                });
+            } else if (uni === 'mgr') {
+                document.getElementById('adminMgrView').style.display = 'block';
+                let html = '';
+                Object.keys(globalFeeData.mgr).forEach((course, idx) => {
+                    const c = globalFeeData.mgr[course];
+                    html += `<h4 style="margin-top:1rem; font-size:1.05rem; color:var(--primary-blue); border-bottom: 1px solid var(--border-color);">${course}</h4><table class="admin-table">`;
+                    html += `<tr><th>Slot</th><th>Sem 1 Base</th><th>Sem 2 Base</th><th>Sem 1 (Schl)</th><th>Sem 2 (Schl)</th></tr>`;
+                    // Slot A
+                    html += `<tr><td>Slot A</td>
+                        <td><input type="number" id="m_a_i_${idx}" style="width:70px" value="${c['Slot A'].i || ''}"></td>
+                        <td><input type="number" id="m_a_ii_${idx}" style="width:70px" value="${c['Slot A'].ii || ''}"></td>
+                        <td><input type="number" id="m_a_si_${idx}" style="width:70px" value="${c['Slot A'].schlI || ''}"></td>
+                        <td><input type="number" id="m_a_sii_${idx}" style="width:70px" value="${c['Slot A'].schlII || ''}"></td>
+                    </tr>`;
+                    // Slot B
+                    html += `<tr><td>Slot B</td>
+                        <td><input type="number" id="m_b_i_${idx}" style="width:70px" value="${c['Slot B'].i || ''}"></td>
+                        <td><input type="number" id="m_b_ii_${idx}" style="width:70px" value="${c['Slot B'].ii || ''}"></td>
+                        <td><input type="number" id="m_b_si_${idx}" style="width:70px" value="${c['Slot B'].schlI || ''}"></td>
+                        <td><input type="number" id="m_b_sii_${idx}" style="width:70px" value="${c['Slot B'].schlII || ''}"></td>
+                    </tr>`;
+                    html += `</table>`;
+                });
+                document.getElementById('adminMgrTableContainer').innerHTML = html;
+            } else if (uni === 'ganpat') {
+                document.getElementById('adminGanpatView').style.display = 'block';
+                document.getElementById('a_g_set1_75').value = globalFeeData.ganpat.set1Yearly75;
+                document.getElementById('a_g_set1_below').value = globalFeeData.ganpat.set1YearlyBelow;
+                document.getElementById('a_g_set2_75').value = globalFeeData.ganpat.set2Yearly75;
+                document.getElementById('a_g_set2_below').value = globalFeeData.ganpat.set2YearlyBelow;
+            }
+
+            document.getElementById('a_whatsapp').value = globalFeeData.bharath.whatsapp || "910000000000";
+        }
+
+        function saveAdminFees() {
+            const uni = document.getElementById('adminUniSelect').value;
+
+            if (uni === 'bharath') {
+                globalFeeData.bharath.cse["90"] = parseInt(document.getElementById('a_cse_90').value) || 0;
+                globalFeeData.bharath.cse["70"] = parseInt(document.getElementById('a_cse_70').value) || 0;
+                globalFeeData.bharath.cse["60"] = parseInt(document.getElementById('a_cse_60').value) || 0;
+                globalFeeData.bharath.cse["50"] = parseInt(document.getElementById('a_cse_50').value) || 0;
+                globalFeeData.bharath.cse["below"] = parseInt(document.getElementById('a_cse_below').value) || 0;
+
+                globalFeeData.bharath.cse_spec["90"] = parseInt(document.getElementById('a_cses_90').value) || 0;
+                globalFeeData.bharath.cse_spec["70"] = parseInt(document.getElementById('a_cses_70').value) || 0;
+                globalFeeData.bharath.cse_spec["60"] = parseInt(document.getElementById('a_cses_60').value) || 0;
+                globalFeeData.bharath.cse_spec["50"] = parseInt(document.getElementById('a_cses_50').value) || 0;
+                globalFeeData.bharath.cse_spec["below"] = parseInt(document.getElementById('a_cses_below').value) || 0;
+
+                let i = 0;
+                for (let course in globalFeeData.bharath.other) {
+                    globalFeeData.bharath.other[course] = parseInt(document.getElementById(`a_other_${i}`).value) || 0;
+                    i++;
+                }
+            } else if (uni === 'mgr') {
+                Object.keys(globalFeeData.mgr).forEach((course, idx) => {
+                    const c = globalFeeData.mgr[course];
+                    c['Slot A'].i = parseInt(document.getElementById(`m_a_i_${idx}`).value) || null;
+                    c['Slot A'].ii = parseInt(document.getElementById(`m_a_ii_${idx}`).value) || null;
+                    c['Slot A'].schlI = parseInt(document.getElementById(`m_a_si_${idx}`).value) || null;
+                    c['Slot A'].schlII = parseInt(document.getElementById(`m_a_sii_${idx}`).value) || null;
+                    
+                    c['Slot B'].i = parseInt(document.getElementById(`m_b_i_${idx}`).value) || null;
+                    c['Slot B'].ii = parseInt(document.getElementById(`m_b_ii_${idx}`).value) || null;
+                    c['Slot B'].schlI = parseInt(document.getElementById(`m_b_si_${idx}`).value) || null;
+                    c['Slot B'].schlII = parseInt(document.getElementById(`m_b_sii_${idx}`).value) || null;
+                });
+            } else if (uni === 'ganpat') {
+                globalFeeData.ganpat.set1Yearly75 = parseInt(document.getElementById('a_g_set1_75').value) || 0;
+                globalFeeData.ganpat.set1YearlyBelow = parseInt(document.getElementById('a_g_set1_below').value) || 0;
+                globalFeeData.ganpat.set2Yearly75 = parseInt(document.getElementById('a_g_set2_75').value) || 0;
+                globalFeeData.ganpat.set2YearlyBelow = parseInt(document.getElementById('a_g_set2_below').value) || 0;
+            }
+
+            globalFeeData.bharath.whatsapp = document.getElementById('a_whatsapp').value;
+            currentFees = globalFeeData.bharath; // Keep currentFees synced for WA backward compatibility
+
+            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
+            const msg = document.getElementById('adminSuccessMsg');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 3000);
+
+            updateWhatsAppLinks();
+        }
+
+        function updateWhatsAppLinks() {
+            const waNum = currentFees.whatsapp || "910000000000";
+            const floatBtn = document.getElementById('waFloat');
+            if (floatBtn) floatBtn.href = `https://wa.me/${waNum}`;
+            const ctaBtn = document.getElementById('waBtn');
+            if (ctaBtn) ctaBtn.onclick = () => window.open(`https://wa.me/${waNum}`, '_blank');
+        }
+
+        // --- Core UI & Logic ---
+        function updateUI() {
+            document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-line').style.width = `${progressPercentage}%`;
+
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                const stepNum = index + 1;
+                indicator.classList.remove('active', 'completed');
+                if (stepNum < currentStep) indicator.classList.add('completed');
+                else if (stepNum === currentStep) indicator.classList.add('active');
+            });
+
+            const btnContainer = document.getElementById('btn-container');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            if (currentStep === 1) {
+                btnPrev.style.display = 'none';
+            } else if (currentStep < totalSteps) {
+                btnPrev.style.display = 'flex';
+                btnContainer.style.display = 'flex';
+                btnNext.innerHTML = currentStep === totalSteps - 1 ? 'Show Results <i class="fa-solid fa-wand-magic-sparkles"></i>' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+                
+                // Calculate Dynamic Fee when entering Step 4
+                if (currentStep === 4) {
+                    calculateDynamicFee();
+                    document.getElementById('dispName').textContent = document.getElementById('fullName').value || '-';
+                    document.getElementById('dispPhone').textContent = document.getElementById('phone').value || '-';
+                    document.getElementById('dispHallTicket').textContent = document.getElementById('hallTicket').value || '-';
+                    document.getElementById('dispEmail').textContent = document.getElementById('email').value || '-';
+                }
+            } else {
+                btnContainer.style.display = 'none';
+                generateResults();
+            }
+        }
+
+        function calculateDynamicFee() {
+            const uniVal = document.getElementById('university').value;
+            const slotVal = document.getElementById('slot').value;
+            const courseVal = document.getElementById('course').value;
+            const specVal = document.getElementById('specialization').value;
+            const percentage = userData.percentage || 0;
+            
+            let tuition = 0;
+            let admissionFee = 10000;
+            let lblTuition = 'Tuition Fee (Per Year)';
+            let lblAdmission = 'Admission Fee (Non-Refundable)';
+            let totalFeeDiscount = 0;
+            
+            const feeNotification = document.getElementById('feeNotification');
+            if (feeNotification) {
+                feeNotification.style.display = 'none';
+                feeNotification.className = '';
+                feeNotification.innerHTML = '';
+            }
+            
+            if (uniVal === 'Mgr University' && specVal && globalFeeData.mgr[specVal]) {
+                const feeDetails = globalFeeData.mgr[specVal][slotVal];
+                if (feeDetails && feeDetails.i !== null) {
+                    let sem1 = feeDetails.i;
+                    let sem2 = feeDetails.ii;
+                    // Apply 30% Scholarship if PCM >= 90%
+                    if (percentage >= 90) {
+                        if (feeDetails.schlI !== null) {
+                            sem1 = feeDetails.schlI;
+                            sem2 = feeDetails.schlII;
+                            feeNotification.style.display = 'block';
+                            feeNotification.className = 'success-message';
+                            feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for a scholarship.';
+                        } else {
+                            feeNotification.style.display = 'block';
+                            feeNotification.style.backgroundColor = '#fef3c7';
+                            feeNotification.style.color = '#92400e';
+                            feeNotification.style.border = '1px solid #fcd34d';
+                            feeNotification.innerHTML = '<i class="fa-solid fa-circle-info"></i> Scholarship is not available for this course/slot.';
+                        }
+                    }
+                    tuition = sem1 + sem2;
+                    admissionFee = 20000 + 1500; // Booking amount + Application amount
+                    lblTuition = `Tuition Fee (Sem 1: ₹${sem1.toLocaleString('en-IN')} + Sem 2: ₹${sem2.toLocaleString('en-IN')})`;
+                    lblAdmission = 'Application (₹1,500) + Booking (₹20,000)';
+                    totalFeeDiscount = 20000;
+                } else if (feeDetails && feeDetails.i === null) {
+                    feeNotification.style.display = 'block';
+                    feeNotification.style.backgroundColor = '#fee2e2';
+                    feeNotification.style.color = '#b91c1c';
+                    feeNotification.style.border = '1px solid #fca5a5';
+                    feeNotification.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> This course is currently not available in ' + slotVal + '.';
+                    tuition = 0;
+                    admissionFee = 0;
+                    lblTuition = 'Not Available';
+                    lblAdmission = 'Not Available';
+                }
+            } else if (uniVal === 'Ganpat University' && specVal) {
+                let yearlyFee = 0;
+                let semFee = 0;
+                if (ganpatFeeData.set1.includes(specVal)) {
+                    if (percentage >= 75) {
+                        yearlyFee = globalFeeData.ganpat.set1Yearly75; semFee = yearlyFee / 2;
+                    } else {
+                        yearlyFee = globalFeeData.ganpat.set1YearlyBelow; semFee = yearlyFee / 2;
+                    }
+                } else if (ganpatFeeData.set2.includes(specVal)) {
+                    if (percentage >= 75) {
+                        yearlyFee = globalFeeData.ganpat.set2Yearly75; semFee = yearlyFee / 2;
+                    } else {
+                        yearlyFee = globalFeeData.ganpat.set2YearlyBelow; semFee = yearlyFee / 2;
+                    }
+                }
+                if (yearlyFee > 0) {
+                    tuition = yearlyFee;
+                    admissionFee = 10000 + 1000; // 10k admission + 1k application
+                    lblTuition = `Yearly Fee (Tuition, Hostel, Exam) - ₹${semFee.toLocaleString('en-IN')} / Sem`;
+                    lblAdmission = 'Admission (₹10,000) + Application (₹1,000)';
+                }
+            } else if (courseVal === 'Engineering (B.Tech)') {
+                if (specVal === 'CSE') {
+                    if (percentage >= 90) tuition = globalFeeData.bharath.cse["90"];
+                    else if (percentage >= 70) tuition = globalFeeData.bharath.cse["70"];
+                    else if (percentage >= 60) tuition = globalFeeData.bharath.cse["60"];
+                    else if (percentage >= 50) tuition = globalFeeData.bharath.cse["50"];
+                    else tuition = globalFeeData.bharath.cse["below"];
+                } else if (specVal && specVal.startsWith('CSE with')) {
+                    if (percentage >= 90) tuition = globalFeeData.bharath.cse_spec["90"];
+                    else if (percentage >= 70) tuition = globalFeeData.bharath.cse_spec["70"];
+                    else if (percentage >= 60) tuition = globalFeeData.bharath.cse_spec["60"];
+                    else if (percentage >= 50) tuition = globalFeeData.bharath.cse_spec["50"];
+                    else tuition = globalFeeData.bharath.cse_spec["below"];
+                } else {
+                    // Other
+                    if (globalFeeData.bharath.other[specVal]) {
+                        tuition = globalFeeData.bharath.other[specVal];
+                    }
+                }
+            } else {
+                // Not B.Tech, fallback
+                tuition = 120000;
+            }
+
+            document.getElementById('lblTuitionFee').textContent = lblTuition;
+            document.getElementById('lblAdmissionFee').textContent = lblAdmission;
+            document.getElementById('calcTuitionFee').textContent = tuition > 0 ? tuition.toLocaleString('en-IN') : '0';
+            document.getElementById('calcAdmissionFee').textContent = admissionFee > 0 ? admissionFee.toLocaleString('en-IN') : '0';
+            
+            let total = tuition + admissionFee - totalFeeDiscount;
+            document.getElementById('calcTotalFee').textContent = total > 0 ? total.toLocaleString('en-IN') : '0';
+
+            let bookingNoteRow = document.getElementById('bookingNoteRow');
+            let bookingNoteCell = document.getElementById('bookingNoteCell');
+            if (bookingNoteRow && bookingNoteCell) {
+                if (totalFeeDiscount > 0) {
+                    bookingNoteCell.textContent = `* Booking fee (₹${totalFeeDiscount.toLocaleString('en-IN')}) is deducted from the Total Estimated Fee.`;
+                    bookingNoteRow.style.display = 'table-row';
+                } else {
+                    bookingNoteRow.style.display = 'none';
+                }
+            }
+        }
+
+        function changeStep(direction) {
+            if (direction === 1 && !validateStep(currentStep)) return;
+            if (currentStep === 3 && direction === 1) collectLeadData();
+            if (currentStep === 4 && direction === 1) saveData();
+            currentStep += direction;
+            updateUI();
+        }
+
+        function collectLeadData() {
+            saveData();
+            const lead = {
+                timestamp: new Date().getTime(),
+                name: userData.name,
+                phone: userData.phone,
+                hallTicket: userData.hallTicket,
+                percentage: userData.percentage,
+                university: userData.university,
+                course: userData.course,
+                specialization: document.getElementById('specialization').value || ''
+            };
+            
+            let leads = JSON.parse(localStorage.getItem('collectedLeads') || '[]');
+            const now = new Date().getTime();
+            const oneDay = 24 * 60 * 60 * 1000;
+            leads = leads.filter(l => (now - l.timestamp) < oneDay);
+            
+            const existingIndex = leads.findIndex(l => l.phone === lead.phone);
+            if (existingIndex >= 0) leads[existingIndex] = lead;
+            else leads.push(lead);
+            
+            localStorage.setItem('collectedLeads', JSON.stringify(leads));
+        }
+
+        function validateStep(step) {
+            hideErrors();
+            let isValid = true;
+            if (step === 1) {
+                const uniVal = document.getElementById('university').value;
+                if (!document.getElementById('state').value) { document.getElementById('err-state').style.display = 'block'; isValid = false; }
+                if (!uniVal) { document.getElementById('err-university').style.display = 'block'; isValid = false; }
+                if (uniVal === 'Mgr University' && !document.getElementById('slot').value) { document.getElementById('err-slot').style.display = 'block'; isValid = false; }
+                const cVal = document.getElementById('course').value;
+                if (!cVal) { document.getElementById('err-course').style.display = 'block'; isValid = false; }
+                if (cVal === 'Engineering (B.Tech)' && !document.getElementById('specialization').value) {
+                    document.getElementById('err-specialization').style.display = 'block';
+                    isValid = false;
+                }
+            } else if (step === 2) {
+                const name = document.getElementById('fullName').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const hallTicket = document.getElementById('hallTicket').value.trim();
+                if (!name) { document.getElementById('err-name').style.display = 'block'; isValid = false; }
+                if (!/^[0-9]{10}$/.test(phone)) { document.getElementById('err-phone').style.display = 'block'; isValid = false; }
+                if (!hallTicket) { document.getElementById('err-hallticket').style.display = 'block'; isValid = false; }
+            } else if (step === 3) {
+                const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
+                const maxMarks = [75, 75, 60, 60, 75, 75, 60, 60, 30, 30];
+                for (let i = 0; i < ids.length; i++) {
+                    const val = parseFloat(document.getElementById(ids[i]).value);
+                    if (isNaN(val) || val < 0 || val > maxMarks[i]) {
+                        document.getElementById('err-marks').style.display = 'block';
+                        isValid = false; break;
+                    }
+                }
+            }
+            return isValid;
+        }
+
+        function hideErrors() { document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); }
+
+        function handleCourseChange() {
+            const courseVal = document.getElementById('course').value;
+            const specGroup = document.getElementById('specialization-group');
+            if (courseVal === 'Engineering (B.Tech)') { specGroup.style.display = 'block'; } 
+            else { specGroup.style.display = 'none'; document.getElementById('specialization').value = ''; }
+        }
+
+        function calculatePercentage() {
+            const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
+            let total = 0;
+            ids.forEach(id => { total += parseFloat(document.getElementById(id).value) || 0; });
+            const percentage = total / 6;
+            document.getElementById('totalMarksDisplay').textContent = total;
+            document.getElementById('percentageDisplay').textContent = percentage > 0 ? `${percentage.toFixed(4)}%` : '0.0000%';
+            userData.percentage = percentage.toFixed(4);
+        }
+
+        function saveData() {
+            const specVal = document.getElementById('specialization').value;
+            userData = {
+                state: document.getElementById('state').value,
+                university: document.getElementById('university').value,
+                slot: document.getElementById('slot').value,
+                course: document.getElementById('course').value + (specVal ? ` - ${specVal}` : ''),
+                name: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                hallTicket: document.getElementById('hallTicket').value,
+                email: document.getElementById('email').value,
+                percentage: userData.percentage || 0
+            };
+            localStorage.setItem('maheshConsultantLead', JSON.stringify(userData));
+        }
+
+        function generateResults() {
+            const loader = document.getElementById('loader');
+            const resultsView = document.getElementById('results-view');
+            const listContainer = document.getElementById('college-list');
+            loader.style.display = 'block'; resultsView.style.display = 'none'; listContainer.innerHTML = '';
+            setTimeout(() => {
+                loader.style.display = 'none'; resultsView.style.display = 'block';
+                document.getElementById('res-percentage').textContent = `${userData.percentage}%`;
+                const msg = document.getElementById('successMsg');
+                msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 5000);
+                
+                let matchedCollege = mockColleges.find(c => c.name === userData.university) || mockColleges[0];
+                const card = document.createElement('div');
+                card.className = `college-card`;
+                card.innerHTML = `
+                    <div class="college-info">
+                        <div class="best-match"><i class="fa-solid fa-star"></i> Selected University</div>
+                        <h3>${matchedCollege.name}</h3>
+                        <p><i class="fa-solid fa-map-pin"></i> ${matchedCollege.location} | <i class="fa-solid fa-star" style="color:#fbbf24"></i> ${matchedCollege.rating}</p>
+                    </div>
+                    <div class="college-fee">
+                        <p style="font-size:0.75rem; color:var(--text-light); margin-bottom:2px;">Est. Total Fee</p>
+                        <div class="fee-amount">₹${document.getElementById('calcTotalFee').textContent}</div>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            }, 1500);
+        }
+
+        // --- Application Form Logic ---
+        function openApplicationForm() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('applicationFormView').style.display = 'block';
+            
+            // Pre-fill some data from step 2 if available
+            document.getElementById('app_name').value = document.getElementById('fullName').value || '';
+            document.getElementById('app_scontact').value = document.getElementById('phone').value || '';
+            document.getElementById('app_email').value = document.getElementById('email').value || '';
+            document.getElementById('app_stream').value = document.getElementById('course').value || '';
+        }
+
+        function closeApplicationForm() {
+            document.getElementById('applicationFormView').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+        }
+
+        function previewImage(input, imgId) {
+            const file = input.files[0];
+            const img = document.getElementById(imgId);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                img.style.display = 'none';
+                img.src = '';
+            }
+        }
+
+        async function compressImage(file) {
+            return new Promise((resolve) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                        } else {
+                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function submitApplication(e) {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const ogText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            btn.disabled = true;
+
+            const appData = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString(),
+                name: document.getElementById('app_name').value,
+                fname: document.getElementById('app_fname').value,
+                mname: document.getElementById('app_mname').value,
+                blood: document.getElementById('app_blood').value,
+                dob: document.getElementById('app_dob').value,
+                stream: document.getElementById('app_stream').value,
+                scontact: document.getElementById('app_scontact').value,
+                pcontact: document.getElementById('app_pcontact').value,
+                email: document.getElementById('app_email').value,
+                aadhar: document.getElementById('app_aadhar').value,
+                community: document.getElementById('app_community').value,
+                pincode: document.getElementById('app_pincode').value,
+                address: document.getElementById('app_address').value,
+                totalFee: document.getElementById('calcTotalFee').textContent,
+            };
+
+            appData.cert_aadhar = await compressImage(document.getElementById('app_cert_aadhar').files[0]);
+            appData.cert_ssc = await compressImage(document.getElementById('app_cert_ssc').files[0]);
+            appData.cert_inter = await compressImage(document.getElementById('app_cert_inter').files[0]);
+
+            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
+            apps.push(appData);
+            
+            try {
+                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
+                document.getElementById('appSuccessMsg').style.display = 'block';
+                e.target.reset();
+                document.querySelectorAll('.preview-img').forEach(img => { img.style.display = 'none'; img.src = ''; });
+                setTimeout(() => {
+                    document.getElementById('appSuccessMsg').style.display = 'none';
+                    closeApplicationForm();
+                }, 3000);
+            } catch (err) {
+                alert("Storage limit exceeded. Please try uploading smaller files or contact admin.");
+                console.error(err);
+            } finally {
+                btn.innerHTML = ogText;
+                btn.disabled = false;
+            }
+        }
+
+        // --- Admin App Viewer Logic ---
+        function renderAdminApplications() {
+            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
+            const table = document.getElementById('applicationsTable');
+            table.innerHTML = '<tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>';
+            
+            if(apps.length === 0) {
+                table.innerHTML += '<tr><td colspan="4" style="text-align:center;">No applications submitted yet.</td></tr>';
+                return;
+            }
+
+            apps.forEach(app => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${app.name}</td>
+                    <td>${app.stream}</td>
+                    <td>${app.date}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-next" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="viewAppDetails(${app.id})">View Details</button>
+                            <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Application" onclick="deleteApplication(${app.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                table.appendChild(tr);
+            });
+        }
+
+        function deleteApplication(id) {
+            if (confirm('Are you sure you want to delete this student application? This action cannot be undone.')) {
+                let apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
+                apps = apps.filter(a => a.id !== id);
+                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
+                renderAdminApplications();
+            }
+        }
+
+        function viewAppDetails(id) {
+            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
+            const app = apps.find(a => a.id === id);
+            if (!app) return;
+
+            let detailsHtml = '';
+            const fields = [
+                {k: 'name', l: 'Name'}, {k: 'fname', l: "Father's Name"}, {k: 'mname', l: "Mother's Name"},
+                {k: 'blood', l: 'Blood Group'}, {k: 'dob', l: 'DOB'}, {k: 'stream', l: 'Stream'},
+                {k: 'scontact', l: 'Student Contact'}, {k: 'pcontact', l: 'Parent Contact'}, {k: 'email', l: 'Email'},
+                {k: 'aadhar', l: 'Aadhar No'}, {k: 'community', l: 'Community'}, {k: 'pincode', l: 'Pincode'},
+                {k: 'address', l: 'Address'}, {k: 'totalFee', l: 'Total Estimated Fee (₹)'}
+            ];
+            
+            fields.forEach(f => {
+                detailsHtml += `<div><strong>${f.l}:</strong> <br>${app[f.k] || '-'}</div>`;
+            });
+            document.getElementById('appDetailsContent').innerHTML = detailsHtml;
+
+            let certsHtml = '';
+            if (app.cert_aadhar) certsHtml += `<div style="text-align: center;"><p>Aadhar</p><img src="${app.cert_aadhar}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+            if (app.cert_ssc) certsHtml += `<div style="text-align: center;"><p>SSC Memo</p><img src="${app.cert_ssc}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+            if (app.cert_inter) certsHtml += `<div style="text-align: center;"><p>Inter Memo</p><img src="${app.cert_inter}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+            
+            document.getElementById('appDetailsCerts').innerHTML = certsHtml || '<p style="color: var(--text-light);">No certificates uploaded.</p>';
+
+            document.getElementById('current_app_id').value = app.id;
+            document.getElementById('app_remark1').value = app.remark1 || '';
+            document.getElementById('app_remark2').value = app.remark2 || '';
+
+            document.getElementById('appDetailsModal').style.display = 'flex';
+        }
+
+        function saveAppRemarks() {
+            const id = parseInt(document.getElementById('current_app_id').value);
+            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
+            const index = apps.findIndex(a => a.id === id);
+            if (index !== -1) {
+                apps[index].remark1 = document.getElementById('app_remark1').value;
+                apps[index].remark2 = document.getElementById('app_remark2').value;
+                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
+                const msg = document.getElementById('appRemarkSuccess');
+                msg.style.display = 'inline-block';
+                setTimeout(() => msg.style.display = 'none', 3000);
+            }
+        }
+
+        function closeAppDetails() {
+            document.getElementById('appDetailsModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

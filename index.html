@@ -1048,7 +1048,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/910000000000" target="_blank" class="whatsapp-float" id="waFloat">
+    <a href="https://api.whatsapp.com/send?phone=+917397549343" target="_blank" class="whatsapp-float" id="waFloat">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -1117,7 +1117,7 @@
                 "B.Arch": 125000,
                 "B.Design": 125000
             },
-            whatsapp: "910000000000"
+            whatsapp: "+917397549343"
         };
 
         const defaultGlobalFeeData = {
@@ -1144,7 +1144,7 @@
         }
 
         let currentFees = globalFeeData.bharath;
-        if (!currentFees.whatsapp) currentFees.whatsapp = "910000000000";
+        if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
 
         const mockColleges = [
             { name: "Bharath University", location: "Chennai, Tamil Nadu", rating: 4.2 },
@@ -1332,7 +1332,9 @@
                 document.getElementById('a_g_set2_below').value = globalFeeData.ganpat.set2YearlyBelow;
             }
 
-            document.getElementById('a_whatsapp').value = globalFeeData.bharath.whatsapp || "910000000000";
+            document.getElementById('a_whatsapp').value = globalFeeData.bharath.whatsapp || "+917397549343";
+            
+            renderAdminApplications();
         }
 
         function saveAdminFees() {
@@ -1388,11 +1390,11 @@
         }
 
         function updateWhatsAppLinks() {
-            const waNum = currentFees.whatsapp || "910000000000";
+            const waNum = currentFees.whatsapp || "+917397549343";
             const floatBtn = document.getElementById('waFloat');
-            if (floatBtn) floatBtn.href = `https://wa.me/${waNum}`;
+            if (floatBtn) floatBtn.href = `https://api.whatsapp.com/send?phone=${waNum}`;
             const ctaBtn = document.getElementById('waBtn');
-            if (ctaBtn) ctaBtn.onclick = () => window.open(`https://wa.me/${waNum}`, '_blank');
+            if (ctaBtn) ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${waNum}`, '_blank');
         }
 
         // --- Core UI & Logic ---
@@ -1779,6 +1781,7 @@
                 pincode: document.getElementById('app_pincode').value,
                 address: document.getElementById('app_address').value,
                 totalFee: document.getElementById('calcTotalFee').textContent,
+                university: userData.university,
             };
 
             appData.cert_aadhar = await compressImage(document.getElementById('app_cert_aadhar').files[0]);
@@ -1812,12 +1815,22 @@
             const table = document.getElementById('applicationsTable');
             table.innerHTML = '<tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>';
             
-            if(apps.length === 0) {
+            const selectedVal = document.getElementById('adminUniSelect').value;
+            let targetUni = '';
+            if (selectedVal === 'bharath') targetUni = 'Bharath University';
+            else if (selectedVal === 'mgr') targetUni = 'Mgr University';
+            else if (selectedVal === 'ganpat') targetUni = 'Ganpat University';
+
+            const filteredApps = apps.filter(app => {
+                return app.university === targetUni;
+            });
+
+            if(filteredApps.length === 0) {
                 table.innerHTML += '<tr><td colspan="4" style="text-align:center;">No applications submitted yet.</td></tr>';
                 return;
             }
 
-            apps.forEach(app => {
+            filteredApps.forEach(app => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${app.name}</td>

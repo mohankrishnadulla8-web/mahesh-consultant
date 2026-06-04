@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahesh Consultant – Intelligent Education Guidance System</title>
+    <title>Disha Education Consultancy – Transforming Academic Potential into World-Class Technical Careers</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -453,6 +453,7 @@
             }
         }
         
+        
         /* Admin Additions */
         .admin-login-btn {
             background: none; border: none; color: var(--text-light); font-size: 1.25rem;
@@ -501,8 +502,8 @@
     <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
         <div style="flex: 1;"></div>
         <div style="flex: 2; text-align: center;">
-            <h1><i class="fa-solid fa-user-graduate"></i> Mahesh Consultant</h1>
-            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Intelligent Education Guidance System</p>
+            <h1><i class="fa-solid fa-user-graduate"></i> Disha Education Consultancy</h1>
+            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Transforming Academic Potential into World-Class Technical Careers</p>
         </div>
         <div style="flex: 1; text-align: right;">
             <button class="admin-login-btn" onclick="openAdminLogin()"><i class="fa-solid fa-user-shield"></i></button>
@@ -513,7 +514,7 @@
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <h2 style="margin-bottom: 1rem;">Admin Login</h2>
-            <input type="text" id="adminUser" placeholder="Enter username" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+            <input type="email" id="adminUser" placeholder="Enter email" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
             <input type="password" id="adminPwd" placeholder="Enter password" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
             <div class="error-message" id="err-admin" style="margin-bottom: 1rem;">Incorrect username or password</div>
             <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
@@ -534,13 +535,16 @@
         </div>
         
         <div id="adminCollectedView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 0.5rem; flex-wrap: wrap;">
                 <h3 style="margin-bottom: 0;">Collected Leads (Last 24 Hours)</h3>
-                <button class="btn btn-prev" onclick="backToAdminMain()" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-next" onclick="downloadAllCollectedData()" style="padding: 0.5rem 1rem; background-color: var(--success-green); border-color: var(--success-green);"><i class="fa-solid fa-download"></i> Download CSV</button>
+                    <button class="btn btn-prev" onclick="backToAdminMain()" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                </div>
             </div>
             <div style="overflow-x: auto;">
                 <table class="admin-table" id="collectedLeadsTable">
-                    <tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th></tr>
+                    <tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th><th>Action</th></tr>
                 </table>
             </div>
         </div>
@@ -552,6 +556,8 @@
                     <option value="bharath">Bharath University</option>
                     <option value="mgr">Mgr University</option>
                     <option value="ganpat">Ganpat University</option>
+                    <option value="dsu">Dhanalakshmi Srinivasan University</option>
+                    <option value="kalasalingam">Kalasalingam Academy of Research and Education</option>
                 </select>
             </div>
 
@@ -603,6 +609,99 @@
                     <tr><th>Condition</th><th>Fee Amount</th></tr>
                     <tr><td>PCM >= 75%</td><td><input type="number" id="a_g_set2_75"></td></tr>
                     <tr><td>PCM < 75%</td><td><input type="number" id="a_g_set2_below"></td></tr>
+                </table>
+            </div>
+
+            <div id="adminDsuView" style="display: none;">
+                <h3>Group A B.Tech Courses (CSE, AI&DS, AI&ML, Cyber Security, IT)</h3>
+                <table class="admin-table">
+                    <tr><th>PCM / Condition</th><th>Fee Amount (₹)</th></tr>
+                    <tr><td>Base Full Fee (without scholarship)</td><td><input type="number" id="a_dsu_groupA_full"></td></tr>
+                    <tr><td>90% - 100% PCM</td><td><input type="number" id="a_dsu_groupA_90"></td></tr>
+                    <tr><td>80% - 89.99% PCM</td><td><input type="number" id="a_dsu_groupA_80"></td></tr>
+                    <tr><td>70% - 79.99% PCM</td><td><input type="number" id="a_dsu_groupA_70"></td></tr>
+                    <tr><td>Below 70% PCM</td><td><input type="number" id="a_dsu_groupA_below"></td></tr>
+                </table>
+
+                <h3>Group B B.Tech Courses (CSE-IOT, ECE, EEE, Mech, Biotech, Biomed)</h3>
+                <table class="admin-table">
+                    <tr><th>Condition</th><th>Fee Amount (₹)</th></tr>
+                    <tr><td>Flat Fee</td><td><input type="number" id="a_dsu_groupB_fee"></td></tr>
+                </table>
+
+                <h3>Hostel Fee Structure</h3>
+                <table class="admin-table">
+                    <tr><th>Hostel Type</th><th>Fee Amount (₹)</th></tr>
+                    <tr><td>Common Bathroom</td><td><input type="number" id="a_dsu_hostel_common"></td></tr>
+                    <tr><td>Common Bathroom with A/C</td><td><input type="number" id="a_dsu_hostel_common_ac"></td></tr>
+                    <tr><td>Attached Bathroom</td><td><input type="number" id="a_dsu_hostel_attached"></td></tr>
+                    <tr><td>Attached Bathroom with A/C</td><td><input type="number" id="a_dsu_hostel_attached_ac"></td></tr>
+                </table>
+
+                <h3>One-Time Fees</h3>
+                <table class="admin-table">
+                    <tr><th>Fee Type</th><th>Fee Amount (₹)</th></tr>
+                    <tr><td>Application Fee</td><td><input type="number" id="a_dsu_one_time_app"></td></tr>
+                    <tr><td>Admission Fee</td><td><input type="number" id="a_dsu_one_time_adm"></td></tr>
+                    <tr><td>Establishment Fee</td><td><input type="number" id="a_dsu_one_time_est"></td></tr>
+                    <tr><td>Registration Fee</td><td><input type="number" id="a_dsu_one_time_reg"></td></tr>
+                </table>
+            </div>
+
+            <div id="adminKalasalingamView" style="display: none;">
+                <h3>Engineering & Architecture (Annual Tuition & Misc)</h3>
+                <table class="admin-table">
+                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
+                    <tr><td>CSE, AI&DS, IT</td><td><input type="number" id="a_k_eng_g1_t"></td><td><input type="number" id="a_k_eng_g1_m"></td></tr>
+                    <tr><td>ECE, Biotech</td><td><input type="number" id="a_k_eng_g2_t"></td><td><input type="number" id="a_k_eng_g2_m"></td></tr>
+                    <tr><td>All other Disciplines</td><td><input type="number" id="a_k_eng_g3_t"></td><td><input type="number" id="a_k_eng_g3_m"></td></tr>
+                    <tr><td>B.Arch</td><td><input type="number" id="a_k_barch_t"></td><td><input type="number" id="a_k_barch_m"></td></tr>
+                    <tr><td>B.Tech (CSE) - SHIP</td><td><input type="number" id="a_k_ship_t"></td><td><input type="number" id="a_k_ship_m"></td></tr>
+                </table>
+
+                <h3>Medical & Allied Health Sciences</h3>
+                <table class="admin-table">
+                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
+                    <tr><td>B.Sc Nursing</td><td><input type="number" id="a_k_nursing_t"></td><td><input type="number" id="a_k_nursing_m"></td></tr>
+                    <tr><td>Bachelor of Physiotherapy</td><td><input type="number" id="a_k_physio_t"></td><td><input type="number" id="a_k_physio_m"></td></tr>
+                    <tr><td>B.Sc Allied Health (Years 1-3)</td><td><input type="number" id="a_k_allied_y13_t"></td><td rowspan="2"><input type="number" id="a_k_allied_m"></td></tr>
+                    <tr><td>B.Sc Allied Health (Year 4)</td><td><input type="number" id="a_k_allied_y4_t"></td></tr>
+                </table>
+
+                <h3>Agriculture, Law & Forensic Science</h3>
+                <table class="admin-table">
+                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
+                    <tr><td>B.Sc. (Hons) Agri / Horti</td><td><input type="number" id="a_k_agri_t"></td><td><input type="number" id="a_k_agri_m"></td></tr>
+                    <tr><td>B.A / B.Com. LLB (5 years)</td><td><input type="number" id="a_k_law5_t"></td><td><input type="number" id="a_k_law5_m"></td></tr>
+                    <tr><td>LLB (Hons) (3 years)</td><td><input type="number" id="a_k_law3_t"></td><td><input type="number" id="a_k_law3_m"></td></tr>
+                    <tr><td>B.Sc. (Hons) Forensic Science</td><td><input type="number" id="a_k_forensic_ug_t"></td><td><input type="number" id="a_k_forensic_ug_m"></td></tr>
+                    <tr><td>M.Sc Forensic Science</td><td><input type="number" id="a_k_forensic_pg_t"></td><td><input type="number" id="a_k_forensic_pg_m"></td></tr>
+                </table>
+
+                <h3>Arts, Science, Commerce & Management (UG/PG)</h3>
+                <table class="admin-table">
+                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
+                    <tr><td>B.Com (CA), BCA, B.Sc (CS/IT)</td><td><input type="number" id="a_k_arts_g1_t"></td><td><input type="number" id="a_k_arts_g1_m"></td></tr>
+                    <tr><td>BBA, B.Com (Reg), B.Com (PA)</td><td><input type="number" id="a_k_arts_g2_t"></td><td><input type="number" id="a_k_arts_g2_m"></td></tr>
+                    <tr><td>B.Sc (Viscom)</td><td><input type="number" id="a_k_viscom_t"></td><td><input type="number" id="a_k_viscom_m"></td></tr>
+                    <tr><td>B.A (Eng), B.Sc (Maths/Phy/Chem)</td><td><input type="number" id="a_k_arts_g3_t"></td><td><input type="number" id="a_k_arts_g3_m"></td></tr>
+                    <tr><td>B.Sc Catering Science</td><td><input type="number" id="a_k_catering_t"></td><td><input type="number" id="a_k_catering_m"></td></tr>
+                    <tr><td>B.Sc Catering One-time Uniform Kit</td><td colspan="2"><input type="number" id="a_k_catering_u"></td></tr>
+                    <tr><td>M.Tech, M.Arch (Habitat Design)</td><td><input type="number" id="a_k_mtech_t"></td><td><input type="number" id="a_k_mtech_m"></td></tr>
+                    <tr><td>MBA, MCA</td><td><input type="number" id="a_k_mbamca_t"></td><td><input type="number" id="a_k_mbamca_m"></td></tr>
+                    <tr><td>M.Sc (MPC), MSW, M.A English</td><td><input type="number" id="a_k_pgarts_t"></td><td><input type="number" id="a_k_pgarts_m"></td></tr>
+                    <tr><td>M.Sc (CS, Data Sciences)</td><td><input type="number" id="a_k_msc_csds_t"></td><td><input type="number" id="a_k_msc_csds_m"></td></tr>
+                    <tr><td>B.Ed (Spl Ed) / B.Com (SHIP)</td><td><input type="number" id="a_k_bedship_t"></td><td><input type="number" id="a_k_bedship_m"></td></tr>
+                    <tr><td>B.Sc (Aero / Aviation)</td><td><input type="number" id="a_k_aero_t"></td><td><input type="number" id="a_k_aero_m"></td></tr>
+                    <tr><td>BBA (Aviation Management)</td><td><input type="number" id="a_k_bbaaviation_t"></td><td><input type="number" id="a_k_bbaaviation_m"></td></tr>
+                    <tr><td>MBA (Aviation & Airport Mgmt)</td><td><input type="number" id="a_k_mbaaviation_t"></td><td><input type="number" id="a_k_mbaaviation_m"></td></tr>
+                </table>
+
+                <h3>Application Fees</h3>
+                <table class="admin-table">
+                    <tr><th>Category</th><th>Fee Amount</th></tr>
+                    <tr><td>Local / Domestic Program (₹)</td><td><input type="number" id="a_k_app_domestic"></td></tr>
+                    <tr><td>NRI & Foreign ($ USD)</td><td><input type="number" id="a_k_app_nri"></td></tr>
                 </table>
             </div>
 
@@ -679,7 +778,7 @@
                     
                     <div class="form-group">
                         <label for="state">Select State <span style="color:red">*</span></label>
-                        <select id="state" required>
+                        <select id="state" required onchange="handleStateChange()">
                             <option value="">-- Choose State --</option>
                             <option value="Andhra Pradesh">Andhra Pradesh</option>
                             <option value="Telangana">Telangana</option>
@@ -694,10 +793,7 @@
                     <div class="form-group">
                         <label for="university">Select University <span style="color:red">*</span></label>
                         <select id="university" required onchange="handleUniversityChange()">
-                            <option value="">-- Choose University --</option>
-                            <option value="Bharath University">Bharath University</option>
-                            <option value="Mgr University">Mgr University</option>
-                            <option value="Ganpat University">Ganpat University</option>
+                            <option value="">-- Select State First --</option>
                         </select>
                         <div class="error-message" id="err-university">Please select a university.</div>
                     </div>
@@ -755,6 +851,17 @@
                         </select>
                         <div class="error-message" id="err-specialization">Please select a specialization.</div>
                     </div>
+
+                    <div class="form-group" id="hostel-group" style="display: none;">
+                        <label for="hostel">Select Hostel Option</label>
+                        <select id="hostel" onchange="saveData()">
+                            <option value="none">No Hostel (Day Scholar)</option>
+                            <option value="common">Common Bathroom (₹85,000/yr)</option>
+                            <option value="common_ac">Common Bathroom with A/C (₹95,000/yr)</option>
+                            <option value="attached">Attached Bathroom (₹1,20,000/yr)</option>
+                            <option value="attached_ac">Attached Bathroom with A/C (₹1,50,000/yr)</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Step 2: Student Information -->
@@ -810,43 +917,43 @@
                     <!-- List of subjects -->
                     <div style="max-height: 280px; overflow-y: auto; padding-right: 0.5rem; margin-bottom: 1rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths1a" style="margin-bottom: 0; font-size: 0.85rem;">1. Maths 1A (Max 75)</label>
+                            <label for="m_maths1a" style="margin-bottom: 0; font-size: 0.85rem;">1. Maths 1A (Max 75, Pass 26)</label>
                             <input type="number" id="m_maths1a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths1b" style="margin-bottom: 0; font-size: 0.85rem;">2. Maths 1B (Max 75)</label>
+                            <label for="m_maths1b" style="margin-bottom: 0; font-size: 0.85rem;">2. Maths 1B (Max 75, Pass 26)</label>
                             <input type="number" id="m_maths1b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phy1" style="margin-bottom: 0; font-size: 0.85rem;">3. Physics 1 (Max 60)</label>
+                            <label for="m_phy1" style="margin-bottom: 0; font-size: 0.85rem;">3. Physics 1 (Max 60, Pass 21)</label>
                             <input type="number" id="m_phy1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chem1" style="margin-bottom: 0; font-size: 0.85rem;">4. Chemistry 1 (Max 60)</label>
+                            <label for="m_chem1" style="margin-bottom: 0; font-size: 0.85rem;">4. Chemistry 1 (Max 60, Pass 21)</label>
                             <input type="number" id="m_chem1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths2a" style="margin-bottom: 0; font-size: 0.85rem;">5. Maths 2A (Max 75)</label>
+                            <label for="m_maths2a" style="margin-bottom: 0; font-size: 0.85rem;">5. Maths 2A (Max 75, Pass 26)</label>
                             <input type="number" id="m_maths2a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths2b" style="margin-bottom: 0; font-size: 0.85rem;">6. Maths 2B (Max 75)</label>
+                            <label for="m_maths2b" style="margin-bottom: 0; font-size: 0.85rem;">6. Maths 2B (Max 75, Pass 26)</label>
                             <input type="number" id="m_maths2b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phy2" style="margin-bottom: 0; font-size: 0.85rem;">7. Physics 2 (Max 60)</label>
+                            <label for="m_phy2" style="margin-bottom: 0; font-size: 0.85rem;">7. Physics 2 (Max 60, Pass 21)</label>
                             <input type="number" id="m_phy2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chem2" style="margin-bottom: 0; font-size: 0.85rem;">8. Chemistry 2 (Max 60)</label>
+                            <label for="m_chem2" style="margin-bottom: 0; font-size: 0.85rem;">8. Chemistry 2 (Max 60, Pass 21)</label>
                             <input type="number" id="m_chem2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phyp" style="margin-bottom: 0; font-size: 0.85rem;">9. Physics Practical (Max 30)</label>
+                            <label for="m_phyp" style="margin-bottom: 0; font-size: 0.85rem;">9. Physics Practical (Max 30, Pass 11)</label>
                             <input type="number" id="m_phyp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chemp" style="margin-bottom: 0; font-size: 0.85rem;">10. Chemistry Practical (Max 30)</label>
+                            <label for="m_chemp" style="margin-bottom: 0; font-size: 0.85rem;">10. Chemistry Practical (Max 30, Pass 11)</label>
                             <input type="number" id="m_chemp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
                         </div>
                     </div>
@@ -855,6 +962,10 @@
                         <span style="font-size: 0.9rem; color: var(--text-light);">Total: <span id="totalMarksDisplay">0</span> / 600</span><br>
                         <span style="font-size: 0.9rem; color: var(--text-light);">Percentage</span>
                         <div id="percentageDisplay" style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">0.0000%</div>
+                    </div>
+                    <div id="marks-warning-note" style="display: none; background-color: #fffbeb; color: #b45309; border: 1px solid #fde68a; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.85rem; margin-top: 1rem; text-align: center;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 5px;"></i>
+                        <span>Note: Marks in one or more subjects are below the pass criteria.</span>
                     </div>
                     <div class="error-message" id="err-marks">Please enter valid marks for all subjects based on their max limit.</div>
                 </div>
@@ -865,8 +976,13 @@
                     <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem;">Estimated fee structure for your selected course (Updated by Admin).</p>
 
                     <div id="feeNotification" style="display: none; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; text-align: center;"></div>
+                    
+                    <div id="fee-warning-note" style="display: none; background-color: #fffbeb; color: #b45309; border: 1px solid #fde68a; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.85rem; margin-bottom: 1.5rem; text-align: center;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 5px;"></i>
+                        <span>Note: Admission is subject to consultant review.</span>
+                    </div>
 
-                    <div style="border: 1px solid var(--border-color); border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem;">
+                    <div id="feeTableContainer" style="border: 1px solid var(--border-color); border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem;">
                         <table style="width: 100%; border-collapse: collapse; text-align: left;">
                             <thead style="background-color: var(--light-blue); color: var(--primary-blue);">
                                 <tr>
@@ -883,8 +999,13 @@
                                     <td style="padding: 0.75rem 1rem; font-size: 0.85rem;" id="lblAdmissionFee">Admission Fee (Non-Refundable)</td>
                                     <td style="padding: 0.75rem 1rem; font-size: 0.85rem; text-align: right;" id="calcAdmissionFee">10,000</td>
                                 </tr>
-                                <tr id="bookingNoteRow" style="display: none; background-color: #ecfdf5;">
-                                    <td colspan="2" style="padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--success-green); font-weight: 600; text-align: right;" id="bookingNoteCell"></td>
+                                <tr id="hostelFeeRow" style="display: none; border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem;" id="lblHostelFee">Hostel Fee</td>
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem; text-align: right;" id="calcHostelFee">0</td>
+                                </tr>
+                                <tr id="bookingNoteRow" style="display: none; background-color: #ecfdf5; border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--success-green); font-weight: 600;" id="bookingNoteCell">Less: Booking Fee (Advance Paid)</td>
+                                    <td style="padding: 0.75rem 1rem; font-size: 0.85rem; text-align: right; color: var(--success-green); font-weight: 600;" id="bookingNoteVal">-₹0</td>
                                 </tr>
                                 <tr style="background-color: #fafafa; font-weight: 700;">
                                     <td style="padding: 0.75rem 1rem; color: var(--text-dark);">Total Estimated Fee</td>
@@ -1043,7 +1164,7 @@
 
     <!-- Footer -->
     <footer style="text-align: center; padding: 2rem 1rem; color: var(--text-light); font-size: 0.85rem; margin-top: 2rem; border-top: 1px solid var(--border-color);">
-        <p style="margin: 0;">&copy; <span id="currentYear"></span> Mahesh Consultant. All rights reserved.</p>
+        <p style="margin: 0;">&copy; <span id="currentYear"></span> Disha Education Consultancy. All rights reserved.</p>
         <p style="margin: 0.5rem 0 0 0; font-weight: 500;">Provided by Mohan krishna.Dulla</p>
     </footer>
 
@@ -1052,7 +1173,28 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBntoxvT-xyEMAmXinu6HTa6-YRTOBN3CA",
+          authDomain: "mahesh-consultant.firebaseapp.com",
+          databaseURL: "https://mahesh-consultant-default-rtdb.firebaseio.com",
+          projectId: "mahesh-consultant",
+          storageBucket: "mahesh-consultant.firebasestorage.app",
+          messagingSenderId: "768691619020",
+          appId: "1:768691619020:web:af1f0cfa55a9ebe448ae69",
+          measurementId: "G-FXSZT0PF18"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const analytics = firebase.analytics();
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+
         // Data & State
         let currentStep = 1;
         const totalSteps = 5;
@@ -1060,21 +1202,22 @@
 
         const mgrFeeData = {
             "DS & AI(IBM)": { "Slot A": { i: 135000, ii: 100000, schlI: null, schlII: null }, "Slot B": { i: 125000, ii: 90000, schlI: null, schlII: null } },
-            "CFIS": { "Slot A": { i: 110000, ii: 75000, schlI: null, schlII: null }, "Slot B": { i: 95000, ii: 70000, schlI: null, schlII: null } },
+            "CFIS": { "Slot A": { i: 110000, ii: 75000, schlI: null, schlII: null }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
             "CSE": { "Slot A": { i: 135000, ii: 100000, schlI: 94500, schlII: 70000 }, "Slot B": { i: 125000, ii: 80000, schlI: 87500, schlII: 56000 } },
             "CSE - AI": { "Slot A": { i: 135000, ii: 100000, schlI: 94500, schlII: 70000 }, "Slot B": { i: 125000, ii: 80000, schlI: 87500, schlII: 56000 } },
-            "CSE - DS": { "Slot A": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 }, "Slot B": { i: 80000, ii: 70000, schlI: 56000, schlII: 49000 } },
-            "AI&ML": { "Slot A": { i: 108000, ii: 98000, schlI: 75600, schlII: 68600 }, "Slot B": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 } },
-            "CSE-CYBER SECURITY": { "Slot A": { i: 108000, ii: 98000, schlI: 75600, schlII: 68600 }, "Slot B": { i: 100000, ii: 90000, schlI: 70000, schlII: 63000 } },
+            "CSE - DS": { "Slot A": { i: null, ii: null, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 70000, schlI: 56000, schlII: 49000 } },
+            "AI&ML": { "Slot A": { i: 100000, ii: 85000, schlI: 70000, schlII: 59500 }, "Slot B": { i: 85000, ii: 75000, schlI: 59500, schlII: 52500 } },
+            "CSE-CYBER SECURITY": { "Slot A": { i: 108000, ii: 98000, schlI: 75600, schlII: 68600 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
             "CSE- BUSINESS SYSTEM": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 100000, ii: 65000, schlI: 70000, schlII: 45500 } },
             "IT": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 95000, ii: 70000, schlI: 66500, schlII: 49000 } },
+            "CHEMICAL": { "Slot A": { i: 80000, ii: 50000, schlI: 56000, schlII: 35000 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
             "IT (CYBER PHYSICAL SYSTEM WITH IMARTICUS LEARNING)": { "Slot A": { i: 110000, ii: 75000, schlI: 77000, schlII: 52500 }, "Slot B": { i: 100000, ii: 65000, schlI: 70000, schlII: 45500 } },
             "ECE": { "Slot A": { i: 100000, ii: 75000, schlI: 70000, schlII: 52500 }, "Slot B": { i: 80000, ii: 65000, schlI: 56000, schlII: 45500 } },
-            "EEE": { "Slot A": { i: 100000, ii: 50000, schlI: 70000, schlII: 35000 }, "Slot B": { i: 65000, ii: 45000, schlI: 45500, schlII: 31500 } },
-            "CIVIL": { "Slot A": { i: 100000, ii: 50000, schlI: 70000, schlII: 35000 }, "Slot B": { i: 65000, ii: 45000, schlI: 45500, schlII: 31500 } },
+            "EEE": { "Slot A": { i: 80000, ii: 50000, schlI: 56000, schlII: 35000 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
+            "CIVIL": { "Slot A": { i: 80000, ii: 50000, schlI: 56000, schlII: 35000 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
             "BIO-TECH": { "Slot A": { i: 85000, ii: 70000, schlI: 59500, schlII: 49000 }, "Slot B": { i: 75000, ii: 65000, schlI: 52500, schlII: 45500 } },
-            "BIO- MEDICAL": { "Slot A": { i: 85000, ii: 70000, schlI: 59500, schlII: 49000 }, "Slot B": { i: 75000, ii: 65000, schlI: 52500, schlII: 45500 } },
-            "MECH": { "Slot A": { i: 85000, ii: 60000, schlI: 59500, schlII: 42000 }, "Slot B": { i: 75000, ii: 50000, schlI: 52500, schlII: 35000 } },
+            "BIO- MEDICAL": { "Slot A": { i: 85000, ii: 70000, schlI: 59500, schlII: 49000 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
+            "MECH": { "Slot A": { i: 85000, ii: 60000, schlI: 59500, schlII: 42000 }, "Slot B": { i: null, ii: null, schlI: null, schlII: null } },
             "CSE(HONS)AI & ML": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
             "CSE(HONS)QUANTUM COMPUTING": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
             "CSE(HONS)CYBER SECURITY": { "Slot A": { i: 90000, ii: 65000, schlI: null, schlII: null }, "Slot B": { i: 80000, ii: 55000, schlI: null, schlII: null } },
@@ -1120,36 +1263,127 @@
             whatsapp: "+917397549343"
         };
 
+        const defaultDsuFeeData = {
+            groupA_full: 225000,
+            groupA_90: 100000,
+            groupA_80: 120000,
+            groupA_70: 140000,
+            groupA_below: 160000,
+            groupB_fee: 100000,
+            hostel_common: 85000,
+            hostel_common_ac: 95000,
+            hostel_attached: 120000,
+            hostel_attached_ac: 150000,
+            one_time_app: 1500,
+            one_time_adm: 10000,
+            one_time_est: 5000,
+            one_time_reg: 6000
+        };
+
+        const defaultKalasalingamFeeData = {
+            eng_group1_tuition: 195000,
+            eng_group1_misc: 12000,
+            eng_group2_tuition: 160000,
+            eng_group2_misc: 12000,
+            eng_group3_tuition: 100000,
+            eng_group3_misc: 12000,
+            barch_tuition: 100000,
+            barch_misc: 12000,
+            ship_tuition: 60000,
+            ship_misc: 5000,
+            nursing_tuition: 125000,
+            nursing_misc: 12000,
+            physio_tuition: 100000,
+            physio_misc: 12000,
+            allied_y1_3_tuition: 90000,
+            allied_y4_tuition: 30000,
+            allied_misc: 12000,
+            agri_tuition: 120000,
+            agri_misc: 12000,
+            law_5yr_tuition: 150000,
+            law_5yr_misc: 12000,
+            law_3yr_tuition: 200000,
+            law_3yr_misc: 0,
+            forensic_ug_tuition: 120000,
+            forensic_ug_misc: 12000,
+            forensic_pg_tuition: 70000,
+            forensic_pg_misc: 5000,
+            arts_group1_tuition: 60000,
+            arts_group1_misc: 5000,
+            arts_group2_tuition: 45000,
+            arts_group2_misc: 5000,
+            viscom_tuition: 30000,
+            viscom_misc: 5000,
+            arts_group3_tuition: 20000,
+            arts_group3_misc: 5000,
+            catering_tuition: 30000,
+            catering_uniform: 10000,
+            catering_misc: 5000,
+            mtech_tuition: 70000,
+            mtech_misc: 12000,
+            mba_mca_tuition: 150000,
+            mba_mca_misc: 12000,
+            pg_arts_tuition: 40000,
+            pg_arts_misc: 5000,
+            msc_cs_ds_tuition: 60000,
+            msc_cs_ds_misc: 5000,
+            bed_ship_tuition: 45000,
+            bed_ship_misc: 5000,
+            aero_aviation_tuition: 90000,
+            aero_aviation_misc: 5000,
+            bba_aviation_tuition: 70000,
+            bba_aviation_misc: 5000,
+            mba_aviation_tuition: 150000,
+            mba_aviation_misc: 12000,
+            app_domestic: 600,
+            app_nri: 50
+        };
+
         const defaultGlobalFeeData = {
             bharath: defaultFeeData,
             mgr: mgrFeeData,
-            ganpat: { set1Yearly75: 250000, set1YearlyBelow: 275000, set2Yearly75: 225000, set2YearlyBelow: 250000 }
+            ganpat: { set1Yearly75: 250000, set1YearlyBelow: 275000, set2Yearly75: 225000, set2YearlyBelow: 250000 },
+            dsu: defaultDsuFeeData,
+            kalasalingam: defaultKalasalingamFeeData
         };
 
-        // Migrate old logic to globalFeeData
-        let storedFees = JSON.parse(localStorage.getItem('adminFeeData'));
-        let globalFeeData;
-        
-        if (storedFees && storedFees.bharath) {
-            globalFeeData = storedFees; // already new structure
-            globalFeeData.mgr = JSON.parse(JSON.stringify(mgrFeeData)); // Force latest MGR fees
-            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
-        } else if (storedFees && storedFees.cse) {
-            // Migrate old structure
-            globalFeeData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
-            globalFeeData.bharath = storedFees;
-            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
-        } else {
-            globalFeeData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
-        }
-
+        let globalFeeData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
         let currentFees = globalFeeData.bharath;
         if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
+
+        // Listen for Firebase Fee updates
+        database.ref('adminFeeData').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                globalFeeData = data;
+                // Auto-update database with new fee structure if CHEMICAL or dsu or kalasalingam is missing
+                if (!globalFeeData.mgr || !globalFeeData.mgr["CHEMICAL"] || !globalFeeData.dsu || !globalFeeData.kalasalingam) {
+                    const mergedData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
+                    if (data.bharath) mergedData.bharath = data.bharath;
+                    if (data.mgr) mergedData.mgr = data.mgr;
+                    if (data.ganpat) mergedData.ganpat = data.ganpat;
+                    if (data.dsu) mergedData.dsu = data.dsu;
+                    if (data.kalasalingam) mergedData.kalasalingam = data.kalasalingam;
+                    globalFeeData = mergedData;
+                    database.ref('adminFeeData').set(globalFeeData);
+                }
+                currentFees = globalFeeData.bharath;
+                if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
+                updateWhatsAppLinks();
+                if (currentStep === 4) calculateDynamicFee();
+                if (document.getElementById('adminView') && document.getElementById('adminView').style.display === 'block') {
+                    renderAdminPanel();
+                }
+            } else {
+                database.ref('adminFeeData').set(globalFeeData);
+            }
+        });
 
         const mockColleges = [
             { name: "Bharath University", location: "Chennai, Tamil Nadu", rating: 4.2 },
             { name: "Mgr University", location: "Chennai, Tamil Nadu", rating: 4.0 },
-            { name: "Ganpat University", location: "Mehsana, Gujarat", rating: 4.1 }
+            { name: "Ganpat University", location: "Mehsana, Gujarat", rating: 4.1 },
+            { name: "Dhanalakshmi Srinivasan University", location: "Perambalur, Tamil Nadu", rating: 4.3 }
         ];
 
         // Initialization
@@ -1180,13 +1414,49 @@
             }
         });
 
+        function handleStateChange() {
+            const state = document.getElementById('state').value;
+            const uniSelect = document.getElementById('university');
+            
+            uniSelect.value = "";
+            
+            let options = '<option value="">-- Choose University --</option>';
+            if (state === 'Tamil Nadu') {
+                options += '<option value="Bharath University">Bharath University</option>';
+                options += '<option value="Mgr University">Mgr University</option>';
+                options += '<option value="Dhanalakshmi Srinivasan University">Dhanalakshmi Srinivasan University</option>';
+                options += '<option value="Kalasalingam Academy of Research and Education (Deemed to be University)">Kalasalingam Academy of Research and Education (Deemed to be University)</option>';
+            } else if (state === 'Gujarat') {
+                options += '<option value="Ganpat University">Ganpat University</option>';
+            } else if (state === '') {
+                options = '<option value="">-- Select State First --</option>';
+            } else {
+                options = '<option value="">-- No Universities Available --</option>';
+            }
+            
+            uniSelect.innerHTML = options;
+            handleUniversityChange();
+        }
+
         function handleUniversityChange() {
             const uni = document.getElementById('university').value;
             const slotGroup = document.getElementById('slot-group');
             const specDropdown = document.getElementById('specialization');
             const courseDropdown = document.getElementById('course');
             
-            if (uni) {
+            if (uni === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
+                slotGroup.style.display = 'none';
+                document.getElementById('slot').value = '';
+                courseDropdown.innerHTML = `
+                    <option value="">-- Choose Course Category --</option>
+                    <option value="Engineering & Architecture">Engineering & Architecture</option>
+                    <option value="Medical & Allied Health Sciences">Medical & Allied Health Sciences</option>
+                    <option value="Agriculture, Law & Forensic Science">Agriculture, Law & Forensic Science</option>
+                    <option value="Arts, Science, Commerce & Management (UG)">Arts, Science, Commerce & Management (UG)</option>
+                    <option value="PG Programmes">PG Programmes</option>
+                `;
+                specDropdown.innerHTML = '<option value="">-- Select Course Category First --</option>';
+            } else if (uni) {
                 courseDropdown.innerHTML = '<option value="Engineering (B.Tech)">Engineering (B.Tech)</option>';
             } else {
                 courseDropdown.innerHTML = '<option value="">-- Choose Course --</option><option value="Engineering (B.Tech)">Engineering (B.Tech)</option><option value="Medical (MBBS)">Medical (MBBS)</option><option value="Pharmacy (B.Pharm)">Pharmacy (B.Pharm)</option><option value="Arts & Science (B.Sc/B.A)">Arts & Science (B.Sc/B.A)</option><option value="Management (BBA)">Management (BBA)</option>';
@@ -1208,10 +1478,32 @@
                     opts += `<option value="${course}">${course}</option>`;
                 });
                 specDropdown.innerHTML = opts;
-            } else {
+            } else if (uni === 'Dhanalakshmi Srinivasan University') {
+                slotGroup.style.display = 'none';
+                document.getElementById('slot').value = '';
+                let opts = '<option value="">-- Choose DSU Course --</option>';
+                const dsuSpecs = [
+                    "CSE", "AI & DS", "AI & ML", "CSE Cyber Security", "IT",
+                    "CSE - IOT", "ECE", "EEE", "Mechanical Engineering", "Bio Technology", "Bio Medical"
+                ];
+                dsuSpecs.forEach(spec => {
+                    opts += `<option value="${spec}">${spec}</option>`;
+                });
+                specDropdown.innerHTML = opts;
+            } else if (uni !== 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
                 slotGroup.style.display = 'none';
                 document.getElementById('slot').value = '';
                 specDropdown.innerHTML = defaultSpecOptions;
+            }
+
+            const hostelGroup = document.getElementById('hostel-group');
+            if (hostelGroup) {
+                if (uni === 'Dhanalakshmi Srinivasan University') {
+                    hostelGroup.style.display = 'block';
+                } else {
+                    hostelGroup.style.display = 'none';
+                    document.getElementById('hostel').value = 'none';
+                }
             }
         }
 
@@ -1219,52 +1511,144 @@
         function openAdminLogin() { document.getElementById('adminModal').style.display = 'flex'; }
         function closeAdminLogin() { document.getElementById('adminModal').style.display = 'none'; document.getElementById('err-admin').style.display = 'none'; }
         function verifyAdmin() {
-            if (document.getElementById('adminUser').value === 'Nanimk@270504' && document.getElementById('adminPwd').value === '270504Nanimk') {
-                closeAdminLogin();
-                document.getElementById('mainContainer').style.display = 'none';
-                const appForm = document.getElementById('applicationFormView');
-                if (appForm) appForm.style.display = 'none';
-                document.getElementById('adminView').style.display = 'block';
-                document.getElementById('adminMainContent').style.display = 'block';
-                document.getElementById('adminCollectedView').style.display = 'none';
-                renderAdminPanel();
-                renderAdminApplications();
-            } else {
-                document.getElementById('err-admin').style.display = 'block';
-            }
+            const email = document.getElementById('adminUser').value;
+            const pwd = document.getElementById('adminPwd').value;
+            
+            auth.signInWithEmailAndPassword(email, pwd)
+                .then((userCredential) => {
+                    closeAdminLogin();
+                    document.getElementById('mainContainer').style.display = 'none';
+                    const appForm = document.getElementById('applicationFormView');
+                    if (appForm) appForm.style.display = 'none';
+                    document.getElementById('adminView').style.display = 'block';
+                    document.getElementById('adminMainContent').style.display = 'block';
+                    document.getElementById('adminCollectedView').style.display = 'none';
+                    renderAdminPanel();
+                })
+                .catch((error) => {
+                    const errAdmin = document.getElementById('err-admin');
+                    errAdmin.textContent = error.message;
+                    errAdmin.style.display = 'block';
+                });
         }
         function logoutAdmin() {
-            document.getElementById('adminView').style.display = 'none';
-            document.getElementById('mainContainer').style.display = 'flex';
-            document.getElementById('adminPwd').value = '';
-            document.getElementById('adminUser').value = '';
+            auth.signOut().then(() => {
+                document.getElementById('adminView').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'flex';
+                document.getElementById('adminPwd').value = '';
+                document.getElementById('adminUser').value = '';
+            });
         }
         
         function viewCollectedData() {
             document.getElementById('adminMainContent').style.display = 'none';
             document.getElementById('adminCollectedView').style.display = 'block';
             
-            let leads = JSON.parse(localStorage.getItem('collectedLeads') || '[]');
-            // Removed 24-hour limit to keep all collected leads visible
-            localStorage.setItem('collectedLeads', JSON.stringify(leads));
-
-            const table = document.getElementById('collectedLeadsTable');
-            table.innerHTML = '<tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th></tr>';
-            
-            leads.sort((a,b) => b.timestamp - a.timestamp).forEach(lead => {
-                const dateStr = new Date(lead.timestamp).toLocaleString('en-IN');
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${dateStr}</td>
-                    <td>${lead.name || '-'}</td>
-                    <td>${lead.phone || '-'}</td>
-                    <td>${lead.hallTicket || '-'}</td>
-                    <td>${lead.percentage || '-'}%</td>
-                    <td>${lead.university || '-'}</td>
-                    <td>${lead.course || '-'}<br><span style="font-size:0.8rem;color:var(--text-light);">${lead.specialization || ''}</span></td>
-                `;
-                table.appendChild(tr);
+            database.ref('collectedLeads').once('value').then((snapshot) => {
+                let leads = [];
+                snapshot.forEach(child => { 
+                    const val = child.val();
+                    if (val) {
+                        val.key = child.key; // Store database key for deletion
+                        leads.push(val); 
+                    }
+                });
+                
+                // Store leads globally for synchronous mobile-friendly download
+                window.latestCollectedLeads = leads;
+                
+                const table = document.getElementById('collectedLeadsTable');
+                table.innerHTML = '<tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th><th>Action</th></tr>';
+                
+                leads.sort((a,b) => b.timestamp - a.timestamp).forEach(lead => {
+                    const dateStr = new Date(lead.timestamp).toLocaleString('en-IN');
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${dateStr}</td>
+                        <td>${lead.name || '-'}</td>
+                        <td>${lead.phone || '-'}</td>
+                        <td>${lead.hallTicket || '-'}</td>
+                        <td>${lead.percentage || '-'}%</td>
+                        <td>${lead.university || '-'}</td>
+                        <td>${lead.course || '-'}<br><span style="font-size:0.8rem;color:var(--text-light);">${lead.specialization || ''}</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Lead" onclick="deleteCollectedLead('${lead.key}')"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    `;
+                    table.appendChild(tr);
+                });
             });
+        }
+
+        function deleteCollectedLead(key) {
+            if (confirm('Are you sure you want to delete this collected lead? This action cannot be undone.')) {
+                database.ref('collectedLeads/' + key).remove().then(() => {
+                    viewCollectedData();
+                });
+            }
+        }
+
+        function downloadAllCollectedData() {
+            const leads = window.latestCollectedLeads;
+            if (leads && leads.length > 0) {
+                generateAndDownloadCSV(leads);
+            } else {
+                database.ref('collectedLeads').once('value').then((snapshot) => {
+                    let fetchedLeads = [];
+                    snapshot.forEach(child => { fetchedLeads.push(child.val()); });
+                    if (fetchedLeads.length === 0) {
+                        alert('No collected data available to download.');
+                        return;
+                    }
+                    generateAndDownloadCSV(fetchedLeads);
+                });
+            }
+        }
+
+        function generateAndDownloadCSV(leads) {
+            leads.sort((a,b) => b.timestamp - a.timestamp);
+            
+            let csvContent = "Date,Name,Phone,Hall Ticket,Percentage,University,Course,Specialization\n";
+            
+            leads.forEach(lead => {
+                const dateStr = new Date(lead.timestamp).toLocaleString('en-IN').replace(/,/g, '');
+                const name = (lead.name || '-').replace(/"/g, '""');
+                const phone = (lead.phone || '-');
+                const hallTicket = (lead.hallTicket || '-');
+                const percentage = (lead.percentage || '0');
+                const university = (lead.university || '-').replace(/"/g, '""');
+                const course = (lead.course || '-').replace(/"/g, '""');
+                const specialization = (lead.specialization || '').replace(/"/g, '""');
+                
+                csvContent += `"${dateStr}","${name}","${phone}","${hallTicket}",${percentage},"${university}","${course}","${specialization}"\n`;
+            });
+            
+            try {
+                const encoder = new TextEncoder();
+                const csvBytes = encoder.encode(csvContent);
+                const bomBytes = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                const mergedBytes = new Uint8Array(bomBytes.length + csvBytes.length);
+                mergedBytes.set(bomBytes, 0);
+                mergedBytes.set(csvBytes, bomBytes.length);
+                
+                const blob = new Blob([mergedBytes], { type: 'text/csv;charset=utf-8;' });
+                if (navigator.msSaveBlob) {
+                    navigator.msSaveBlob(blob, "collected_leads.csv");
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "collected_leads_" + new Date().toISOString().slice(0,10) + ".csv";
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+            } catch (e) {
+                const encodedUri = "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURIComponent(csvContent);
+                window.open(encodedUri, '_blank');
+            }
         }
         
         function backToAdminMain() {
@@ -1276,6 +1660,8 @@
             document.getElementById('adminBharathView').style.display = 'none';
             document.getElementById('adminMgrView').style.display = 'none';
             document.getElementById('adminGanpatView').style.display = 'none';
+            document.getElementById('adminDsuView').style.display = 'none';
+            document.getElementById('adminKalasalingamView').style.display = 'none';
 
             if (uni === 'bharath') {
                 document.getElementById('adminBharathView').style.display = 'block';
@@ -1328,6 +1714,87 @@
                 document.getElementById('a_g_set1_below').value = globalFeeData.ganpat.set1YearlyBelow;
                 document.getElementById('a_g_set2_75').value = globalFeeData.ganpat.set2Yearly75;
                 document.getElementById('a_g_set2_below').value = globalFeeData.ganpat.set2YearlyBelow;
+            } else if (uni === 'dsu') {
+                document.getElementById('adminDsuView').style.display = 'block';
+                document.getElementById('a_dsu_groupA_full').value = globalFeeData.dsu.groupA_full;
+                document.getElementById('a_dsu_groupA_90').value = globalFeeData.dsu.groupA_90;
+                document.getElementById('a_dsu_groupA_80').value = globalFeeData.dsu.groupA_80;
+                document.getElementById('a_dsu_groupA_70').value = globalFeeData.dsu.groupA_70;
+                document.getElementById('a_dsu_groupA_below').value = globalFeeData.dsu.groupA_below;
+                document.getElementById('a_dsu_groupB_fee').value = globalFeeData.dsu.groupB_fee;
+                document.getElementById('a_dsu_hostel_common').value = globalFeeData.dsu.hostel_common;
+                document.getElementById('a_dsu_hostel_common_ac').value = globalFeeData.dsu.hostel_common_ac;
+                document.getElementById('a_dsu_hostel_attached').value = globalFeeData.dsu.hostel_attached;
+                document.getElementById('a_dsu_hostel_attached_ac').value = globalFeeData.dsu.hostel_attached_ac;
+                document.getElementById('a_dsu_one_time_app').value = globalFeeData.dsu.one_time_app;
+                document.getElementById('a_dsu_one_time_adm').value = globalFeeData.dsu.one_time_adm;
+                document.getElementById('a_dsu_one_time_est').value = globalFeeData.dsu.one_time_est;
+                document.getElementById('a_dsu_one_time_reg').value = globalFeeData.dsu.one_time_reg;
+            } else if (uni === 'kalasalingam') {
+                document.getElementById('adminKalasalingamView').style.display = 'block';
+                const config = globalFeeData.kalasalingam || defaultKalasalingamFeeData;
+                
+                document.getElementById('a_k_eng_g1_t').value = config.eng_group1_tuition;
+                document.getElementById('a_k_eng_g1_m').value = config.eng_group1_misc;
+                document.getElementById('a_k_eng_g2_t').value = config.eng_group2_tuition;
+                document.getElementById('a_k_eng_g2_m').value = config.eng_group2_misc;
+                document.getElementById('a_k_eng_g3_t').value = config.eng_group3_tuition;
+                document.getElementById('a_k_eng_g3_m').value = config.eng_group3_misc;
+                document.getElementById('a_k_barch_t').value = config.barch_tuition;
+                document.getElementById('a_k_barch_m').value = config.barch_misc;
+                document.getElementById('a_k_ship_t').value = config.ship_tuition;
+                document.getElementById('a_k_ship_m').value = config.ship_misc;
+                
+                document.getElementById('a_k_nursing_t').value = config.nursing_tuition;
+                document.getElementById('a_k_nursing_m').value = config.nursing_misc;
+                document.getElementById('a_k_physio_t').value = config.physio_tuition;
+                document.getElementById('a_k_physio_m').value = config.physio_misc;
+                document.getElementById('a_k_allied_y13_t').value = config.allied_y1_3_tuition;
+                document.getElementById('a_k_allied_y4_t').value = config.allied_y4_tuition;
+                document.getElementById('a_k_allied_m').value = config.allied_misc;
+                
+                document.getElementById('a_k_agri_t').value = config.agri_tuition;
+                document.getElementById('a_k_agri_m').value = config.agri_misc;
+                document.getElementById('a_k_law5_t').value = config.law_5yr_tuition;
+                document.getElementById('a_k_law5_m').value = config.law_5yr_misc;
+                document.getElementById('a_k_law3_t').value = config.law_3yr_tuition;
+                document.getElementById('a_k_law3_m').value = config.law_3yr_misc;
+                document.getElementById('a_k_forensic_ug_t').value = config.forensic_ug_tuition;
+                document.getElementById('a_k_forensic_ug_m').value = config.forensic_ug_misc;
+                document.getElementById('a_k_forensic_pg_t').value = config.forensic_pg_tuition;
+                document.getElementById('a_k_forensic_pg_m').value = config.forensic_pg_misc;
+                
+                document.getElementById('a_k_arts_g1_t').value = config.arts_group1_tuition;
+                document.getElementById('a_k_arts_g1_m').value = config.arts_group1_misc;
+                document.getElementById('a_k_arts_g2_t').value = config.arts_group2_tuition;
+                document.getElementById('a_k_arts_g2_m').value = config.arts_group2_misc;
+                document.getElementById('a_k_viscom_t').value = config.viscom_tuition;
+                document.getElementById('a_k_viscom_m').value = config.viscom_misc;
+                document.getElementById('a_k_arts_g3_t').value = config.arts_group3_tuition;
+                document.getElementById('a_k_arts_g3_m').value = config.arts_group3_misc;
+                document.getElementById('a_k_catering_t').value = config.catering_tuition;
+                document.getElementById('a_k_catering_m').value = config.catering_misc;
+                document.getElementById('a_k_catering_u').value = config.catering_uniform;
+                
+                document.getElementById('a_k_mtech_t').value = config.mtech_tuition;
+                document.getElementById('a_k_mtech_m').value = config.mtech_misc;
+                document.getElementById('a_k_mbamca_t').value = config.mba_mca_tuition;
+                document.getElementById('a_k_mbamca_m').value = config.mba_mca_misc;
+                document.getElementById('a_k_pgarts_t').value = config.pg_arts_tuition;
+                document.getElementById('a_k_pgarts_m').value = config.pg_arts_misc;
+                document.getElementById('a_k_msc_csds_t').value = config.msc_cs_ds_tuition;
+                document.getElementById('a_k_msc_csds_m').value = config.msc_cs_ds_misc;
+                document.getElementById('a_k_bedship_t').value = config.bed_ship_tuition;
+                document.getElementById('a_k_bedship_m').value = config.bed_ship_misc;
+                document.getElementById('a_k_aero_t').value = config.aero_aviation_tuition;
+                document.getElementById('a_k_aero_m').value = config.aero_aviation_misc;
+                document.getElementById('a_k_bbaaviation_t').value = config.bba_aviation_tuition;
+                document.getElementById('a_k_bbaaviation_m').value = config.bba_aviation_misc;
+                document.getElementById('a_k_mbaaviation_t').value = config.mba_aviation_tuition;
+                document.getElementById('a_k_mbaaviation_m').value = config.mba_aviation_misc;
+                
+                document.getElementById('a_k_app_domestic').value = config.app_domestic;
+                document.getElementById('a_k_app_nri').value = config.app_nri;
             }
 
             document.getElementById('a_whatsapp').value = globalFeeData.bharath.whatsapp || "+917397549343";
@@ -1335,56 +1802,156 @@
             renderAdminApplications();
         }
 
-        function saveAdminFees() {
-            const uni = document.getElementById('adminUniSelect').value;
-
-            if (uni === 'bharath') {
-                globalFeeData.bharath.cse["90"] = parseInt(document.getElementById('a_cse_90').value) || 0;
-                globalFeeData.bharath.cse["70"] = parseInt(document.getElementById('a_cse_70').value) || 0;
-                globalFeeData.bharath.cse["60"] = parseInt(document.getElementById('a_cse_60').value) || 0;
-                globalFeeData.bharath.cse["50"] = parseInt(document.getElementById('a_cse_50').value) || 0;
-                globalFeeData.bharath.cse["below"] = parseInt(document.getElementById('a_cse_below').value) || 0;
-
-                globalFeeData.bharath.cse_spec["90"] = parseInt(document.getElementById('a_cses_90').value) || 0;
-                globalFeeData.bharath.cse_spec["70"] = parseInt(document.getElementById('a_cses_70').value) || 0;
-                globalFeeData.bharath.cse_spec["60"] = parseInt(document.getElementById('a_cses_60').value) || 0;
-                globalFeeData.bharath.cse_spec["50"] = parseInt(document.getElementById('a_cses_50').value) || 0;
-                globalFeeData.bharath.cse_spec["below"] = parseInt(document.getElementById('a_cses_below').value) || 0;
-
-                let i = 0;
-                for (let course in globalFeeData.bharath.other) {
-                    globalFeeData.bharath.other[course] = parseInt(document.getElementById(`a_other_${i}`).value) || 0;
-                    i++;
-                }
-            } else if (uni === 'mgr') {
-                Object.keys(globalFeeData.mgr).forEach((course, idx) => {
-                    const c = globalFeeData.mgr[course];
-                    c['Slot A'].i = parseInt(document.getElementById(`m_a_i_${idx}`).value) || null;
-                    c['Slot A'].ii = parseInt(document.getElementById(`m_a_ii_${idx}`).value) || null;
-                    c['Slot A'].schlI = parseInt(document.getElementById(`m_a_si_${idx}`).value) || null;
-                    c['Slot A'].schlII = parseInt(document.getElementById(`m_a_sii_${idx}`).value) || null;
-                    
-                    c['Slot B'].i = parseInt(document.getElementById(`m_b_i_${idx}`).value) || null;
-                    c['Slot B'].ii = parseInt(document.getElementById(`m_b_ii_${idx}`).value) || null;
-                    c['Slot B'].schlI = parseInt(document.getElementById(`m_b_si_${idx}`).value) || null;
-                    c['Slot B'].schlII = parseInt(document.getElementById(`m_b_sii_${idx}`).value) || null;
-                });
-            } else if (uni === 'ganpat') {
-                globalFeeData.ganpat.set1Yearly75 = parseInt(document.getElementById('a_g_set1_75').value) || 0;
-                globalFeeData.ganpat.set1YearlyBelow = parseInt(document.getElementById('a_g_set1_below').value) || 0;
-                globalFeeData.ganpat.set2Yearly75 = parseInt(document.getElementById('a_g_set2_75').value) || 0;
-                globalFeeData.ganpat.set2YearlyBelow = parseInt(document.getElementById('a_g_set2_below').value) || 0;
+        async function saveAdminFees() {
+            const btn = document.querySelector('button[onclick="saveAdminFees()"]');
+            let ogHtml = "Save Changes";
+            if (btn) {
+                ogHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading & Saving (this may take a minute)...';
+                btn.disabled = true;
             }
 
-            globalFeeData.bharath.whatsapp = document.getElementById('a_whatsapp').value;
-            currentFees = globalFeeData.bharath; // Keep currentFees synced for WA backward compatibility
+            try {
+                const uni = document.getElementById('adminUniSelect').value;
 
-            localStorage.setItem('adminFeeData', JSON.stringify(globalFeeData));
-            const msg = document.getElementById('adminSuccessMsg');
-            msg.style.display = 'block';
-            setTimeout(() => msg.style.display = 'none', 3000);
+                if (uni === 'bharath') {
+                    globalFeeData.bharath.cse["90"] = parseInt(document.getElementById('a_cse_90').value) || 0;
+                    globalFeeData.bharath.cse["70"] = parseInt(document.getElementById('a_cse_70').value) || 0;
+                    globalFeeData.bharath.cse["60"] = parseInt(document.getElementById('a_cse_60').value) || 0;
+                    globalFeeData.bharath.cse["50"] = parseInt(document.getElementById('a_cse_50').value) || 0;
+                    globalFeeData.bharath.cse["below"] = parseInt(document.getElementById('a_cse_below').value) || 0;
 
-            updateWhatsAppLinks();
+                    globalFeeData.bharath.cse_spec["90"] = parseInt(document.getElementById('a_cses_90').value) || 0;
+                    globalFeeData.bharath.cse_spec["70"] = parseInt(document.getElementById('a_cses_70').value) || 0;
+                    globalFeeData.bharath.cse_spec["60"] = parseInt(document.getElementById('a_cses_60').value) || 0;
+                    globalFeeData.bharath.cse_spec["50"] = parseInt(document.getElementById('a_cses_50').value) || 0;
+                    globalFeeData.bharath.cse_spec["below"] = parseInt(document.getElementById('a_cses_below').value) || 0;
+
+                    let i = 0;
+                    for (let course in globalFeeData.bharath.other) {
+                        globalFeeData.bharath.other[course] = parseInt(document.getElementById(`a_other_${i}`).value) || 0;
+                        i++;
+                    }
+                } else if (uni === 'mgr') {
+                    Object.keys(globalFeeData.mgr).forEach((course, idx) => {
+                        const c = globalFeeData.mgr[course];
+                        c['Slot A'].i = parseInt(document.getElementById(`m_a_i_${idx}`).value) || null;
+                        c['Slot A'].ii = parseInt(document.getElementById(`m_a_ii_${idx}`).value) || null;
+                        c['Slot A'].schlI = parseInt(document.getElementById(`m_a_si_${idx}`).value) || null;
+                        c['Slot A'].schlII = parseInt(document.getElementById(`m_a_sii_${idx}`).value) || null;
+                        
+                        c['Slot B'].i = parseInt(document.getElementById(`m_b_i_${idx}`).value) || null;
+                        c['Slot B'].ii = parseInt(document.getElementById(`m_b_ii_${idx}`).value) || null;
+                        c['Slot B'].schlI = parseInt(document.getElementById(`m_b_si_${idx}`).value) || null;
+                        c['Slot B'].schlII = parseInt(document.getElementById(`m_b_sii_${idx}`).value) || null;
+                    });
+                } else if (uni === 'ganpat') {
+                    globalFeeData.ganpat.set1Yearly75 = parseInt(document.getElementById('a_g_set1_75').value) || 0;
+                    globalFeeData.ganpat.set1YearlyBelow = parseInt(document.getElementById('a_g_set1_below').value) || 0;
+                    globalFeeData.ganpat.set2Yearly75 = parseInt(document.getElementById('a_g_set2_75').value) || 0;
+                    globalFeeData.ganpat.set2YearlyBelow = parseInt(document.getElementById('a_g_set2_below').value) || 0;
+                } else if (uni === 'dsu') {
+                    globalFeeData.dsu = {
+                        groupA_full: parseInt(document.getElementById('a_dsu_groupA_full').value) || 0,
+                        groupA_90: parseInt(document.getElementById('a_dsu_groupA_90').value) || 0,
+                        groupA_80: parseInt(document.getElementById('a_dsu_groupA_80').value) || 0,
+                        groupA_70: parseInt(document.getElementById('a_dsu_groupA_70').value) || 0,
+                        groupA_below: parseInt(document.getElementById('a_dsu_groupA_below').value) || 0,
+                        groupB_fee: parseInt(document.getElementById('a_dsu_groupB_fee').value) || 0,
+                        hostel_common: parseInt(document.getElementById('a_dsu_hostel_common').value) || 0,
+                        hostel_common_ac: parseInt(document.getElementById('a_dsu_hostel_common_ac').value) || 0,
+                        hostel_attached: parseInt(document.getElementById('a_dsu_hostel_attached').value) || 0,
+                        hostel_attached_ac: parseInt(document.getElementById('a_dsu_hostel_attached_ac').value) || 0,
+                        one_time_app: parseInt(document.getElementById('a_dsu_one_time_app').value) || 0,
+                        one_time_adm: parseInt(document.getElementById('a_dsu_one_time_adm').value) || 0,
+                        one_time_est: parseInt(document.getElementById('a_dsu_one_time_est').value) || 0,
+                        one_time_reg: parseInt(document.getElementById('a_dsu_one_time_reg').value) || 0
+                    };
+                } else if (uni === 'kalasalingam') {
+                    globalFeeData.kalasalingam = {
+                        eng_group1_tuition: parseInt(document.getElementById('a_k_eng_g1_t').value) || 0,
+                        eng_group1_misc: parseInt(document.getElementById('a_k_eng_g1_m').value) || 0,
+                        eng_group2_tuition: parseInt(document.getElementById('a_k_eng_g2_t').value) || 0,
+                        eng_group2_misc: parseInt(document.getElementById('a_k_eng_g2_m').value) || 0,
+                        eng_group3_tuition: parseInt(document.getElementById('a_k_eng_g3_t').value) || 0,
+                        eng_group3_misc: parseInt(document.getElementById('a_k_eng_g3_m').value) || 0,
+                        barch_tuition: parseInt(document.getElementById('a_k_barch_t').value) || 0,
+                        barch_misc: parseInt(document.getElementById('a_k_barch_m').value) || 0,
+                        ship_tuition: parseInt(document.getElementById('a_k_ship_t').value) || 0,
+                        ship_misc: parseInt(document.getElementById('a_k_ship_m').value) || 0,
+                        
+                        nursing_tuition: parseInt(document.getElementById('a_k_nursing_t').value) || 0,
+                        nursing_misc: parseInt(document.getElementById('a_k_nursing_m').value) || 0,
+                        physio_tuition: parseInt(document.getElementById('a_k_physio_t').value) || 0,
+                        physio_misc: parseInt(document.getElementById('a_k_physio_m').value) || 0,
+                        allied_y1_3_tuition: parseInt(document.getElementById('a_k_allied_y13_t').value) || 0,
+                        allied_y4_tuition: parseInt(document.getElementById('a_k_allied_y4_t').value) || 0,
+                        allied_misc: parseInt(document.getElementById('a_k_allied_m').value) || 0,
+                        
+                        agri_tuition: parseInt(document.getElementById('a_k_agri_t').value) || 0,
+                        agri_misc: parseInt(document.getElementById('a_k_agri_m').value) || 0,
+                        law_5yr_tuition: parseInt(document.getElementById('a_k_law5_t').value) || 0,
+                        law_5yr_misc: parseInt(document.getElementById('a_k_law5_m').value) || 0,
+                        law_3yr_tuition: parseInt(document.getElementById('a_k_law3_t').value) || 0,
+                        law_3yr_misc: parseInt(document.getElementById('a_k_law3_m').value) || 0,
+                        forensic_ug_tuition: parseInt(document.getElementById('a_k_forensic_ug_t').value) || 0,
+                        forensic_ug_misc: parseInt(document.getElementById('a_k_forensic_ug_m').value) || 0,
+                        forensic_pg_tuition: parseInt(document.getElementById('a_k_forensic_pg_t').value) || 0,
+                        forensic_pg_misc: parseInt(document.getElementById('a_k_forensic_pg_m').value) || 0,
+                        
+                        arts_group1_tuition: parseInt(document.getElementById('a_k_arts_g1_t').value) || 0,
+                        arts_group1_misc: parseInt(document.getElementById('a_k_arts_g1_m').value) || 0,
+                        arts_group2_tuition: parseInt(document.getElementById('a_k_arts_g2_t').value) || 0,
+                        arts_group2_misc: parseInt(document.getElementById('a_k_arts_g2_m').value) || 0,
+                        viscom_tuition: parseInt(document.getElementById('a_k_viscom_t').value) || 0,
+                        viscom_misc: parseInt(document.getElementById('a_k_viscom_m').value) || 0,
+                        arts_group3_tuition: parseInt(document.getElementById('a_k_arts_g3_t').value) || 0,
+                        arts_group3_misc: parseInt(document.getElementById('a_k_arts_g3_m').value) || 0,
+                        catering_tuition: parseInt(document.getElementById('a_k_catering_t').value) || 0,
+                        catering_misc: parseInt(document.getElementById('a_k_catering_m').value) || 0,
+                        catering_uniform: parseInt(document.getElementById('a_k_catering_u').value) || 0,
+                        
+                        mtech_tuition: parseInt(document.getElementById('a_k_mtech_t').value) || 0,
+                        mtech_misc: parseInt(document.getElementById('a_k_mtech_m').value) || 0,
+                        mba_mca_tuition: parseInt(document.getElementById('a_k_mbamca_t').value) || 0,
+                        mba_mca_misc: parseInt(document.getElementById('a_k_mbamca_m').value) || 0,
+                        pg_arts_tuition: parseInt(document.getElementById('a_k_pgarts_t').value) || 0,
+                        pg_arts_misc: parseInt(document.getElementById('a_k_pgarts_m').value) || 0,
+                        msc_cs_ds_tuition: parseInt(document.getElementById('a_k_msc_csds_t').value) || 0,
+                        msc_cs_ds_misc: parseInt(document.getElementById('a_k_msc_csds_m').value) || 0,
+                        bed_ship_tuition: parseInt(document.getElementById('a_k_bedship_t').value) || 0,
+                        bed_ship_misc: parseInt(document.getElementById('a_k_bedship_m').value) || 0,
+                        aero_aviation_tuition: parseInt(document.getElementById('a_k_aero_t').value) || 0,
+                        aero_aviation_misc: parseInt(document.getElementById('a_k_aero_m').value) || 0,
+                        bba_aviation_tuition: parseInt(document.getElementById('a_k_bbaaviation_t').value) || 0,
+                        bba_aviation_misc: parseInt(document.getElementById('a_k_bbaaviation_m').value) || 0,
+                        mba_aviation_tuition: parseInt(document.getElementById('a_k_mbaaviation_t').value) || 0,
+                        mba_aviation_misc: parseInt(document.getElementById('a_k_mbaaviation_m').value) || 0,
+                        
+                        app_domestic: parseInt(document.getElementById('a_k_app_domestic').value) || 0,
+                        app_nri: parseInt(document.getElementById('a_k_app_nri').value) || 0
+                    };
+                }
+
+                globalFeeData.bharath.whatsapp = document.getElementById('a_whatsapp').value;
+                currentFees = globalFeeData.bharath; // Keep currentFees synced for WA backward compatibility
+                await database.ref('adminFeeData').set(globalFeeData);
+                
+                const msg = document.getElementById('adminSuccessMsg');
+                msg.style.display = 'block';
+                setTimeout(() => msg.style.display = 'none', 3000);
+                
+                updateWhatsAppLinks();
+                renderAdminPanel(); // re-render to update the labels
+            } catch (err) {
+                console.error("Error saving admin fees: ", err);
+                alert("Failed to save due to database or network issue.");
+            } finally {
+                if (btn) {
+                    btn.innerHTML = ogHtml;
+                    btn.disabled = false;
+                }
+            }
         }
 
         function updateWhatsAppLinks() {
@@ -1444,8 +2011,10 @@
             
             let tuition = 0;
             let admissionFee = 10000;
+            let hostelFee = 0;
             let lblTuition = 'Tuition Fee (Per Year)';
             let lblAdmission = 'Admission Fee (Non-Refundable)';
+            let lblHostel = 'Hostel Fee';
             let totalFeeDiscount = 0;
             
             const feeNotification = document.getElementById('feeNotification');
@@ -1455,20 +2024,44 @@
                 feeNotification.innerHTML = '';
             }
             
+            const feeTableEl = document.getElementById('feeTableContainer');
+            const feeWarningEl = document.getElementById('fee-warning-note');
+            if (userData.hasFailed) {
+                if (feeTableEl) feeTableEl.style.display = 'none';
+                if (feeWarningEl) {
+                    feeWarningEl.style.display = 'block';
+                    feeWarningEl.style.backgroundColor = '#fee2e2';
+                    feeWarningEl.style.color = '#b91c1c';
+                    feeWarningEl.style.border = '1px solid #fca5a5';
+                    feeWarningEl.querySelector('span').innerHTML = `<strong>Admission Rejected:</strong> You have scored below the required pass marks in: ${userData.failedSubjects.join(', ')}. Fee details are unavailable.`;
+                }
+            } else {
+                if (feeTableEl) feeTableEl.style.display = 'block';
+                if (feeWarningEl) feeWarningEl.style.display = 'none';
+            }
+            
             if (uniVal === 'Mgr University' && specVal && globalFeeData.mgr[specVal]) {
                 const feeDetails = globalFeeData.mgr[specVal][slotVal];
                 if (feeDetails && feeDetails.i !== null) {
                     let sem1 = feeDetails.i;
                     let sem2 = feeDetails.ii;
-                    // Apply 30% Scholarship if PCM >= 90%
-                    if (percentage >= 90) {
-                        if (feeDetails.schlI !== null) {
+                    // Apply scholarship based on percentage
+                    if (feeDetails.schlI !== null && !userData.hasFailed) {
+                        if (percentage >= 90) {
                             sem1 = feeDetails.schlI;
                             sem2 = feeDetails.schlII;
                             feeNotification.style.display = 'block';
                             feeNotification.className = 'success-message';
-                            feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for a scholarship.';
-                        } else {
+                            feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for a 30% scholarship.';
+                        } else if (percentage >= 80) {
+                            sem1 = Math.round(feeDetails.i * 0.8);
+                            sem2 = Math.round(feeDetails.ii * 0.8);
+                            feeNotification.style.display = 'block';
+                            feeNotification.className = 'success-message';
+                            feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for a 20% scholarship.';
+                        }
+                    } else {
+                        if (percentage >= 80 && !userData.hasFailed) {
                             feeNotification.style.display = 'block';
                             feeNotification.style.backgroundColor = '#fef3c7';
                             feeNotification.style.color = '#92400e';
@@ -1477,9 +2070,9 @@
                         }
                     }
                     tuition = sem1 + sem2;
-                    admissionFee = 20000 + 1500; // Booking amount + Application amount
+                    admissionFee = 1500; // Application fee only (Booking is an advance on Tuition, not an additional fee)
                     lblTuition = `Tuition Fee (Sem 1: ₹${sem1.toLocaleString('en-IN')} + Sem 2: ₹${sem2.toLocaleString('en-IN')})`;
-                    lblAdmission = 'Application (₹1,500) + Booking (₹20,000)';
+                    lblAdmission = 'Application Fee (Non-Refundable)';
                     totalFeeDiscount = 20000;
                 } else if (feeDetails && feeDetails.i === null) {
                     feeNotification.style.display = 'block';
@@ -1514,6 +2107,170 @@
                     lblTuition = `Yearly Fee (Tuition, Hostel, Exam) - ₹${semFee.toLocaleString('en-IN')} / Sem`;
                     lblAdmission = 'Admission (₹10,000) + Application (₹1,000)';
                 }
+            } else if (uniVal === 'Dhanalakshmi Srinivasan University' && specVal) {
+                const groupA = ["CSE", "AI & DS", "AI & ML", "CSE Cyber Security", "IT"];
+                const groupB = ["CSE - IOT", "ECE", "EEE", "Mechanical Engineering", "Bio Technology", "Bio Medical"];
+                
+                let baseTuition = 0;
+                let finalTuition = 0;
+                
+                if (groupA.includes(specVal)) {
+                    baseTuition = globalFeeData.dsu.groupA_full;
+                    if (percentage >= 90) {
+                        finalTuition = globalFeeData.dsu.groupA_90;
+                        feeNotification.style.display = 'block';
+                        feeNotification.className = 'success-message';
+                        feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for the 90%-100% PCM Scholarship (Tuition Fee: ₹' + finalTuition.toLocaleString('en-IN') + '/yr).';
+                    } else if (percentage >= 80) {
+                        finalTuition = globalFeeData.dsu.groupA_80;
+                        feeNotification.style.display = 'block';
+                        feeNotification.className = 'success-message';
+                        feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for the 80%-89.99% PCM Scholarship (Tuition Fee: ₹' + finalTuition.toLocaleString('en-IN') + '/yr).';
+                    } else if (percentage >= 70) {
+                        finalTuition = globalFeeData.dsu.groupA_70;
+                        feeNotification.style.display = 'block';
+                        feeNotification.className = 'success-message';
+                        feeNotification.innerHTML = '<i class="fa-solid fa-check-circle"></i> Congratulations! You are eligible for the 70%-79.99% PCM Scholarship (Tuition Fee: ₹' + finalTuition.toLocaleString('en-IN') + '/yr).';
+                    } else {
+                        finalTuition = globalFeeData.dsu.groupA_below;
+                        feeNotification.style.display = 'block';
+                        feeNotification.style.backgroundColor = '#eff6ff';
+                        feeNotification.style.color = '#1e40af';
+                        feeNotification.style.border = '1px solid #bfdbfe';
+                        feeNotification.innerHTML = '<i class="fa-solid fa-info-circle"></i> Tuition Fee (Below 70% PCM): ₹' + finalTuition.toLocaleString('en-IN') + '/yr.';
+                    }
+                } else if (groupB.includes(specVal)) {
+                    baseTuition = globalFeeData.dsu.groupB_fee;
+                    finalTuition = baseTuition;
+                    feeNotification.style.display = 'block';
+                    feeNotification.style.backgroundColor = '#eff6ff';
+                    feeNotification.style.color = '#1e40af';
+                    feeNotification.style.border = '1px solid #bfdbfe';
+                    feeNotification.innerHTML = '<i class="fa-solid fa-info-circle"></i> Flat Tuition Fee: ₹' + finalTuition.toLocaleString('en-IN') + '/yr.';
+                }
+                
+                let extraNotes = '<div style="margin-top: 10px; font-size: 0.85rem; color: #4b5563; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 8px;"><div style="margin-bottom: 4px;"><i class="fa-solid fa-book-open" style="margin-right: 4px;"></i><strong>Curriculum Note:</strong> Curriculum Integrated with INTEL, NEC and L&T Edutech</div><div><i class="fa-solid fa-award" style="margin-right: 4px;"></i><strong>Scholarship Framework:</strong> AP / TS INTERMEDIATE BASED SCHOLARSHIP</div></div>';
+                feeNotification.innerHTML += extraNotes;
+
+                tuition = finalTuition;
+                admissionFee = globalFeeData.dsu.one_time_app + globalFeeData.dsu.one_time_adm + globalFeeData.dsu.one_time_est + globalFeeData.dsu.one_time_reg;
+                lblAdmission = 'One-Time Fees (Application, Admission, Est., Reg.)';
+                lblTuition = 'Tuition Fee (Per Year)';
+                
+                const hostelVal = document.getElementById('hostel') ? document.getElementById('hostel').value : 'none';
+                if (hostelVal === 'common') {
+                    hostelFee = globalFeeData.dsu.hostel_common;
+                    lblHostel = 'Hostel Fee (Common Bathroom)';
+                } else if (hostelVal === 'common_ac') {
+                    hostelFee = globalFeeData.dsu.hostel_common_ac;
+                    lblHostel = 'Hostel Fee (Common Bathroom with A/C)';
+                } else if (hostelVal === 'attached') {
+                    hostelFee = globalFeeData.dsu.hostel_attached;
+                    lblHostel = 'Hostel Fee (Attached Bathroom)';
+                } else if (hostelVal === 'attached_ac') {
+                    hostelFee = globalFeeData.dsu.hostel_attached_ac;
+                    lblHostel = 'Hostel Fee (Attached Bathroom with A/C)';
+                }
+            } else if (uniVal === 'Kalasalingam Academy of Research and Education (Deemed to be University)' && specVal) {
+                const config = globalFeeData.kalasalingam || defaultKalasalingamFeeData;
+                let tFee = 0;
+                let mFee = 0;
+                let oneTimeFee = 0;
+                
+                if (specVal === 'B.Tech (CSE)' || specVal === 'B.Tech (AI&DS)' || specVal === 'B.Tech (IT)') {
+                    tFee = config.eng_group1_tuition;
+                    mFee = config.eng_group1_misc;
+                } else if (specVal === 'B.Tech (ECE)' || specVal === 'B.Tech (Biotech)') {
+                    tFee = config.eng_group2_tuition;
+                    mFee = config.eng_group2_misc;
+                } else if (specVal === 'B.Tech (Other Engineering)') {
+                    tFee = config.eng_group3_tuition;
+                    mFee = config.eng_group3_misc;
+                } else if (specVal === 'B.Arch') {
+                    tFee = config.barch_tuition;
+                    mFee = config.barch_misc;
+                } else if (specVal === 'B.Tech (CSE) - SHIP') {
+                    tFee = config.ship_tuition;
+                    mFee = config.ship_misc;
+                } else if (specVal === 'B.Sc Nursing') {
+                    tFee = config.nursing_tuition;
+                    mFee = config.nursing_misc;
+                } else if (specVal === 'Bachelor of Physiotherapy') {
+                    tFee = config.physio_tuition;
+                    mFee = config.physio_misc;
+                } else if (specVal === 'B.Sc Allied Health Science') {
+                    tFee = config.allied_y1_3_tuition;
+                    mFee = config.allied_misc;
+                    feeNotification.style.display = 'block';
+                    feeNotification.className = 'success-message';
+                    feeNotification.innerHTML = `<i class="fa-solid fa-circle-info"></i> B.Sc Allied Health Science Tuition is ₹${config.allied_y1_3_tuition.toLocaleString('en-IN')}/yr for Years 1-3, and ₹${config.allied_y4_tuition.toLocaleString('en-IN')} for Year 4.`;
+                } else if (specVal === 'B.Sc. (Hons.) Agriculture / Horticulture') {
+                    tFee = config.agri_tuition;
+                    mFee = config.agri_misc;
+                } else if (specVal === 'B.A / B.Com. LLB (5 years)') {
+                    tFee = config.law_5yr_tuition;
+                    mFee = config.law_5yr_misc;
+                } else if (specVal === 'LLB (Hons.) (3 Years)') {
+                    tFee = config.law_3yr_tuition;
+                    mFee = config.law_3yr_misc;
+                } else if (specVal === 'B.Sc. (Hons.) Forensic Science') {
+                    tFee = config.forensic_ug_tuition;
+                    mFee = config.forensic_ug_misc;
+                } else if (specVal === 'M.Sc (Forensic Science)') {
+                    tFee = config.forensic_pg_tuition;
+                    mFee = config.forensic_pg_misc;
+                } else if (specVal === 'B.Com (CA) / BCA / B.Sc (CS/IT)') {
+                    tFee = config.arts_group1_tuition;
+                    mFee = config.arts_group1_misc;
+                } else if (specVal === 'BBA / B.Com (Regular) / B.Com (PA)') {
+                    tFee = config.arts_group2_tuition;
+                    mFee = config.arts_group2_misc;
+                } else if (specVal === 'B.Sc. (Viscom)') {
+                    tFee = config.viscom_tuition;
+                    mFee = config.viscom_misc;
+                } else if (specVal === 'B.A. (English Lit) / B.Sc. (Maths/Physics/Chemistry)') {
+                    tFee = config.arts_group3_tuition;
+                    mFee = config.arts_group3_misc;
+                } else if (specVal === 'B.Sc. (Catering Science & Hotel Management)') {
+                    tFee = config.catering_tuition;
+                    mFee = config.catering_misc;
+                    oneTimeFee = config.catering_uniform;
+                } else if (specVal === 'M.Tech / M.Arch (Habitat Design)') {
+                    tFee = config.mtech_tuition;
+                    mFee = config.mtech_misc;
+                } else if (specVal === 'MBA / MCA') {
+                    tFee = config.mba_mca_tuition;
+                    mFee = config.mba_mca_misc;
+                } else if (specVal === 'M.Sc (MPC) / MSW / M.A. English Lit') {
+                    tFee = config.pg_arts_tuition;
+                    mFee = config.pg_arts_misc;
+                } else if (specVal === 'M.Sc. (CS, Data Sciences)') {
+                    tFee = config.msc_cs_ds_tuition;
+                    mFee = config.msc_cs_ds_misc;
+                } else if (specVal === 'B.Ed. (Spl. Education) / B.Com (SHIP)') {
+                    tFee = config.bed_ship_tuition;
+                    mFee = config.bed_ship_misc;
+                } else if (specVal === 'B.Sc (Aeronautical Science / Aviation)') {
+                    tFee = config.aero_aviation_tuition;
+                    mFee = config.aero_aviation_misc;
+                } else if (specVal === 'BBA (Aviation Management)') {
+                    tFee = config.bba_aviation_tuition;
+                    mFee = config.bba_aviation_misc;
+                } else if (specVal === 'MBA (Aviation and Airport Management)') {
+                    tFee = config.mba_aviation_tuition;
+                    mFee = config.mba_aviation_misc;
+                }
+                
+                admissionFee = config.app_domestic;
+                lblAdmission = 'Application Processing Fee (Domestic)';
+                
+                if (oneTimeFee > 0) {
+                    admissionFee += oneTimeFee;
+                    lblAdmission = `App Fee (₹${config.app_domestic}) + Uniform Kit (₹${oneTimeFee.toLocaleString('en-IN')})`;
+                }
+                
+                tuition = tFee + mFee;
+                lblTuition = `Annual Fee (Tuition: ₹${tFee.toLocaleString('en-IN')} + Misc: ₹${mFee.toLocaleString('en-IN')})`;
             } else if (courseVal === 'Engineering (B.Tech)') {
                 if (specVal === 'CSE') {
                     if (percentage >= 90) tuition = globalFeeData.bharath.cse["90"];
@@ -1537,20 +2294,33 @@
                 // Not B.Tech, fallback
                 tuition = 120000;
             }
-
+ 
             document.getElementById('lblTuitionFee').textContent = lblTuition;
             document.getElementById('lblAdmissionFee').textContent = lblAdmission;
             document.getElementById('calcTuitionFee').textContent = tuition > 0 ? tuition.toLocaleString('en-IN') : '0';
             document.getElementById('calcAdmissionFee').textContent = admissionFee > 0 ? admissionFee.toLocaleString('en-IN') : '0';
             
-            let total = tuition + admissionFee - totalFeeDiscount;
+            const hostelRow = document.getElementById('hostelFeeRow');
+            if (hostelRow) {
+                if (hostelFee > 0) {
+                    hostelRow.style.display = 'table-row';
+                    document.getElementById('lblHostelFee').textContent = lblHostel;
+                    document.getElementById('calcHostelFee').textContent = hostelFee.toLocaleString('en-IN');
+                } else {
+                    hostelRow.style.display = 'none';
+                }
+            }
+
+            let total = tuition + admissionFee + hostelFee - totalFeeDiscount;
             document.getElementById('calcTotalFee').textContent = total > 0 ? total.toLocaleString('en-IN') : '0';
 
             let bookingNoteRow = document.getElementById('bookingNoteRow');
             let bookingNoteCell = document.getElementById('bookingNoteCell');
-            if (bookingNoteRow && bookingNoteCell) {
+            let bookingNoteVal = document.getElementById('bookingNoteVal');
+            if (bookingNoteRow && bookingNoteCell && bookingNoteVal) {
                 if (totalFeeDiscount > 0) {
-                    bookingNoteCell.textContent = `* Booking fee (₹${totalFeeDiscount.toLocaleString('en-IN')}) is deducted from the Total Estimated Fee.`;
+                    bookingNoteCell.textContent = 'Less: Booking Fee (Advance Paid)';
+                    bookingNoteVal.textContent = `-₹${totalFeeDiscount.toLocaleString('en-IN')}`;
                     bookingNoteRow.style.display = 'table-row';
                 } else {
                     bookingNoteRow.style.display = 'none';
@@ -1579,16 +2349,8 @@
                 specialization: document.getElementById('specialization').value || ''
             };
             
-            let leads = JSON.parse(localStorage.getItem('collectedLeads') || '[]');
-            const now = new Date().getTime();
-            const oneDay = 24 * 60 * 60 * 1000;
-            leads = leads.filter(l => (now - l.timestamp) < oneDay);
-            
-            const existingIndex = leads.findIndex(l => l.phone === lead.phone);
-            if (existingIndex >= 0) leads[existingIndex] = lead;
-            else leads.push(lead);
-            
-            localStorage.setItem('collectedLeads', JSON.stringify(leads));
+            const phoneKey = lead.phone || ('anon_' + lead.timestamp);
+            database.ref('collectedLeads/' + phoneKey).set(lead);
         }
 
         function validateStep(step) {
@@ -1615,10 +2377,20 @@
             } else if (step === 3) {
                 const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
                 const maxMarks = [75, 75, 60, 60, 75, 75, 60, 60, 30, 30];
+                const passMarks = [26, 26, 21, 21, 26, 26, 21, 21, 11, 11];
+                const names = ['Maths 1A', 'Maths 1B', 'Physics 1', 'Chemistry 1', 'Maths 2A', 'Maths 2B', 'Physics 2', 'Chemistry 2', 'Physics Practical', 'Chemistry Practical'];
+                const errMsgEl = document.getElementById('err-marks');
+                
                 for (let i = 0; i < ids.length; i++) {
                     const val = parseFloat(document.getElementById(ids[i]).value);
                     if (isNaN(val) || val < 0 || val > maxMarks[i]) {
-                        document.getElementById('err-marks').style.display = 'block';
+                        errMsgEl.textContent = `Please enter valid marks for all subjects based on their max limit (e.g. ${names[i]} has max ${maxMarks[i]}).`;
+                        errMsgEl.style.display = 'block';
+                        isValid = false; break;
+                    }
+                    if (val < passMarks[i]) {
+                        errMsgEl.textContent = `Admission rejected: You must score at least the required pass marks (${passMarks[i]} marks) in ${names[i]}.`;
+                        errMsgEl.style.display = 'block';
                         isValid = false; break;
                     }
                 }
@@ -1629,20 +2401,101 @@
         function hideErrors() { document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); }
 
         function handleCourseChange() {
+            const uniVal = document.getElementById('university').value;
             const courseVal = document.getElementById('course').value;
             const specGroup = document.getElementById('specialization-group');
-            if (courseVal === 'Engineering (B.Tech)') { specGroup.style.display = 'block'; } 
-            else { specGroup.style.display = 'none'; document.getElementById('specialization').value = ''; }
+            const specDropdown = document.getElementById('specialization');
+            
+            if (uniVal === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
+                specGroup.style.display = 'block';
+                let opts = '<option value="">-- Choose Course --</option>';
+                if (courseVal === 'Engineering & Architecture') {
+                    opts += `
+                        <option value="B.Tech (CSE)">B.Tech (CSE)</option>
+                        <option value="B.Tech (AI&DS)">B.Tech (AI&DS)</option>
+                        <option value="B.Tech (IT)">B.Tech (IT)</option>
+                        <option value="B.Tech (ECE)">B.Tech (ECE)</option>
+                        <option value="B.Tech (Biotech)">B.Tech (Biotech)</option>
+                        <option value="B.Tech (Other Engineering)">B.Tech (All other Disciplines)</option>
+                        <option value="B.Arch">B.Arch</option>
+                        <option value="B.Tech (CSE) - SHIP">B.Tech (CSE) - SHIP (I-IV Years)</option>
+                    `;
+                } else if (courseVal === 'Medical & Allied Health Sciences') {
+                    opts += `
+                        <option value="B.Sc Nursing">B.Sc Nursing (4 years)</option>
+                        <option value="Bachelor of Physiotherapy">Bachelor of Physiotherapy</option>
+                        <option value="B.Sc Allied Health Science">B.Sc Allied Health Science (4 years)</option>
+                    `;
+                } else if (courseVal === 'Agriculture, Law & Forensic Science') {
+                    opts += `
+                        <option value="B.Sc. (Hons.) Agriculture / Horticulture">B.Sc. (Hons.) Agriculture / Horticulture</option>
+                        <option value="B.A / B.Com. LLB (5 years)">B.A / B.Com. LLB (5 years)</option>
+                        <option value="LLB (Hons.) (3 Years)">LLB (Hons.) (3 Years)</option>
+                        <option value="B.Sc. (Hons.) Forensic Science">B.Sc. (Hons.) Forensic Science</option>
+                    `;
+                } else if (courseVal === 'Arts, Science, Commerce & Management (UG)') {
+                    opts += `
+                        <option value="B.Com (CA) / BCA / B.Sc (CS/IT)">B.Com (CA), BCA, B.Sc (CS), B.Sc (IT)</option>
+                        <option value="BBA / B.Com (Regular) / B.Com (PA)">BBA, B.Com (Regular), B.Com (Professional Accounting)</option>
+                        <option value="B.Sc. (Viscom)">B.Sc. (Viscom)</option>
+                        <option value="B.A. (English Lit) / B.Sc. (Maths/Physics/Chemistry)">B.A. (English Lit), B.Sc. (Maths/Physics/Chemistry)</option>
+                        <option value="B.Sc. (Catering Science & Hotel Management)">B.Sc. (Catering Science & Hotel Management)</option>
+                        <option value="B.Ed. (Spl. Education) / B.Com (SHIP)">B.Ed. (Spl. Education) / B.Com (for SHIP students)</option>
+                        <option value="B.Sc (Aeronautical Science / Aviation)">B.Sc (Aeronautical Science / Aviation)</option>
+                        <option value="BBA (Aviation Management)">BBA (Aviation Management)</option>
+                    `;
+                } else if (courseVal === 'PG Programmes') {
+                    opts += `
+                        <option value="M.Tech / M.Arch (Habitat Design)">M.Tech., M.Arch (Habitat Design)</option>
+                        <option value="MBA / MCA">MBA, MCA</option>
+                        <option value="M.Sc (MPC) / MSW / M.A. English Lit">M.Sc (Maths/Physics/Chemistry), MSW, M.A. English Lit</option>
+                        <option value="M.Sc. (CS, Data Sciences)">M.Sc. (CS, Data Sciences)</option>
+                        <option value="M.Sc (Forensic Science)">M.Sc (Forensic Science)</option>
+                        <option value="MBA (Aviation and Airport Management)">MBA (Aviation and Airport Management)</option>
+                    `;
+                }
+                specDropdown.innerHTML = opts;
+            } else {
+                if (courseVal === 'Engineering (B.Tech)') { specGroup.style.display = 'block'; } 
+                else { specGroup.style.display = 'none'; document.getElementById('specialization').value = ''; }
+            }
         }
 
         function calculatePercentage() {
             const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
+            const passMarks = [26, 26, 21, 21, 26, 26, 21, 21, 11, 11];
+            const names = ['Maths 1A', 'Maths 1B', 'Physics 1', 'Chemistry 1', 'Maths 2A', 'Maths 2B', 'Physics 2', 'Chemistry 2', 'Physics Practical', 'Chemistry Practical'];
+            
             let total = 0;
-            ids.forEach(id => { total += parseFloat(document.getElementById(id).value) || 0; });
+            let failedSubjects = [];
+            
+            for (let i = 0; i < ids.length; i++) {
+                const valStr = document.getElementById(ids[i]).value;
+                const val = parseFloat(valStr) || 0;
+                total += val;
+                
+                if (valStr !== "" && val < passMarks[i]) {
+                    failedSubjects.push(`${names[i]} (${val}/${passMarks[i]})`);
+                }
+            }
+            
             const percentage = total / 6;
             document.getElementById('totalMarksDisplay').textContent = total;
             document.getElementById('percentageDisplay').textContent = percentage > 0 ? `${percentage.toFixed(4)}%` : '0.0000%';
+            
             userData.percentage = percentage.toFixed(4);
+            userData.hasFailed = failedSubjects.length > 0;
+            userData.failedSubjects = failedSubjects;
+            
+            const warningEl = document.getElementById('marks-warning-note');
+            if (warningEl) {
+                if (userData.hasFailed) {
+                    warningEl.style.display = 'block';
+                    warningEl.querySelector('span').innerHTML = `<strong>Note:</strong> Marks in one or more subjects are below the pass criteria:<br>${failedSubjects.join(', ')}.`;
+                } else {
+                    warningEl.style.display = 'none';
+                }
+            }
         }
 
         function saveData() {
@@ -1656,7 +2509,9 @@
                 phone: document.getElementById('phone').value,
                 hallTicket: document.getElementById('hallTicket').value,
                 email: document.getElementById('email').value,
-                percentage: userData.percentage || 0
+                percentage: userData.percentage || 0,
+                hasFailed: userData.hasFailed || false,
+                failedSubjects: userData.failedSubjects || []
             };
             localStorage.setItem('maheshConsultantLead', JSON.stringify(userData));
         }
@@ -1786,11 +2641,8 @@
             appData.cert_ssc = await compressImage(document.getElementById('app_cert_ssc').files[0]);
             appData.cert_inter = await compressImage(document.getElementById('app_cert_inter').files[0]);
 
-            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
-            apps.push(appData);
-            
             try {
-                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
+                await database.ref('adminApplicationsData/' + appData.id).set(appData);
                 document.getElementById('appSuccessMsg').style.display = 'block';
                 e.target.reset();
                 document.querySelectorAll('.preview-img').forEach(img => { img.style.display = 'none'; img.src = ''; });
@@ -1799,7 +2651,7 @@
                     closeApplicationForm();
                 }, 3000);
             } catch (err) {
-                alert("Storage limit exceeded. Please try uploading smaller files or contact admin.");
+                alert("Storage limit exceeded or database error. Please contact admin.");
                 console.error(err);
             } finally {
                 btn.innerHTML = ogText;
@@ -1809,102 +2661,108 @@
 
         // --- Admin App Viewer Logic ---
         function renderAdminApplications() {
-            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
             const table = document.getElementById('applicationsTable');
             table.innerHTML = '<tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>';
             
-            const selectedVal = document.getElementById('adminUniSelect').value;
-            let targetUni = '';
-            if (selectedVal === 'bharath') targetUni = 'Bharath University';
-            else if (selectedVal === 'mgr') targetUni = 'Mgr University';
-            else if (selectedVal === 'ganpat') targetUni = 'Ganpat University';
+            database.ref('adminApplicationsData').once('value').then((snapshot) => {
+                const apps = [];
+                snapshot.forEach(child => { apps.push(child.val()); });
+                
+                const selectedVal = document.getElementById('adminUniSelect').value;
+                let targetUni = '';
+                if (selectedVal === 'bharath') targetUni = 'Bharath University';
+                else if (selectedVal === 'mgr') targetUni = 'Mgr University';
+                else if (selectedVal === 'ganpat') targetUni = 'Ganpat University';
+                else if (selectedVal === 'dsu') targetUni = 'Dhanalakshmi Srinivasan University';
+                else if (selectedVal === 'kalasalingam') targetUni = 'Kalasalingam Academy of Research and Education (Deemed to be University)';
 
-            const filteredApps = apps.filter(app => {
-                if (!app.university) return true; // fallback for older entries
-                return app.university === targetUni;
-            });
+                const filteredApps = apps.filter(app => {
+                    if (!app.university) return true; // fallback for older entries
+                    return app.university === targetUni;
+                });
 
-            if(filteredApps.length === 0) {
-                table.innerHTML += '<tr><td colspan="4" style="text-align:center;">No applications submitted yet.</td></tr>';
-                return;
-            }
+                if(filteredApps.length === 0) {
+                    table.innerHTML += '<tr><td colspan="4" style="text-align:center;">No applications submitted yet.</td></tr>';
+                    return;
+                }
 
-            filteredApps.forEach(app => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${app.name}</td>
-                    <td>${app.stream}</td>
-                    <td>${app.date}</td>
-                    <td>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="btn btn-next" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="viewAppDetails(${app.id})">View Details</button>
-                            <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Application" onclick="deleteApplication(${app.id})"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </td>
-                `;
-                table.appendChild(tr);
+                filteredApps.forEach(app => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${app.name}</td>
+                        <td>${app.stream}</td>
+                        <td>${app.date}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-next" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="viewAppDetails(${app.id})">View Details</button>
+                                <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Application" onclick="deleteApplication(${app.id})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    `;
+                    table.appendChild(tr);
+                });
             });
         }
 
         function deleteApplication(id) {
             if (confirm('Are you sure you want to delete this student application? This action cannot be undone.')) {
-                let apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
-                apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
-                renderAdminApplications();
+                database.ref('adminApplicationsData/' + id).remove().then(() => {
+                    renderAdminApplications();
+                });
             }
         }
 
         function viewAppDetails(id) {
-            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
-            const app = apps.find(a => a.id === id);
-            if (!app) return;
+            database.ref('adminApplicationsData/' + id).once('value').then(snapshot => {
+                const app = snapshot.val();
+                if (!app) return;
 
-            let detailsHtml = '';
-            const fields = [
-                {k: 'name', l: 'Name'}, {k: 'fname', l: "Father's Name"}, {k: 'mname', l: "Mother's Name"},
-                {k: 'blood', l: 'Blood Group'}, {k: 'dob', l: 'DOB'}, {k: 'stream', l: 'Stream'},
-                {k: 'scontact', l: 'Student Contact'}, {k: 'pcontact', l: 'Parent Contact'}, {k: 'email', l: 'Email'},
-                {k: 'aadhar', l: 'Aadhar No'}, {k: 'community', l: 'Community'}, {k: 'pincode', l: 'Pincode'},
-                {k: 'address', l: 'Address'}, {k: 'totalFee', l: 'Total Estimated Fee (₹)'}
-            ];
-            
-            fields.forEach(f => {
-                detailsHtml += `<div><strong>${f.l}:</strong> <br>${app[f.k] || '-'}</div>`;
+                let detailsHtml = '';
+                const fields = [
+                    {k: 'name', l: 'Name'}, {k: 'fname', l: "Father's Name"}, {k: 'mname', l: "Mother's Name"},
+                    {k: 'blood', l: 'Blood Group'}, {k: 'dob', l: 'DOB'}, {k: 'stream', l: 'Stream'},
+                    {k: 'scontact', l: 'Student Contact'}, {k: 'pcontact', l: 'Parent Contact'}, {k: 'email', l: 'Email'},
+                    {k: 'aadhar', l: 'Aadhar No'}, {k: 'community', l: 'Community'}, {k: 'pincode', l: 'Pincode'},
+                    {k: 'address', l: 'Address'}, {k: 'totalFee', l: 'Total Estimated Fee (₹)'}
+                ];
+                
+                fields.forEach(f => {
+                    detailsHtml += `<div><strong>${f.l}:</strong> <br>${app[f.k] || '-'}</div>`;
+                });
+                document.getElementById('appDetailsContent').innerHTML = detailsHtml;
+
+                let certsHtml = '';
+                if (app.cert_aadhar) certsHtml += `<div style="text-align: center;"><p>Aadhar</p><img src="${app.cert_aadhar}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+                if (app.cert_ssc) certsHtml += `<div style="text-align: center;"><p>SSC Memo</p><img src="${app.cert_ssc}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+                if (app.cert_inter) certsHtml += `<div style="text-align: center;"><p>Inter Memo</p><img src="${app.cert_inter}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
+                
+                document.getElementById('appDetailsCerts').innerHTML = certsHtml || '<p style="color: var(--text-light);">No certificates uploaded.</p>';
+
+                document.getElementById('current_app_id').value = app.id;
+                document.getElementById('app_remark1').value = app.remark1 || '';
+                document.getElementById('app_remark2').value = app.remark2 || '';
+
+                document.getElementById('appDetailsModal').style.display = 'flex';
             });
-            document.getElementById('appDetailsContent').innerHTML = detailsHtml;
-
-            let certsHtml = '';
-            if (app.cert_aadhar) certsHtml += `<div style="text-align: center;"><p>Aadhar</p><img src="${app.cert_aadhar}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-            if (app.cert_ssc) certsHtml += `<div style="text-align: center;"><p>SSC Memo</p><img src="${app.cert_ssc}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-            if (app.cert_inter) certsHtml += `<div style="text-align: center;"><p>Inter Memo</p><img src="${app.cert_inter}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-            
-            document.getElementById('appDetailsCerts').innerHTML = certsHtml || '<p style="color: var(--text-light);">No certificates uploaded.</p>';
-
-            document.getElementById('current_app_id').value = app.id;
-            document.getElementById('app_remark1').value = app.remark1 || '';
-            document.getElementById('app_remark2').value = app.remark2 || '';
-
-            document.getElementById('appDetailsModal').style.display = 'flex';
         }
 
         function saveAppRemarks() {
             const id = parseInt(document.getElementById('current_app_id').value);
-            const apps = JSON.parse(localStorage.getItem('adminApplicationsData')) || [];
-            const index = apps.findIndex(a => a.id === id);
-            if (index !== -1) {
-                apps[index].remark1 = document.getElementById('app_remark1').value;
-                apps[index].remark2 = document.getElementById('app_remark2').value;
-                localStorage.setItem('adminApplicationsData', JSON.stringify(apps));
+            database.ref('adminApplicationsData/' + id).update({
+                remark1: document.getElementById('app_remark1').value,
+                remark2: document.getElementById('app_remark2').value
+            }).then(() => {
                 const msg = document.getElementById('appRemarkSuccess');
                 msg.style.display = 'inline-block';
                 setTimeout(() => msg.style.display = 'none', 3000);
-            }
+            });
         }
 
         function closeAppDetails() {
             document.getElementById('appDetailsModal').style.display = 'none';
         }
+
+
     </script>
 </body>
 </html>

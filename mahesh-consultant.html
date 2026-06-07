@@ -494,6 +494,56 @@
         .admin-app-modal-content {
             background: white; padding: 2rem; border-radius: 0.5rem; width: 95%; max-width: 800px; max-height: 90vh; overflow-y: auto;
         }
+        
+        /* Stream Toggle Tabs */
+        .stream-toggle-container {
+            margin-bottom: 1.5rem;
+        }
+        .stream-tabs {
+            display: flex;
+            background: var(--light-blue);
+            padding: 4px;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+        .stream-tab-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            background: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .stream-tab-btn.active {
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.2);
+        }
+        .stream-tab-btn:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary-blue);
+        }
+        /* Subjects Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem 1.5rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 640px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+                max-height: 280px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -775,6 +825,14 @@
                 <div class="step-content active" id="step-1">
                     <h2><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Academic Preferences</h2>
                     
+                    <div class="form-group stream-toggle-container">
+                        <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Choose Stream <span style="color:red">*</span></label>
+                        <div class="stream-tabs">
+                            <button type="button" class="stream-tab-btn active" id="stream-mpc" onclick="setStream('MPC')">MPC</button>
+                            <button type="button" class="stream-tab-btn" id="stream-bipc" onclick="setStream('BiPC')">BiPC</button>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="state">Select State <span style="color:red">*</span></label>
                         <select id="state" required onchange="handleStateChange()">
@@ -914,47 +972,8 @@
                     </div>
 
                     <!-- List of subjects -->
-                    <div style="max-height: 280px; overflow-y: auto; padding-right: 0.5rem; margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths1a" style="margin-bottom: 0; font-size: 0.85rem;">1. Maths 1A (Max 75, Pass 26)</label>
-                            <input type="number" id="m_maths1a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths1b" style="margin-bottom: 0; font-size: 0.85rem;">2. Maths 1B (Max 75, Pass 26)</label>
-                            <input type="number" id="m_maths1b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phy1" style="margin-bottom: 0; font-size: 0.85rem;">3. Physics 1 (Max 60, Pass 21)</label>
-                            <input type="number" id="m_phy1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chem1" style="margin-bottom: 0; font-size: 0.85rem;">4. Chemistry 1 (Max 60, Pass 21)</label>
-                            <input type="number" id="m_chem1" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths2a" style="margin-bottom: 0; font-size: 0.85rem;">5. Maths 2A (Max 75, Pass 26)</label>
-                            <input type="number" id="m_maths2a" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_maths2b" style="margin-bottom: 0; font-size: 0.85rem;">6. Maths 2B (Max 75, Pass 26)</label>
-                            <input type="number" id="m_maths2b" min="0" max="75" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phy2" style="margin-bottom: 0; font-size: 0.85rem;">7. Physics 2 (Max 60, Pass 21)</label>
-                            <input type="number" id="m_phy2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chem2" style="margin-bottom: 0; font-size: 0.85rem;">8. Chemistry 2 (Max 60, Pass 21)</label>
-                            <input type="number" id="m_chem2" min="0" max="60" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_phyp" style="margin-bottom: 0; font-size: 0.85rem;">9. Physics Practical (Max 30, Pass 11)</label>
-                            <input type="number" id="m_phyp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <label for="m_chemp" style="margin-bottom: 0; font-size: 0.85rem;">10. Chemistry Practical (Max 30, Pass 11)</label>
-                            <input type="number" id="m_chemp" min="0" max="30" required oninput="calculatePercentage()" style="width: 100px; padding: 0.5rem;">
-                        </div>
+                    <div id="subjectsContainer" class="subjects-grid">
+                        <!-- Rendered dynamically -->
                     </div>
 
                     <div class="form-group" style="background-color: var(--light-blue); padding: 1rem; border-radius: 0.5rem; text-align: center; margin-top: 1.5rem;">
@@ -1196,6 +1215,35 @@
         let currentStep = 1;
         const totalSteps = 5;
         let userData = {};
+        window.selectedStream = 'MPC';
+
+        const mpcSubjects = [
+            { id: 'm_maths1a', name: 'Maths 1A', max: 75, pass: 26 },
+            { id: 'm_maths1b', name: 'Maths 1B', max: 75, pass: 26 },
+            { id: 'm_phy1', name: 'Physics 1', max: 60, pass: 21 },
+            { id: 'm_chem1', name: 'Chemistry 1', max: 60, pass: 21 },
+            { id: 'm_maths2a', name: 'Maths 2A', max: 75, pass: 26 },
+            { id: 'm_maths2b', name: 'Maths 2B', max: 75, pass: 26 },
+            { id: 'm_phy2', name: 'Physics 2', max: 60, pass: 21 },
+            { id: 'm_chem2', name: 'Chemistry 2', max: 60, pass: 21 },
+            { id: 'm_phyp', name: 'Physics Practical', max: 30, pass: 11 },
+            { id: 'm_chemp', name: 'Chemistry Practical', max: 30, pass: 11 }
+        ];
+
+        const bipcSubjects = [
+            { id: 'b_bot1', name: 'Botany 1st Year', max: 60, pass: 21 },
+            { id: 'b_zoo1', name: 'Zoology 1st Year', max: 60, pass: 21 },
+            { id: 'b_phy1', name: 'Physics 1st Year', max: 60, pass: 21 },
+            { id: 'b_chem1', name: 'Chemistry 1st Year', max: 60, pass: 21 },
+            { id: 'b_bot2', name: 'Botany 2nd Year', max: 60, pass: 21 },
+            { id: 'b_zoo2', name: 'Zoology 2nd Year', max: 60, pass: 21 },
+            { id: 'b_phy2', name: 'Physics 2nd Year', max: 60, pass: 21 },
+            { id: 'b_chem2', name: 'Chemistry 2nd Year', max: 60, pass: 21 },
+            { id: 'b_botp', name: 'Botany Practical', max: 30, pass: 11 },
+            { id: 'b_zoop', name: 'Zoology Practical', max: 30, pass: 11 },
+            { id: 'b_phyp', name: 'Physics Practical', max: 30, pass: 11 },
+            { id: 'b_chemp', name: 'Chemistry Practical', max: 30, pass: 11 }
+        ];
 
         const mgrFeeData = {
             "DS & AI(IBM)": { "Slot A": { i: 135000, ii: 100000, schlI: null, schlII: null }, "Slot B": { i: 125000, ii: 90000, schlI: null, schlII: null } },
@@ -1254,8 +1302,8 @@
                 "Electrical & Electronics Engineering": 75000,
                 "Civil Engineering": 75000,
                 "Automobile Engineering": 75000,
-                "B.Arch": 125000,
-                "B.Design": 125000
+                "B Arch": 125000,
+                "B Design": 125000
             },
             whatsapp: "+917397549343"
         };
@@ -1362,7 +1410,11 @@
                     if (data.dsu) mergedData.dsu = data.dsu;
                     if (data.kalasalingam) mergedData.kalasalingam = data.kalasalingam;
                     globalFeeData = mergedData;
-                    database.ref('adminFeeData').set(globalFeeData);
+                    if (auth.currentUser) {
+                        database.ref('adminFeeData').set(globalFeeData).catch(err => {
+                            console.warn("Failed to auto-update adminFeeData: ", err.message);
+                        });
+                    }
                 }
                 currentFees = globalFeeData.bharath;
                 if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
@@ -1372,7 +1424,11 @@
                     renderAdminPanel();
                 }
             } else {
-                database.ref('adminFeeData').set(globalFeeData);
+                if (auth.currentUser) {
+                    database.ref('adminFeeData').set(globalFeeData).catch(err => {
+                        console.warn("Failed to initialize adminFeeData: ", err.message);
+                    });
+                }
             }
         });
 
@@ -1388,9 +1444,71 @@
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             defaultSpecOptions = document.getElementById('specialization').innerHTML;
+            renderCalculator();
             updateUI();
             updateWhatsAppLinks();
         });
+
+        function setStream(stream) {
+            if (window.selectedStream === stream) return;
+            window.selectedStream = stream;
+            
+            // Update Tab Active UI
+            document.getElementById('stream-mpc').classList.toggle('active', stream === 'MPC');
+            document.getElementById('stream-bipc').classList.toggle('active', stream === 'BiPC');
+            
+            // Reset Course & Specialization
+            const courseSelect = document.getElementById('course');
+            const specSelect = document.getElementById('specialization');
+            if (courseSelect) courseSelect.value = '';
+            if (specSelect) specSelect.value = '';
+            
+            // Re-run university change to update course and specialization dropdown options
+            handleUniversityChange();
+            
+            // Reset Marks Calculator inputs
+            resetCalculator();
+            
+            // Re-render Calculator structure
+            renderCalculator();
+        }
+
+        function resetCalculator() {
+            const subjects = window.selectedStream === 'MPC' ? mpcSubjects : bipcSubjects;
+            subjects.forEach(sub => {
+                const el = document.getElementById(sub.id);
+                if (el) el.value = '';
+            });
+            document.getElementById('totalMarksDisplay').textContent = '0';
+            document.getElementById('percentageDisplay').textContent = '0.0000%';
+            
+            userData.percentage = '0.0000';
+            userData.hasFailed = false;
+            userData.failedSubjects = [];
+            
+            const warningEl = document.getElementById('marks-warning-note');
+            if (warningEl) warningEl.style.display = 'none';
+            
+            const errMsgEl = document.getElementById('err-marks');
+            if (errMsgEl) errMsgEl.style.display = 'none';
+        }
+
+        function renderCalculator() {
+            const container = document.getElementById('subjectsContainer');
+            if (!container) return;
+            
+            const subjects = window.selectedStream === 'MPC' ? mpcSubjects : bipcSubjects;
+            let html = '';
+            subjects.forEach((sub, index) => {
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 0.5rem 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem;">
+                        <label for="${sub.id}" style="margin-bottom: 0; font-size: 0.85rem; font-weight: 500;">${index + 1}. ${sub.name} <span style="display: block; font-size: 0.75rem; color: var(--text-light); font-weight: 400;">Max ${sub.max}, Pass ${sub.pass}</span></label>
+                        <input type="number" id="${sub.id}" min="0" max="${sub.max}" required oninput="calculatePercentage()" style="width: 80px; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 0.375rem; text-align: center;">
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
 
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -1408,7 +1526,10 @@
                         changeStep(1);
                     }
                 }
-             function handleStateChange() {
+            }
+        });
+
+        function handleStateChange() {
             const state = document.getElementById('state').value;
             const uniSelect = document.getElementById('university');
             
@@ -1437,6 +1558,61 @@
             const slotGroup = document.getElementById('slot-group');
             const specDropdown = document.getElementById('specialization');
             const courseDropdown = document.getElementById('course');
+            
+            if (window.selectedStream === 'BiPC') {
+                if (uni === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
+                    slotGroup.style.display = 'none';
+                    document.getElementById('slot').value = '';
+                    courseDropdown.innerHTML = `
+                        <option value="">-- Choose Course Category --</option>
+                        <option value="Medical & Allied Health Sciences">Medical & Allied Health Sciences</option>
+                        <option value="Agriculture, Law & Forensic Science">Agriculture & Forensic Science</option>
+                        <option value="Engineering (B.Tech)">Engineering (B.Tech)</option>
+                    `;
+                    specDropdown.innerHTML = '<option value="">-- Select Course Category First --</option>';
+                } else if (uni) {
+                    courseDropdown.innerHTML = '<option value="Engineering (B.Tech)">Engineering (B.Tech)</option>';
+                } else {
+                    courseDropdown.innerHTML = `
+                        <option value="">-- Choose Course Category --</option>
+                        <option value="Medical & Allied Health Sciences">Medical & Allied Health Sciences</option>
+                        <option value="Agriculture, Law & Forensic Science">Agriculture & Forensic Science</option>
+                        <option value="Engineering (B.Tech)">Engineering (B.Tech)</option>
+                    `;
+                    specDropdown.innerHTML = '<option value="">-- Select Course First --</option>';
+                }
+                
+                if (uni === 'Mgr University') {
+                    slotGroup.style.display = 'block';
+                } else {
+                    slotGroup.style.display = 'none';
+                    document.getElementById('slot').value = '';
+                }
+                
+                if (uni && uni !== 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
+                    let opts = '<option value="">-- Choose Specialization --</option>';
+                    opts += `
+                        <option value="Biotech (Agricultural)">Biotech (Agricultural)</option>
+                        <option value="Biomedical Engineering">Biomedical Engineering</option>
+                        <option value="Biotech (Genetic)">Biotech (Genetic)</option>
+                        <option value="Industrial Biotechnology">Industrial Biotechnology</option>
+                    `;
+                    specDropdown.innerHTML = opts;
+                }
+                
+                handleCourseChange();
+                
+                const hostelGroup = document.getElementById('hostel-group');
+                if (hostelGroup) {
+                    if (uni === 'Dhanalakshmi Srinivasan University') {
+                        hostelGroup.style.display = 'block';
+                    } else {
+                        hostelGroup.style.display = 'none';
+                        document.getElementById('hostel').value = 'none';
+                    }
+                }
+                return;
+            }
             
             if (uni === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
                 slotGroup.style.display = 'none';
@@ -1499,7 +1675,6 @@
                     document.getElementById('hostel').value = 'none';
                 }
             }
-        }           }
         }
 
         // --- Admin Functions ---
@@ -1986,6 +2161,35 @@
             const specVal = document.getElementById('specialization').value;
             const percentage = userData.percentage || 0;
             
+            // Map BiPC course options to DB fields
+            let mgrKey = specVal;
+            let ganpatKey = specVal;
+            let dsuKey = specVal;
+            let MathKey = specVal; // not needed, but keeping variable names simple
+            let bharathKey = specVal;
+            if (bharathKey === 'B.Arch') bharathKey = 'B Arch';
+            if (bharathKey === 'B.Design') bharathKey = 'B Design';
+            
+            if (window.selectedStream === 'BiPC') {
+                if (specVal === 'Biotech (Agricultural)' || specVal === 'Biotech (Genetic)' || specVal === 'Industrial Biotechnology') {
+                    mgrKey = 'BIO-TECH';
+                    ganpatKey = 'B. Tech. Biotechnology';
+                    dsuKey = 'Bio Technology';
+                } else if (specVal === 'Biomedical Engineering') {
+                    mgrKey = 'BIO- MEDICAL';
+                    ganpatKey = 'B. Tech. Biomedical';
+                    dsuKey = 'Bio Medical';
+                }
+                
+                if (specVal === 'Biotech (Agricultural)') {
+                    bharathKey = 'Biotechnology (Agricultural)';
+                } else if (specVal === 'Biomedical Engineering') {
+                    bharathKey = 'Bio medical Engineering';
+                } else if (specVal === 'Biotech (Genetic)') {
+                    bharathKey = 'Biotechnology (Genetic)';
+                }
+            }
+            
             let tuition = 0;
             let admissionFee = 10000;
             let hostelFee = 0;
@@ -2017,8 +2221,8 @@
                 if (feeWarningEl) feeWarningEl.style.display = 'none';
             }
             
-            if (uniVal === 'Mgr University' && specVal && globalFeeData.mgr[specVal]) {
-                const feeDetails = globalFeeData.mgr[specVal][slotVal];
+            if (uniVal === 'Mgr University' && specVal && globalFeeData.mgr[mgrKey]) {
+                const feeDetails = globalFeeData.mgr[mgrKey][slotVal];
                 if (feeDetails && feeDetails.i !== null) {
                     let sem1 = feeDetails.i;
                     let sem2 = feeDetails.ii;
@@ -2065,13 +2269,13 @@
             } else if (uniVal === 'Ganpat University' && specVal) {
                 let yearlyFee = 0;
                 let semFee = 0;
-                if (ganpatFeeData.set1.includes(specVal)) {
+                if (ganpatFeeData.set1.includes(ganpatKey)) {
                     if (percentage >= 75) {
                         yearlyFee = globalFeeData.ganpat.set1Yearly75; semFee = yearlyFee / 2;
                     } else {
                         yearlyFee = globalFeeData.ganpat.set1YearlyBelow; semFee = yearlyFee / 2;
                     }
-                } else if (ganpatFeeData.set2.includes(specVal)) {
+                } else if (ganpatFeeData.set2.includes(ganpatKey)) {
                     if (percentage >= 75) {
                         yearlyFee = globalFeeData.ganpat.set2Yearly75; semFee = yearlyFee / 2;
                     } else {
@@ -2091,7 +2295,7 @@
                 let baseTuition = 0;
                 let finalTuition = 0;
                 
-                if (groupA.includes(specVal)) {
+                if (groupA.includes(dsuKey)) {
                     baseTuition = globalFeeData.dsu.groupA_full;
                     if (percentage >= 90) {
                         finalTuition = globalFeeData.dsu.groupA_90;
@@ -2116,7 +2320,7 @@
                         feeNotification.style.border = '1px solid #bfdbfe';
                         feeNotification.innerHTML = '<i class="fa-solid fa-info-circle"></i> Tuition Fee (Below 70% PCM): ₹' + finalTuition.toLocaleString('en-IN') + '/yr.';
                     }
-                } else if (groupB.includes(specVal)) {
+                } else if (groupB.includes(dsuKey)) {
                     baseTuition = globalFeeData.dsu.groupB_fee;
                     finalTuition = baseTuition;
                     feeNotification.style.display = 'block';
@@ -2157,10 +2361,10 @@
                 if (specVal === 'B.Tech (CSE)' || specVal === 'B.Tech (AI&DS)' || specVal === 'B.Tech (IT)') {
                     tFee = config.eng_group1_tuition;
                     mFee = config.eng_group1_misc;
-                } else if (specVal === 'B.Tech (ECE)' || specVal === 'B.Tech (Biotech)') {
+                } else if (specVal === 'B.Tech (ECE)' || specVal === 'B.Tech (Biotech)' || specVal === 'Biotech (Agricultural)' || specVal === 'Biotech (Genetic)') {
                     tFee = config.eng_group2_tuition;
                     mFee = config.eng_group2_misc;
-                } else if (specVal === 'B.Tech (Other Engineering)') {
+                } else if (specVal === 'B.Tech (Other Engineering)' || specVal === 'Biomedical Engineering' || specVal === 'Industrial Biotechnology') {
                     tFee = config.eng_group3_tuition;
                     mFee = config.eng_group3_misc;
                 } else if (specVal === 'B.Arch') {
@@ -2172,16 +2376,16 @@
                 } else if (specVal === 'B.Sc Nursing') {
                     tFee = config.nursing_tuition;
                     mFee = config.nursing_misc;
-                } else if (specVal === 'Bachelor of Physiotherapy') {
+                } else if (specVal === 'Bachelor of Physiotherapy' || specVal === 'Bachelor of Physiotherapy (BPT)') {
                     tFee = config.physio_tuition;
                     mFee = config.physio_misc;
-                } else if (specVal === 'B.Sc Allied Health Science') {
+                } else if (specVal === 'B.Sc Allied Health Science' || specVal === 'B.Sc Allied Health Sciences') {
                     tFee = config.allied_y1_3_tuition;
                     mFee = config.allied_misc;
                     feeNotification.style.display = 'block';
                     feeNotification.className = 'success-message';
                     feeNotification.innerHTML = `<i class="fa-solid fa-circle-info"></i> B.Sc Allied Health Science Tuition is ₹${config.allied_y1_3_tuition.toLocaleString('en-IN')}/yr for Years 1-3, and ₹${config.allied_y4_tuition.toLocaleString('en-IN')} for Year 4.`;
-                } else if (specVal === 'B.Sc. (Hons.) Agriculture / Horticulture') {
+                } else if (specVal === 'B.Sc. (Hons.) Agriculture / Horticulture' || specVal === 'B.Sc. (Hons) Agriculture / Horticulture') {
                     tFee = config.agri_tuition;
                     mFee = config.agri_misc;
                 } else if (specVal === 'B.A / B.Com. LLB (5 years)') {
@@ -2190,7 +2394,7 @@
                 } else if (specVal === 'LLB (Hons.) (3 Years)') {
                     tFee = config.law_3yr_tuition;
                     mFee = config.law_3yr_misc;
-                } else if (specVal === 'B.Sc. (Hons.) Forensic Science') {
+                } else if (specVal === 'B.Sc. (Hons.) Forensic Science' || specVal === 'B.Sc. (Hons) Forensic Science') {
                     tFee = config.forensic_ug_tuition;
                     mFee = config.forensic_ug_misc;
                 } else if (specVal === 'M.Sc (Forensic Science)') {
@@ -2263,8 +2467,8 @@
                     else tuition = globalFeeData.bharath.cse_spec["below"];
                 } else {
                     // Other
-                    if (globalFeeData.bharath.other[specVal]) {
-                        tuition = globalFeeData.bharath.other[specVal];
+                    if (globalFeeData.bharath.other[bharathKey]) {
+                        tuition = globalFeeData.bharath.other[bharathKey];
                     }
                 }
             } else {
@@ -2340,7 +2544,8 @@
                 if (uniVal === 'Mgr University' && !document.getElementById('slot').value) { document.getElementById('err-slot').style.display = 'block'; isValid = false; }
                 const cVal = document.getElementById('course').value;
                 if (!cVal) { document.getElementById('err-course').style.display = 'block'; isValid = false; }
-                if (cVal === 'Engineering (B.Tech)' && !document.getElementById('specialization').value) {
+                const specGroup = document.getElementById('specialization-group');
+                if (specGroup && specGroup.style.display !== 'none' && !document.getElementById('specialization').value) {
                     document.getElementById('err-specialization').style.display = 'block';
                     isValid = false;
                 }
@@ -2352,21 +2557,21 @@
                 if (!/^[0-9]{10}$/.test(phone)) { document.getElementById('err-phone').style.display = 'block'; isValid = false; }
                 if (!hallTicket) { document.getElementById('err-hallticket').style.display = 'block'; isValid = false; }
             } else if (step === 3) {
-                const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
-                const maxMarks = [75, 75, 60, 60, 75, 75, 60, 60, 30, 30];
-                const passMarks = [26, 26, 21, 21, 26, 26, 21, 21, 11, 11];
-                const names = ['Maths 1A', 'Maths 1B', 'Physics 1', 'Chemistry 1', 'Maths 2A', 'Maths 2B', 'Physics 2', 'Chemistry 2', 'Physics Practical', 'Chemistry Practical'];
+                const subjects = window.selectedStream === 'MPC' ? mpcSubjects : bipcSubjects;
                 const errMsgEl = document.getElementById('err-marks');
                 
-                for (let i = 0; i < ids.length; i++) {
-                    const val = parseFloat(document.getElementById(ids[i]).value);
-                    if (isNaN(val) || val < 0 || val > maxMarks[i]) {
-                        errMsgEl.textContent = `Please enter valid marks for all subjects based on their max limit (e.g. ${names[i]} has max ${maxMarks[i]}).`;
+                for (let i = 0; i < subjects.length; i++) {
+                    const sub = subjects[i];
+                    const inputEl = document.getElementById(sub.id);
+                    if (!inputEl) continue;
+                    const val = parseFloat(inputEl.value);
+                    if (isNaN(val) || val < 0 || val > sub.max) {
+                        errMsgEl.textContent = `Please enter valid marks for all subjects based on their max limit (e.g. ${sub.name} has max ${sub.max}).`;
                         errMsgEl.style.display = 'block';
                         isValid = false; break;
                     }
-                    if (val < passMarks[i]) {
-                        errMsgEl.textContent = `Admission rejected: You must score at least the required pass marks (${passMarks[i]} marks) in ${names[i]}.`;
+                    if (val < sub.pass) {
+                        errMsgEl.textContent = `Admission rejected: You must score at least the required pass marks (${sub.pass} marks) in ${sub.name}.`;
                         errMsgEl.style.display = 'block';
                         isValid = false; break;
                     }
@@ -2382,6 +2587,41 @@
             const courseVal = document.getElementById('course').value;
             const specGroup = document.getElementById('specialization-group');
             const specDropdown = document.getElementById('specialization');
+            
+            if (window.selectedStream === 'BiPC') {
+                if (uniVal === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
+                    specGroup.style.display = 'block';
+                    let opts = '<option value="">-- Choose Course --</option>';
+                    if (courseVal === 'Medical & Allied Health Sciences') {
+                        opts += `
+                            <option value="B.Sc Nursing">B.Sc Nursing</option>
+                            <option value="Bachelor of Physiotherapy (BPT)">Bachelor of Physiotherapy (BPT)</option>
+                            <option value="B.Sc Allied Health Sciences">B.Sc Allied Health Sciences</option>
+                        `;
+                    } else if (courseVal === 'Agriculture, Law & Forensic Science' || courseVal === 'Agriculture & Forensic Science') {
+                        opts += `
+                            <option value="B.Sc. (Hons) Agriculture / Horticulture">B.Sc. (Hons) Agriculture / Horticulture</option>
+                            <option value="B.Sc. (Hons) Forensic Science">B.Sc. (Hons) Forensic Science</option>
+                        `;
+                    } else if (courseVal === 'Engineering & Architecture' || courseVal === 'Engineering (B.Tech)') {
+                        opts += `
+                            <option value="Biotech (Agricultural)">Biotech (Agricultural)</option>
+                            <option value="Biomedical Engineering">Biomedical Engineering</option>
+                            <option value="Biotech (Genetic)">Biotech (Genetic)</option>
+                            <option value="Industrial Biotechnology">Industrial Biotechnology</option>
+                        `;
+                    }
+                    specDropdown.innerHTML = opts;
+                } else {
+                    if (courseVal === 'Engineering (B.Tech)') {
+                        specGroup.style.display = 'block';
+                    } else {
+                        specGroup.style.display = 'none';
+                        document.getElementById('specialization').value = '';
+                    }
+                }
+                return;
+            }
             
             if (uniVal === 'Kalasalingam Academy of Research and Education (Deemed to be University)') {
                 specGroup.style.display = 'block';
@@ -2439,24 +2679,24 @@
         }
 
         function calculatePercentage() {
-            const ids = ['m_maths1a', 'm_maths1b', 'm_phy1', 'm_chem1', 'm_maths2a', 'm_maths2b', 'm_phy2', 'm_chem2', 'm_phyp', 'm_chemp'];
-            const passMarks = [26, 26, 21, 21, 26, 26, 21, 21, 11, 11];
-            const names = ['Maths 1A', 'Maths 1B', 'Physics 1', 'Chemistry 1', 'Maths 2A', 'Maths 2B', 'Physics 2', 'Chemistry 2', 'Physics Practical', 'Chemistry Practical'];
+            const subjects = window.selectedStream === 'MPC' ? mpcSubjects : bipcSubjects;
             
             let total = 0;
             let failedSubjects = [];
             
-            for (let i = 0; i < ids.length; i++) {
-                const valStr = document.getElementById(ids[i]).value;
+            for (let i = 0; i < subjects.length; i++) {
+                const sub = subjects[i];
+                const inputEl = document.getElementById(sub.id);
+                const valStr = inputEl ? inputEl.value : "";
                 const val = parseFloat(valStr) || 0;
                 total += val;
                 
-                if (valStr !== "" && val < passMarks[i]) {
-                    failedSubjects.push(`${names[i]} (${val}/${passMarks[i]})`);
+                if (valStr !== "" && val < sub.pass) {
+                    failedSubjects.push(`${sub.name} (${val}/${sub.pass})`);
                 }
             }
             
-            const percentage = total / 6;
+            const percentage = (total / 600) * 100;
             document.getElementById('totalMarksDisplay').textContent = total;
             document.getElementById('percentageDisplay').textContent = percentage > 0 ? `${percentage.toFixed(4)}%` : '0.0000%';
             
@@ -2478,6 +2718,7 @@
         function saveData() {
             const specVal = document.getElementById('specialization').value;
             userData = {
+                stream: window.selectedStream || 'MPC',
                 state: document.getElementById('state').value,
                 university: document.getElementById('university').value,
                 slot: document.getElementById('slot').value,
@@ -2531,7 +2772,14 @@
             document.getElementById('app_name').value = document.getElementById('fullName').value || '';
             document.getElementById('app_scontact').value = document.getElementById('phone').value || '';
             document.getElementById('app_email').value = document.getElementById('email').value || '';
-            document.getElementById('app_stream').value = document.getElementById('course').value || '';
+            
+            const streamVal = window.selectedStream || 'MPC';
+            const courseVal = document.getElementById('course').value || '';
+            const specVal = document.getElementById('specialization').value || '';
+            let streamDisplay = streamVal;
+            if (courseVal) streamDisplay += ` - ${courseVal}`;
+            if (specVal) streamDisplay += ` (${specVal})`;
+            document.getElementById('app_stream').value = streamDisplay;
         }
 
         function closeApplicationForm() {

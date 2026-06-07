@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "adminFeeData": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "collectedLeads": {
+      ".read": "auth != null",
+      ".write": true
+    },
+    "adminApplicationsData": {
+      ".read": "auth != null",
+      ".write": true
+    }
+  }
+}

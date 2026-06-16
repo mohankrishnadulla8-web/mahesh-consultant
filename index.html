@@ -70,7 +70,7 @@
             padding: 2rem 1rem;
         }
 
-        .container {
+        .container, .application-view {
             background-color: var(--card-bg);
             width: 100%;
             max-width: 600px;
@@ -78,6 +78,12 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
             position: relative;
+        }
+
+        .application-view {
+            display: none;
+            padding: 2rem;
+            margin: 2rem auto;
         }
 
         /* Progress Bar */
@@ -464,32 +470,136 @@
         .admin-login-btn {
             background: none; border: none; color: var(--text-light); font-size: 1.25rem;
             cursor: pointer; transition: var(--transition); margin-left: auto; display: block;
+            text-decoration: none;
         }
         .admin-login-btn:hover { transform: scale(1.1); color: var(--primary-blue); }
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;
-        }
-        .modal-content {
-            background: white; padding: 2rem; border-radius: 0.5rem; width: 90%; max-width: 400px;
-        }
-        .admin-view {
-            display: none; width: 100%; max-width: 800px; margin: 2rem auto;
-            background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.85rem; }
-        .admin-table th, .admin-table td { border: 1px solid var(--border-color); padding: 0.5rem; }
-        .admin-table th { background-color: var(--light-blue); color: var(--primary-blue); }
-        .admin-table input { width: 100px; padding: 0.25rem; border: 1px solid var(--border-color); border-radius: 4px; }
-
-        .application-view {
-            display: none; width: 100%; max-width: 800px; margin: 2rem auto;
-            background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        .form-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;
-        }
         @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        @media screen and (max-width: 768px) {
+            /* Full width containers with touch-friendly margins/padding */
+            .container, .application-view, .admin-view {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 1rem 0 !important;
+                border-radius: 0.5rem !important;
+                padding: 1.25rem !important;
+            }
+
+            /* Resolve layout crashing/overlapping and add spacing */
+            h2 {
+                font-size: 1.2rem !important;
+                margin-bottom: 1.25rem !important;
+                line-height: 1.4 !important;
+            }
+            .form-group {
+                margin-bottom: 1.5rem !important;
+            }
+            .form-group label {
+                margin-bottom: 0.5rem !important;
+                font-size: 0.9rem !important;
+            }
+
+            /* Force all multi-column layouts into single vertical column */
+            .form-grid, .cert-grid, .subjects-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+            #appDetailsContent {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            /* Convert stream selection tabs to vertical stacked list */
+            .stream-tabs {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            .stream-tab-btn {
+                width: 100% !important;
+                border: 1px solid var(--border-color) !important;
+                border-radius: 0.5rem !important;
+                margin: 0 !important;
+            }
+
+            /* Prevent auto-zoom on iOS and ensure tap-friendly padding */
+            input, select, textarea {
+                font-size: 16px !important;
+                padding: 12px 16px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .input-icon-wrapper input {
+                padding-left: 2.5rem !important;
+            }
+
+            /* Touch-friendly full-width buttons stacking vertically */
+            .btn {
+                width: 100% !important;
+                padding: 12px 16px !important;
+                justify-content: center !important;
+                font-size: 1rem !important;
+            }
+            .btn-container {
+                flex-direction: column-reverse !important;
+                gap: 0.75rem !important;
+                padding: 0 1.25rem 1.5rem 1.25rem !important;
+                margin-top: 1.5rem !important;
+            }
+            .admin-login-btn {
+                width: auto !important;
+                padding: 0.5rem !important;
+            }
+
+            /* Prevent horizontal overflow on wide tables and cards */
+            .admin-table, table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+            .college-card {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 1rem !important;
+                padding: 1.25rem !important;
+            }
+            .college-fee {
+                text-align: left !important;
+                width: 100% !important;
+                border-top: 1px solid var(--border-color) !important;
+                padding-top: 0.75rem !important;
+            }
+            .preview-img {
+                max-width: 120px !important;
+                max-height: 120px !important;
+            }
+            .file-upload-group {
+                width: 100% !important;
+                padding: 1.5rem !important;
+            }
+
+            /* Header adjustments for smaller viewport */
+            header {
+                padding: 1rem !important;
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+            header h1 {
+                font-size: 1.3rem !important;
+            }
+            .admin-login-btn {
+                margin: 0 auto !important;
+            }
+            
+            /* Modal response */
+            .modal-content, .admin-app-modal-content {
+                width: 95% !important;
+                padding: 1.5rem !important;
+            }
+        }
         
         .file-upload-group {
             border: 1px dashed var(--border-color); padding: 1rem; border-radius: 0.5rem; text-align: center; background: #fafafa;
@@ -562,254 +672,12 @@
             <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Transforming Academic Potential into World-Class Technical Careers</p>
         </div>
         <div style="flex: 1; text-align: right;">
-            <button class="admin-login-btn" onclick="openAdminLogin()"><i class="fa-solid fa-user-shield"></i></button>
         </div>
     </header>
 
-    <!-- Admin Login Modal -->
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 1rem;">Admin Login</h2>
-            <input type="email" id="adminUser" placeholder="Enter email" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-            <input type="password" id="adminPwd" placeholder="Enter password" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-            <div class="error-message" id="err-admin" style="margin-bottom: 1rem;">Incorrect username or password</div>
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                <button class="btn btn-prev" onclick="closeAdminLogin()">Cancel</button>
-                <button class="btn btn-next" onclick="verifyAdmin()">Login</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Admin Dashboard -->
-    <div id="adminView" class="admin-view">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2><i class="fa-solid fa-gear"></i> Admin Dashboard</h2>
-            <div style="display: flex; gap: 1rem;">
-                <button class="btn btn-prev" onclick="viewCollectedData()"><i class="fa-solid fa-users"></i> Collected</button>
-                <button class="btn btn-prev" onclick="logoutAdmin()">Logout</button>
-            </div>
-        </div>
-        
-        <div id="adminCollectedView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 0.5rem; flex-wrap: wrap;">
-                <h3 style="margin-bottom: 0;">Collected Leads (Last 24 Hours)</h3>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn btn-next" onclick="downloadAllCollectedData()" style="padding: 0.5rem 1rem; background-color: var(--success-green); border-color: var(--success-green);"><i class="fa-solid fa-download"></i> Download CSV</button>
-                    <button class="btn btn-prev" onclick="backToAdminMain()" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                </div>
-            </div>
-            <div style="overflow-x: auto;">
-                <table class="admin-table" id="collectedLeadsTable">
-                    <tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th><th>Action</th></tr>
-                </table>
-            </div>
-        </div>
 
-        <div id="adminMainContent">
-            <div style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
-                <label style="font-weight:600; margin-right: 1rem;">Select University to Edit:</label>
-                <select id="adminUniSelect" style="padding: 0.5rem; border-radius: 0.25rem; border: 1px solid var(--border-color);" onchange="renderAdminPanel()">
-                    <option value="bharath">Bharath University</option>
-                    <option value="mgr">Mgr University</option>
-                    <option value="ganpat">Ganpat University</option>
-                    <option value="dsu">Dhanalakshmi Srinivasan University</option>
-                    <option value="kalasalingam">Kalasalingam Academy of Research and Education</option>
-                </select>
-            </div>
 
-            <div style="max-height: 60vh; overflow-y: auto;">
-            
-            <div id="adminBharathView">
-                <h3>CSE Core (Tuition Fee)</h3>
-            <table class="admin-table">
-                <tr><th>PCM %</th><th>Fee Amount</th></tr>
-                <tr><td>90% Above</td><td><input type="number" id="a_cse_90"></td></tr>
-                <tr><td>70% - 89.9%</td><td><input type="number" id="a_cse_70"></td></tr>
-                <tr><td>60% - 69.9%</td><td><input type="number" id="a_cse_60"></td></tr>
-                <tr><td>50% - 59.9%</td><td><input type="number" id="a_cse_50"></td></tr>
-                <tr><td>50% Below</td><td><input type="number" id="a_cse_below"></td></tr>
-            </table>
-
-            <h3>CSE Specializations (Tuition Fee)</h3>
-            <table class="admin-table">
-                <tr><th>PCM %</th><th>Fee Amount</th></tr>
-                <tr><td>90% Above</td><td><input type="number" id="a_cses_90"></td></tr>
-                <tr><td>70% - 89.9%</td><td><input type="number" id="a_cses_70"></td></tr>
-                <tr><td>60% - 69.9%</td><td><input type="number" id="a_cses_60"></td></tr>
-                <tr><td>50% - 59.9%</td><td><input type="number" id="a_cses_50"></td></tr>
-                <tr><td>50% Below</td><td><input type="number" id="a_cses_below"></td></tr>
-            </table>
-
-            <h3>Other B.Tech Courses (Tuition Fee)</h3>
-            <table class="admin-table" id="otherCoursesTable">
-                <!-- Injected via JS -->
-            </table>
-
-            </div> <!-- End Bharath View -->
-
-            <div id="adminMgrView" style="display: none;">
-                <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Leave fields empty to not offer that slot/scholarship.</p>
-                <div id="adminMgrTableContainer"></div>
-            </div>
-
-            <div id="adminGanpatView" style="display: none;">
-                <h3>Set 1 Courses Yearly Fee</h3>
-                <table class="admin-table">
-                    <tr><th>Condition</th><th>Fee Amount</th></tr>
-                    <tr><td>PCM >= 75%</td><td><input type="number" id="a_g_set1_75"></td></tr>
-                    <tr><td>PCM < 75%</td><td><input type="number" id="a_g_set1_below"></td></tr>
-                </table>
-
-                <h3>Set 2 Courses Yearly Fee</h3>
-                <table class="admin-table">
-                    <tr><th>Condition</th><th>Fee Amount</th></tr>
-                    <tr><td>PCM >= 75%</td><td><input type="number" id="a_g_set2_75"></td></tr>
-                    <tr><td>PCM < 75%</td><td><input type="number" id="a_g_set2_below"></td></tr>
-                </table>
-            </div>
-
-            <div id="adminDsuView" style="display: none;">
-                <h3>Group A B.Tech Courses (CSE, AI&DS, AI&ML, Cyber Security, IT)</h3>
-                <table class="admin-table">
-                    <tr><th>PCM / Condition</th><th>Fee Amount (₹)</th></tr>
-                    <tr><td>Base Full Fee (without scholarship)</td><td><input type="number" id="a_dsu_groupA_full"></td></tr>
-                    <tr><td>90% - 100% PCM</td><td><input type="number" id="a_dsu_groupA_90"></td></tr>
-                    <tr><td>80% - 89.99% PCM</td><td><input type="number" id="a_dsu_groupA_80"></td></tr>
-                    <tr><td>70% - 79.99% PCM</td><td><input type="number" id="a_dsu_groupA_70"></td></tr>
-                    <tr><td>Below 70% PCM</td><td><input type="number" id="a_dsu_groupA_below"></td></tr>
-                </table>
-
-                <h3>Group B B.Tech Courses (CSE-IOT, ECE, EEE, Mech, Biotech, Biomed)</h3>
-                <table class="admin-table">
-                    <tr><th>Condition</th><th>Fee Amount (₹)</th></tr>
-                    <tr><td>Flat Fee</td><td><input type="number" id="a_dsu_groupB_fee"></td></tr>
-                </table>
-
-                <h3>Hostel Fee Structure</h3>
-                <table class="admin-table">
-                    <tr><th>Hostel Type</th><th>Fee Amount (₹)</th></tr>
-                    <tr><td>Common Bathroom</td><td><input type="number" id="a_dsu_hostel_common"></td></tr>
-                    <tr><td>Common Bathroom with A/C</td><td><input type="number" id="a_dsu_hostel_common_ac"></td></tr>
-                    <tr><td>Attached Bathroom</td><td><input type="number" id="a_dsu_hostel_attached"></td></tr>
-                    <tr><td>Attached Bathroom with A/C</td><td><input type="number" id="a_dsu_hostel_attached_ac"></td></tr>
-                </table>
-
-                <h3>One-Time Fees</h3>
-                <table class="admin-table">
-                    <tr><th>Fee Type</th><th>Fee Amount (₹)</th></tr>
-                    <tr><td>Application Fee</td><td><input type="number" id="a_dsu_one_time_app"></td></tr>
-                    <tr><td>Admission Fee</td><td><input type="number" id="a_dsu_one_time_adm"></td></tr>
-                    <tr><td>Establishment Fee</td><td><input type="number" id="a_dsu_one_time_est"></td></tr>
-                    <tr><td>Registration Fee</td><td><input type="number" id="a_dsu_one_time_reg"></td></tr>
-                </table>
-            </div>
-
-            <div id="adminKalasalingamView" style="display: none;">
-                <h3>Engineering & Architecture (Annual Tuition & Misc)</h3>
-                <table class="admin-table">
-                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
-                    <tr><td>CSE, AI&DS, IT</td><td><input type="number" id="a_k_eng_g1_t"></td><td><input type="number" id="a_k_eng_g1_m"></td></tr>
-                    <tr><td>ECE, Biotech</td><td><input type="number" id="a_k_eng_g2_t"></td><td><input type="number" id="a_k_eng_g2_m"></td></tr>
-                    <tr><td>All other Disciplines</td><td><input type="number" id="a_k_eng_g3_t"></td><td><input type="number" id="a_k_eng_g3_m"></td></tr>
-                    <tr><td>B.Arch</td><td><input type="number" id="a_k_barch_t"></td><td><input type="number" id="a_k_barch_m"></td></tr>
-                    <tr><td>B.Tech (CSE) - SHIP</td><td><input type="number" id="a_k_ship_t"></td><td><input type="number" id="a_k_ship_m"></td></tr>
-                </table>
-
-                <h3>Medical & Allied Health Sciences</h3>
-                <table class="admin-table">
-                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
-                    <tr><td>B.Sc Nursing</td><td><input type="number" id="a_k_nursing_t"></td><td><input type="number" id="a_k_nursing_m"></td></tr>
-                    <tr><td>Bachelor of Physiotherapy</td><td><input type="number" id="a_k_physio_t"></td><td><input type="number" id="a_k_physio_m"></td></tr>
-                    <tr><td>B.Sc Allied Health (Years 1-3)</td><td><input type="number" id="a_k_allied_y13_t"></td><td rowspan="2"><input type="number" id="a_k_allied_m"></td></tr>
-                    <tr><td>B.Sc Allied Health (Year 4)</td><td><input type="number" id="a_k_allied_y4_t"></td></tr>
-                </table>
-
-                <h3>Agriculture, Law & Forensic Science</h3>
-                <table class="admin-table">
-                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
-                    <tr><td>B.Sc. (Hons) Agri / Horti</td><td><input type="number" id="a_k_agri_t"></td><td><input type="number" id="a_k_agri_m"></td></tr>
-                    <tr><td>B.A / B.Com. LLB (5 years)</td><td><input type="number" id="a_k_law5_t"></td><td><input type="number" id="a_k_law5_m"></td></tr>
-                    <tr><td>LLB (Hons) (3 years)</td><td><input type="number" id="a_k_law3_t"></td><td><input type="number" id="a_k_law3_m"></td></tr>
-                    <tr><td>B.Sc. (Hons) Forensic Science</td><td><input type="number" id="a_k_forensic_ug_t"></td><td><input type="number" id="a_k_forensic_ug_m"></td></tr>
-                    <tr><td>M.Sc Forensic Science</td><td><input type="number" id="a_k_forensic_pg_t"></td><td><input type="number" id="a_k_forensic_pg_m"></td></tr>
-                </table>
-
-                <h3>Arts, Science, Commerce & Management (UG/PG)</h3>
-                <table class="admin-table">
-                    <tr><th>Course Category</th><th>Tuition Fee (₹)</th><th>Misc Fee (₹)</th></tr>
-                    <tr><td>B.Com (CA), BCA, B.Sc (CS/IT)</td><td><input type="number" id="a_k_arts_g1_t"></td><td><input type="number" id="a_k_arts_g1_m"></td></tr>
-                    <tr><td>BBA, B.Com (Reg), B.Com (PA)</td><td><input type="number" id="a_k_arts_g2_t"></td><td><input type="number" id="a_k_arts_g2_m"></td></tr>
-                    <tr><td>B.Sc (Viscom)</td><td><input type="number" id="a_k_viscom_t"></td><td><input type="number" id="a_k_viscom_m"></td></tr>
-                    <tr><td>B.A (Eng), B.Sc (Maths/Phy/Chem)</td><td><input type="number" id="a_k_arts_g3_t"></td><td><input type="number" id="a_k_arts_g3_m"></td></tr>
-                    <tr><td>B.Sc Catering Science</td><td><input type="number" id="a_k_catering_t"></td><td><input type="number" id="a_k_catering_m"></td></tr>
-                    <tr><td>B.Sc Catering One-time Uniform Kit</td><td colspan="2"><input type="number" id="a_k_catering_u"></td></tr>
-                    <tr><td>M.Tech, M.Arch (Habitat Design)</td><td><input type="number" id="a_k_mtech_t"></td><td><input type="number" id="a_k_mtech_m"></td></tr>
-                    <tr><td>MBA, MCA</td><td><input type="number" id="a_k_mbamca_t"></td><td><input type="number" id="a_k_mbamca_m"></td></tr>
-                    <tr><td>M.Sc (MPC), MSW, M.A English</td><td><input type="number" id="a_k_pgarts_t"></td><td><input type="number" id="a_k_pgarts_m"></td></tr>
-                    <tr><td>M.Sc (CS, Data Sciences)</td><td><input type="number" id="a_k_msc_csds_t"></td><td><input type="number" id="a_k_msc_csds_m"></td></tr>
-                    <tr><td>B.Ed (Spl Ed) / B.Com (SHIP)</td><td><input type="number" id="a_k_bedship_t"></td><td><input type="number" id="a_k_bedship_m"></td></tr>
-                    <tr><td>B.Sc (Aero / Aviation)</td><td><input type="number" id="a_k_aero_t"></td><td><input type="number" id="a_k_aero_m"></td></tr>
-                    <tr><td>BBA (Aviation Management)</td><td><input type="number" id="a_k_bbaaviation_t"></td><td><input type="number" id="a_k_bbaaviation_m"></td></tr>
-                    <tr><td>MBA (Aviation & Airport Mgmt)</td><td><input type="number" id="a_k_mbaaviation_t"></td><td><input type="number" id="a_k_mbaaviation_m"></td></tr>
-                </table>
-
-                <h3>Application Fees</h3>
-                <table class="admin-table">
-                    <tr><th>Category</th><th>Fee Amount</th></tr>
-                    <tr><td>Local / Domestic Program (₹)</td><td><input type="number" id="a_k_app_domestic"></td></tr>
-                    <tr><td>NRI & Foreign ($ USD)</td><td><input type="number" id="a_k_app_nri"></td></tr>
-                </table>
-            </div>
-
-            <h3 style="margin-top: 1rem;">Consultant Contact</h3>
-            <table class="admin-table">
-                <tr><th>Setting</th><th>Value</th></tr>
-                <tr><td>WhatsApp Number (with country code)</td><td><input type="text" id="a_whatsapp" placeholder="e.g. 919876543210" style="width: 150px;"></td></tr>
-            </table>
-
-            <h3 style="margin-top: 2rem; border-top: 2px solid var(--border-color); padding-top: 1rem;">Submitted Applications</h3>
-            <table class="admin-table" id="applicationsTable">
-                <tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>
-                <!-- Injected via JS -->
-            </table>
-        </div>
-        
-            <div style="margin-top: 1.5rem; text-align: right;">
-                <button class="btn btn-next" onclick="saveAdminFees()"><i class="fa-solid fa-save"></i> Save Changes</button>
-            </div>
-            <div class="success-message" id="adminSuccessMsg" style="margin-top: 1rem; display: none;">Changes saved successfully!</div>
-        </div> <!-- End adminMainContent -->
-    </div>
-
-    <!-- Admin Application Details Modal -->
-    <div id="appDetailsModal" class="modal">
-        <div class="admin-app-modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2>Application Details</h2>
-                <button class="btn btn-prev" onclick="closeAppDetails()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="appDetailsContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
-                <!-- Injected via JS -->
-            </div>
-            <h3 style="margin-top: 1.5rem;">Certificates</h3>
-            <div id="appDetailsCerts" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
-                <!-- Injected via JS -->
-            </div>
-            
-            <h3 style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">Admin Remarks</h3>
-            <div style="margin-top: 1rem;">
-                <label style="font-weight: 500; font-size: 0.9rem;">Remark 1</label>
-                <textarea id="app_remark1" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 1rem; resize: vertical;" rows="3"></textarea>
-                
-                <label style="font-weight: 500; font-size: 0.9rem;">Remark 2</label>
-                <textarea id="app_remark2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 1rem; resize: vertical;" rows="3"></textarea>
-                
-                <input type="hidden" id="current_app_id">
-                <button class="btn btn-next" onclick="saveAppRemarks()"><i class="fa-solid fa-save"></i> Save Remarks</button>
-                <span id="appRemarkSuccess" style="color: var(--success-green); font-size: 0.85rem; margin-left: 1rem; display: none;"><i class="fa-solid fa-check"></i> Remarks saved!</span>
-            </div>
-        </div>
-    </div>
 
     <main id="mainContainer">
         <div class="container">
@@ -851,7 +719,7 @@
                             <option value="Gujarat">Gujarat</option>
                             <option value="Other">Other</option>
                         </select>
-                        <div class="error-message" id="err-state">Please select a state.</div>
+                        <div class="error-message" id="err-state" style="display: none;">Please select a state.</div>
                     </div>
 
                     <div class="form-group">
@@ -859,7 +727,7 @@
                         <select id="university" required onchange="handleUniversityChange()">
                             <option value="">-- Select State First --</option>
                         </select>
-                        <div class="error-message" id="err-university">Please select a university.</div>
+                        <div class="error-message" id="err-university" style="display: none;">Please select a university.</div>
                     </div>
 
                     <div class="form-group" id="slot-group" style="display: none;">
@@ -869,7 +737,7 @@
                             <option value="Slot A">Slot A</option>
                             <option value="Slot B">Slot B</option>
                         </select>
-                        <div class="error-message" id="err-slot">Please select a slot.</div>
+                        <div class="error-message" id="err-slot" style="display: none;">Please select a slot.</div>
                     </div>
 
                     <div class="form-group">
@@ -882,7 +750,7 @@
                             <option value="Arts & Science (B.Sc/B.A)">Arts & Science (B.Sc/B.A)</option>
                             <option value="Management (BBA)">Management (BBA)</option>
                         </select>
-                        <div class="error-message" id="err-course">Please select a course.</div>
+                        <div class="error-message" id="err-course" style="display: none;">Please select a course.</div>
                     </div>
 
                     <div class="form-group" id="specialization-group" style="display: none;">
@@ -913,7 +781,7 @@
                             <option value="B.Arch">B.Arch</option>
                             <option value="B.Design">B.Design</option>
                         </select>
-                        <div class="error-message" id="err-specialization">Please select a specialization.</div>
+                        <div class="error-message" id="err-specialization" style="display: none;">Please select a specialization.</div>
                     </div>
 
                     <div class="form-group" id="hostel-group" style="display: none;">
@@ -938,7 +806,7 @@
                             <i class="fa-regular fa-user"></i>
                             <input type="text" id="fullName" placeholder="Enter your full name" required>
                         </div>
-                        <div class="error-message" id="err-name">Name is required.</div>
+                        <div class="error-message" id="err-name" style="display: none;">Name is required.</div>
                     </div>
 
                     <div class="form-group">
@@ -947,7 +815,7 @@
                             <i class="fa-solid fa-phone"></i>
                             <input type="tel" id="phone" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
                         </div>
-                        <div class="error-message" id="err-phone">Please enter a valid 10-digit phone number.</div>
+                        <div class="error-message" id="err-phone" style="display: none;">Please enter a valid 10-digit phone number.</div>
                     </div>
 
                     <div class="form-group">
@@ -956,7 +824,7 @@
                             <i class="fa-solid fa-hashtag"></i>
                             <input type="text" id="hallTicket" placeholder="E.g., 123456789" required>
                         </div>
-                        <div class="error-message" id="err-hallticket">Hall Ticket is required.</div>
+                        <div class="error-message" id="err-hallticket" style="display: none;">Hall Ticket is required.</div>
                     </div>
 
                     <div class="form-group">
@@ -992,7 +860,7 @@
                         <i class="fa-solid fa-triangle-exclamation" style="margin-right: 5px;"></i>
                         <span>Note: Marks in one or more subjects are below the pass criteria.</span>
                     </div>
-                    <div class="error-message" id="err-marks">Please enter valid marks for all subjects based on their max limit.</div>
+                    <div class="error-message" id="err-marks" style="display: none;">Please enter valid marks for all subjects based on their max limit.</div>
                 </div>
 
                 <!-- Step 4: Fee Structure -->
@@ -1096,101 +964,102 @@
     </main>
 
     <!-- Application Form View -->
-    <div id="applicationFormView" class="application-view">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <div id="applicationFormView" class="application-view" style="display: none;">
+        <div class="application-header">
             <h2><i class="fa-solid fa-file-signature"></i> Student Application Form</h2>
             <button class="btn btn-prev" onclick="closeApplicationForm()">Cancel</button>
         </div>
         
-        <form id="studentAppForm" onsubmit="submitApplication(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>NAME OF THE STUDENT <span style="color:red">*</span></label>
-                    <input type="text" id="app_name" required>
-                </div>
-                <div class="form-group">
-                    <label>FATHER'S NAME <span style="color:red">*</span></label>
-                    <input type="text" id="app_fname" required>
-                </div>
-                <div class="form-group">
-                    <label>MOTHER'S NAME <span style="color:red">*</span></label>
-                    <input type="text" id="app_mname" required>
-                </div>
-                <div class="form-group">
-                    <label>BLOOD GROUP</label>
-                    <input type="text" id="app_blood">
-                </div>
-                <div class="form-group">
-                    <label>DATE OF BIRTH <span style="color:red">*</span></label>
-                    <input type="date" id="app_dob" required>
-                </div>
-                <div class="form-group">
-                    <label>STREAM/BRANCH <span style="color:red">*</span></label>
-                    <input type="text" id="app_stream" required>
-                </div>
-                <div class="form-group">
-                    <label>STUDENT CONTACT <span style="color:red">*</span></label>
-                    <input type="tel" id="app_scontact" required>
-                </div>
-                <div class="form-group">
-                    <label>PARENT CONTACT <span style="color:red">*</span></label>
-                    <input type="tel" id="app_pcontact" required>
-                </div>
-                <div class="form-group">
-                    <label>EMAIL ID</label>
-                    <input type="email" id="app_email">
-                </div>
-                <div class="form-group">
-                    <label>AADHAR NO <span style="color:red">*</span></label>
-                    <input type="text" id="app_aadhar" required>
-                </div>
-                <div class="form-group">
-                    <label>COMMUNITY</label>
-                    <input type="text" id="app_community">
-                </div>
-                <div class="form-group">
-                    <label>PINCODE <span style="color:red">*</span></label>
-                    <input type="text" id="app_pincode" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>FULL ADDRESS <span style="color:red">*</span></label>
-                <input type="text" id="app_address" required>
-            </div>
+        <!-- Document Submission Success Card -->
+        <div id="successCardContainer" style="display: none; text-align: center; padding: 2rem 1.5rem; background: var(--card-bg); border-radius: 8px;">
+            <div style="font-size: 3.5rem; color: var(--success-green); margin-bottom: 1rem;"><i class="fa-solid fa-circle-check"></i></div>
+            <h2 style="margin-bottom: 0.5rem; color: var(--text-dark);">Application Submitted!</h2>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.95rem;">Your registration has been saved successfully.</p>
             
-            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-blue); font-size: 1.1rem;">Certificates Required (Images)</h3>
-            <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-                <div class="file-upload-group">
-                    <i class="fa-solid fa-id-card" style="font-size: 2rem; color: var(--text-light);"></i>
-                    <label class="file-upload-label" for="app_cert_aadhar">Aadhar Card Photo</label>
-                    <input type="file" id="app_cert_aadhar" accept="image/*" onchange="previewImage(this, 'prev_aadhar')">
-                    <img id="prev_aadhar" class="preview-img" alt="Preview">
-                </div>
-                <div class="file-upload-group">
-                    <i class="fa-solid fa-file-lines" style="font-size: 2rem; color: var(--text-light);"></i>
-                    <label class="file-upload-label" for="app_cert_ssc">SSC (10th) Memo</label>
-                    <input type="file" id="app_cert_ssc" accept="image/*" onchange="previewImage(this, 'prev_ssc')">
-                    <img id="prev_ssc" class="preview-img" alt="Preview">
-                </div>
-                <div class="file-upload-group">
-                    <i class="fa-solid fa-file-contract" style="font-size: 2rem; color: var(--text-light);"></i>
-                    <label class="file-upload-label" for="app_cert_inter">Inter (12th) Memo</label>
-                    <input type="file" id="app_cert_inter" accept="image/*" onchange="previewImage(this, 'prev_inter')">
-                    <img id="prev_inter" class="preview-img" alt="Preview">
-                </div>
+            <div style="background: var(--light-blue); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px; margin-bottom: 2rem;">
+                <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Your Application ID</span>
+                <div id="successAppId" style="font-size: 1.8rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.25rem; letter-spacing: 1px;">-</div>
             </div>
 
-            <div style="margin-top: 2rem; text-align: right;">
-                <button type="submit" class="btn btn-next"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+            <p style="color: var(--text-dark); font-weight: 500; margin-bottom: 1rem; font-size: 0.9rem;">To complete your verification, send your documents (Aadhar, 10th Memo, Inter Memo) to our consultancy team on WhatsApp:</p>
+            
+            <button type="button" id="successWaBtn" class="btn" style="background-color: #25d366; color: white; width: 100%; padding: 0.9rem; font-size: 1.05rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s ease;">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> Send Documents on WhatsApp
+            </button>
+            
+            <button type="button" onclick="resetFormStateAndClose()" class="btn btn-prev" style="margin-top: 1rem; width: 100%; border: 1px solid var(--border-color); background: transparent; padding: 0.6rem; font-size: 0.9rem; cursor: pointer; color: var(--text-dark);">
+                Return to Home
+            </button>
+        </div>
+
+        <form id="studentAppForm" onsubmit="submitApplication(event)">
+            <div id="formFieldsContainer">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>NAME OF THE STUDENT <span style="color:red">*</span></label>
+                        <input type="text" id="app_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>FATHER'S NAME <span style="color:red">*</span></label>
+                        <input type="text" id="app_fname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>MOTHER'S NAME <span style="color:red">*</span></label>
+                        <input type="text" id="app_mname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BLOOD GROUP</label>
+                        <input type="text" id="app_blood">
+                    </div>
+                    <div class="form-group">
+                        <label>DATE OF BIRTH <span style="color:red">*</span></label>
+                        <input type="date" id="app_dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label>STREAM/BRANCH <span style="color:red">*</span></label>
+                        <input type="text" id="app_stream" required>
+                    </div>
+                    <div class="form-group">
+                        <label>STUDENT CONTACT <span style="color:red">*</span></label>
+                        <input type="tel" id="app_scontact" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PARENT CONTACT <span style="color:red">*</span></label>
+                        <input type="tel" id="app_pcontact" required>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL ID</label>
+                        <input type="email" id="app_email">
+                    </div>
+                    <div class="form-group">
+                        <label>AADHAR NO <span style="color:red">*</span></label>
+                        <input type="text" id="app_aadhar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>COMMUNITY</label>
+                        <input type="text" id="app_community">
+                    </div>
+                    <div class="form-group">
+                        <label>PINCODE <span style="color:red">*</span></label>
+                        <input type="text" id="app_pincode" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>FULL ADDRESS <span style="color:red">*</span></label>
+                    <input type="text" id="app_address" required>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: right;">
+                    <button type="submit" class="btn btn-next"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+                </div>
+                <div class="success-message" id="appSuccessMsg" style="margin-top: 1rem; display: none;">Application Submitted Successfully!</div>
             </div>
-            <div class="success-message" id="appSuccessMsg" style="margin-top: 1rem; display: none;">Application Submitted Successfully!</div>
         </form>
     </div>
 
     <!-- Footer -->
     <footer style="text-align: center; padding: 2rem 1rem; color: var(--text-light); font-size: 0.85rem; margin-top: 2rem; border-top: 1px solid var(--border-color);">
-        <p style="margin: 0;">&copy; <span id="currentYear"></span> Disha Education Consultancy. All rights reserved.</p>
-        <p style="margin: 0.5rem 0 0 0; font-weight: 500;">Provided by Mohan krishna.Dulla</p>
+        <p style="margin: 0;">&copy; <span id="currentYear"></span> Disha Education Consultancy. All rights reserved. | Website Developed by Mohan Krishna Dulla</p>
     </footer>
 
     <!-- Floating WhatsApp -->
@@ -1198,12 +1067,15 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { getFirestore, collection, addDoc, doc, onSnapshot, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app-check.js";
+
         const firebaseConfig = {
           apiKey: "AIzaSyBntoxvT-xyEMAmXinu6HTa6-YRTOBN3CA",
           authDomain: "mahesh-consultant.firebaseapp.com",
@@ -1214,16 +1086,49 @@
           appId: "1:768691619020:web:af1f0cfa55a9ebe448ae69",
           measurementId: "G-FXSZT0PF18"
         };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const analytics = firebase.analytics();
-        const auth = firebase.auth();
-        const storage = firebase.storage();
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        storage.maxUploadRetryTime = 5000; // Limit retry duration to 5 seconds
+        const db = getFirestore(app);
+
+        // Dynamic WhatsApp Routing Settings
+        let dynamicDoubtNum = "917397549343";
+        let dynamicDocNum = "919440662754";
+
+        onSnapshot(doc(db, "settings", "whatsapp"), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                dynamicDoubtNum = data.doubtNum || "917397549343";
+                dynamicDocNum = data.docNum || "919440662754";
+            } else {
+                dynamicDoubtNum = "917397549343";
+                dynamicDocNum = "919440662754";
+            }
+            updateWhatsAppLinks();
+        }, (err) => {
+            console.error("Error loading whatsapp settings: ", err);
+        });
+
+        // App Check
+        const siteKey = window.reCaptchaV3SiteKey || "6Ld_placeholder_site_key_value_here";
+        if (siteKey && siteKey !== "6Ld_placeholder_site_key_value_here") {
+            initializeAppCheck(app, {
+              provider: new ReCaptchaV3Provider(siteKey),
+              isTokenAutoRefreshEnabled: true
+            });
+        } else {
+            console.warn("App Check is skipped because the reCAPTCHA site key is a placeholder.");
+        }
 
         let currentStep = 1;
         const totalSteps = 5;
         let userData = {};
         window.selectedStream = 'MPC';
+        let showErrors = { 1: false, 2: false, 3: false };
 
         const mpcSubjects = [
             { id: 'm_maths1a', name: 'Maths 1A', max: 75, pass: 26 },
@@ -1405,11 +1310,11 @@
         if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
 
         // Listen for Firebase Fee updates
-        database.ref('adminFeeData').on('value', (snapshot) => {
+        onValue(ref(database, 'adminFeeData'), (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 globalFeeData = data;
-                // Auto-update database with new fee structure if CHEMICAL or dsu or kalasalingam is missing
+                // Sync fee structure if needed
                 if (!globalFeeData.mgr || !globalFeeData.mgr["CHEMICAL"] || !globalFeeData.dsu || !globalFeeData.kalasalingam) {
                     const mergedData = JSON.parse(JSON.stringify(defaultGlobalFeeData));
                     if (data.bharath) mergedData.bharath = data.bharath;
@@ -1418,25 +1323,11 @@
                     if (data.dsu) mergedData.dsu = data.dsu;
                     if (data.kalasalingam) mergedData.kalasalingam = data.kalasalingam;
                     globalFeeData = mergedData;
-                    if (auth.currentUser) {
-                        database.ref('adminFeeData').set(globalFeeData).catch(err => {
-                            console.warn("Failed to auto-update adminFeeData: ", err.message);
-                        });
-                    }
                 }
                 currentFees = globalFeeData.bharath;
                 if (!currentFees.whatsapp) currentFees.whatsapp = "+917397549343";
                 updateWhatsAppLinks();
                 if (currentStep === 4) calculateDynamicFee();
-                if (document.getElementById('adminView') && document.getElementById('adminView').style.display === 'block') {
-                    renderAdminPanel();
-                }
-            } else {
-                if (auth.currentUser) {
-                    database.ref('adminFeeData').set(globalFeeData).catch(err => {
-                        console.warn("Failed to initialize adminFeeData: ", err.message);
-                    });
-                }
             }
         });
 
@@ -1455,7 +1346,32 @@
             renderCalculator();
             updateUI();
             updateWhatsAppLinks();
+            setupValidationListeners();
         });
+
+        function setupValidationListeners() {
+            const inputs = [
+                { id: 'state', event: 'change' },
+                { id: 'university', event: 'change' },
+                { id: 'slot', event: 'change' },
+                { id: 'course', event: 'change' },
+                { id: 'specialization', event: 'change' },
+                { id: 'fullName', event: 'input' },
+                { id: 'phone', event: 'input' },
+                { id: 'hallTicket', event: 'input' }
+            ];
+
+            inputs.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el) {
+                    el.addEventListener(item.event, () => {
+                        if (showErrors[currentStep]) {
+                            validateStep(currentStep);
+                        }
+                    });
+                }
+            });
+        }
 
         function setStream(stream) {
             if (window.selectedStream === stream) return;
@@ -1525,10 +1441,7 @@
                     return; // let default behavior handle
                 }
                 
-                if (document.getElementById('adminModal').style.display === 'flex') {
-                    e.preventDefault();
-                    verifyAdmin();
-                } else if (document.getElementById('mainContainer').style.display !== 'none') {
+                if (document.getElementById('mainContainer').style.display !== 'none') {
                     if (currentStep < totalSteps) {
                         e.preventDefault();
                         changeStep(1);
@@ -1685,459 +1598,30 @@
             }
         }
 
-        // --- Admin Functions ---
-        function openAdminLogin() { document.getElementById('adminModal').style.display = 'flex'; }
-        function closeAdminLogin() { document.getElementById('adminModal').style.display = 'none'; document.getElementById('err-admin').style.display = 'none'; }
-        function verifyAdmin() {
-            const email = document.getElementById('adminUser').value;
-            const pwd = document.getElementById('adminPwd').value;
-            
-            auth.signInWithEmailAndPassword(email, pwd)
-                .then((userCredential) => {
-                    closeAdminLogin();
-                    document.getElementById('mainContainer').style.display = 'none';
-                    const appForm = document.getElementById('applicationFormView');
-                    if (appForm) appForm.style.display = 'none';
-                    document.getElementById('adminView').style.display = 'block';
-                    document.getElementById('adminMainContent').style.display = 'block';
-                    document.getElementById('adminCollectedView').style.display = 'none';
-                    renderAdminPanel();
-                })
-                .catch((error) => {
-                    const errAdmin = document.getElementById('err-admin');
-                    errAdmin.textContent = error.message;
-                    errAdmin.style.display = 'block';
-                });
-        }
-        function logoutAdmin() {
-            auth.signOut().then(() => {
-                document.getElementById('adminView').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'flex';
-                document.getElementById('adminPwd').value = '';
-                document.getElementById('adminUser').value = '';
-            });
-        }
-        
-        function viewCollectedData() {
-            document.getElementById('adminMainContent').style.display = 'none';
-            document.getElementById('adminCollectedView').style.display = 'block';
-            
-            database.ref('collectedLeads').once('value').then((snapshot) => {
-                let leads = [];
-                snapshot.forEach(child => { 
-                    const val = child.val();
-                    if (val) {
-                        val.key = child.key; // Store database key for deletion
-                        leads.push(val); 
-                    }
-                });
-                
-                // Store leads globally for synchronous mobile-friendly download
-                window.latestCollectedLeads = leads;
-                
-                const table = document.getElementById('collectedLeadsTable');
-                table.innerHTML = '<tr><th>Date</th><th>Name</th><th>Phone</th><th>Hall Ticket</th><th>Percentage</th><th>University</th><th>Course/Spec</th><th>Action</th></tr>';
-                
-                leads.sort((a,b) => b.timestamp - a.timestamp).forEach(lead => {
-                    const dateStr = new Date(lead.timestamp).toLocaleString('en-IN');
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${dateStr}</td>
-                        <td>${lead.name || '-'}</td>
-                        <td>${lead.phone || '-'}</td>
-                        <td>${lead.hallTicket || '-'}</td>
-                        <td>${lead.percentage || '-'}%</td>
-                        <td>${lead.university || '-'}</td>
-                        <td>${lead.course || '-'}<br><span style="font-size:0.8rem;color:var(--text-light);">${lead.specialization || ''}</span></td>
-                        <td>
-                            <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Lead" onclick="deleteCollectedLead('${lead.key}')"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    `;
-                    table.appendChild(tr);
-                });
-            });
-        }
-
-        function deleteCollectedLead(key) {
-            if (confirm('Are you sure you want to delete this collected lead? This action cannot be undone.')) {
-                database.ref('collectedLeads/' + key).remove().then(() => {
-                    viewCollectedData();
-                });
-            }
-        }
-
-        function downloadAllCollectedData() {
-            const leads = window.latestCollectedLeads;
-            if (leads && leads.length > 0) {
-                generateAndDownloadCSV(leads);
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, (user) => {
+            const shieldIcon = document.querySelector('.admin-login-btn i');
+            if (user) {
+                if (shieldIcon) {
+                    shieldIcon.className = "fa-solid fa-user-gear";
+                }
             } else {
-                database.ref('collectedLeads').once('value').then((snapshot) => {
-                    let fetchedLeads = [];
-                    snapshot.forEach(child => { fetchedLeads.push(child.val()); });
-                    if (fetchedLeads.length === 0) {
-                        alert('No collected data available to download.');
-                        return;
-                    }
-                    generateAndDownloadCSV(fetchedLeads);
-                });
-            }
-        }
-
-        function generateAndDownloadCSV(leads) {
-            leads.sort((a,b) => b.timestamp - a.timestamp);
-            
-            let csvContent = "Date,Name,Phone,Hall Ticket,Percentage,University,Course,Specialization\n";
-            
-            leads.forEach(lead => {
-                const dateStr = new Date(lead.timestamp).toLocaleString('en-IN').replace(/,/g, '');
-                const name = (lead.name || '-').replace(/"/g, '""');
-                const phone = (lead.phone || '-');
-                const hallTicket = (lead.hallTicket || '-');
-                const percentage = (lead.percentage || '0');
-                const university = (lead.university || '-').replace(/"/g, '""');
-                const course = (lead.course || '-').replace(/"/g, '""');
-                const specialization = (lead.specialization || '').replace(/"/g, '""');
-                
-                csvContent += `"${dateStr}","${name}","${phone}","${hallTicket}",${percentage},"${university}","${course}","${specialization}"\n`;
-            });
-            
-            try {
-                const encoder = new TextEncoder();
-                const csvBytes = encoder.encode(csvContent);
-                const bomBytes = new Uint8Array([0xEF, 0xBB, 0xBF]);
-                const mergedBytes = new Uint8Array(bomBytes.length + csvBytes.length);
-                mergedBytes.set(bomBytes, 0);
-                mergedBytes.set(csvBytes, bomBytes.length);
-                
-                const blob = new Blob([mergedBytes], { type: 'text/csv;charset=utf-8;' });
-                if (navigator.msSaveBlob) {
-                    navigator.msSaveBlob(blob, "collected_leads.csv");
-                    return;
-                }
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "collected_leads_" + new Date().toISOString().slice(0,10) + ".csv";
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-            } catch (e) {
-                const encodedUri = "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURIComponent(csvContent);
-                window.open(encodedUri, '_blank');
-            }
-        }
-        
-        function backToAdminMain() {
-            document.getElementById('adminCollectedView').style.display = 'none';
-            document.getElementById('adminMainContent').style.display = 'block';
-        }
-        function renderAdminPanel() {
-            const uni = document.getElementById('adminUniSelect').value;
-            document.getElementById('adminBharathView').style.display = 'none';
-            document.getElementById('adminMgrView').style.display = 'none';
-            document.getElementById('adminGanpatView').style.display = 'none';
-            document.getElementById('adminDsuView').style.display = 'none';
-            document.getElementById('adminKalasalingamView').style.display = 'none';
-
-            if (uni === 'bharath') {
-                document.getElementById('adminBharathView').style.display = 'block';
-                document.getElementById('a_cse_90').value = globalFeeData.bharath.cse["90"];
-                document.getElementById('a_cse_70').value = globalFeeData.bharath.cse["70"];
-                document.getElementById('a_cse_60').value = globalFeeData.bharath.cse["60"];
-                document.getElementById('a_cse_50').value = globalFeeData.bharath.cse["50"];
-                document.getElementById('a_cse_below').value = globalFeeData.bharath.cse["below"];
-                
-                document.getElementById('a_cses_90').value = globalFeeData.bharath.cse_spec["90"];
-                document.getElementById('a_cses_70').value = globalFeeData.bharath.cse_spec["70"];
-                document.getElementById('a_cses_60').value = globalFeeData.bharath.cse_spec["60"];
-                document.getElementById('a_cses_50').value = globalFeeData.bharath.cse_spec["50"];
-                document.getElementById('a_cses_below').value = globalFeeData.bharath.cse_spec["below"];
-
-                const otherTbl = document.getElementById('otherCoursesTable');
-                otherTbl.innerHTML = '<tr><th>Course Name</th><th>Fee Amount</th></tr>';
-                Object.keys(globalFeeData.bharath.other).forEach((course, index) => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${course}</td><td><input type="number" id="a_other_${index}" value="${globalFeeData.bharath.other[course]}"></td>`;
-                    otherTbl.appendChild(tr);
-                });
-            } else if (uni === 'mgr') {
-                document.getElementById('adminMgrView').style.display = 'block';
-                let html = '';
-                Object.keys(globalFeeData.mgr).forEach((course, idx) => {
-                    const c = globalFeeData.mgr[course];
-                    html += `<h4 style="margin-top:1rem; font-size:1.05rem; color:var(--primary-blue); border-bottom: 1px solid var(--border-color);">${course}</h4><table class="admin-table">`;
-                    html += `<tr><th>Slot</th><th>Sem 1 Base</th><th>Sem 2 Base</th><th>Sem 1 (Schl)</th><th>Sem 2 (Schl)</th></tr>`;
-                    // Slot A
-                    html += `<tr><td>Slot A</td>
-                        <td><input type="number" id="m_a_i_${idx}" style="width:70px" value="${c['Slot A'].i || ''}"></td>
-                        <td><input type="number" id="m_a_ii_${idx}" style="width:70px" value="${c['Slot A'].ii || ''}"></td>
-                        <td><input type="number" id="m_a_si_${idx}" style="width:70px" value="${c['Slot A'].schlI || ''}"></td>
-                        <td><input type="number" id="m_a_sii_${idx}" style="width:70px" value="${c['Slot A'].schlII || ''}"></td>
-                    </tr>`;
-                    // Slot B
-                    html += `<tr><td>Slot B</td>
-                        <td><input type="number" id="m_b_i_${idx}" style="width:70px" value="${c['Slot B'].i || ''}"></td>
-                        <td><input type="number" id="m_b_ii_${idx}" style="width:70px" value="${c['Slot B'].ii || ''}"></td>
-                        <td><input type="number" id="m_b_si_${idx}" style="width:70px" value="${c['Slot B'].schlI || ''}"></td>
-                        <td><input type="number" id="m_b_sii_${idx}" style="width:70px" value="${c['Slot B'].schlII || ''}"></td>
-                    </tr>`;
-                    html += `</table>`;
-                });
-                document.getElementById('adminMgrTableContainer').innerHTML = html;
-            } else if (uni === 'ganpat') {
-                document.getElementById('adminGanpatView').style.display = 'block';
-                document.getElementById('a_g_set1_75').value = globalFeeData.ganpat.set1Yearly75;
-                document.getElementById('a_g_set1_below').value = globalFeeData.ganpat.set1YearlyBelow;
-                document.getElementById('a_g_set2_75').value = globalFeeData.ganpat.set2Yearly75;
-                document.getElementById('a_g_set2_below').value = globalFeeData.ganpat.set2YearlyBelow;
-            } else if (uni === 'dsu') {
-                document.getElementById('adminDsuView').style.display = 'block';
-                document.getElementById('a_dsu_groupA_full').value = globalFeeData.dsu.groupA_full;
-                document.getElementById('a_dsu_groupA_90').value = globalFeeData.dsu.groupA_90;
-                document.getElementById('a_dsu_groupA_80').value = globalFeeData.dsu.groupA_80;
-                document.getElementById('a_dsu_groupA_70').value = globalFeeData.dsu.groupA_70;
-                document.getElementById('a_dsu_groupA_below').value = globalFeeData.dsu.groupA_below;
-                document.getElementById('a_dsu_groupB_fee').value = globalFeeData.dsu.groupB_fee;
-                document.getElementById('a_dsu_hostel_common').value = globalFeeData.dsu.hostel_common;
-                document.getElementById('a_dsu_hostel_common_ac').value = globalFeeData.dsu.hostel_common_ac;
-                document.getElementById('a_dsu_hostel_attached').value = globalFeeData.dsu.hostel_attached;
-                document.getElementById('a_dsu_hostel_attached_ac').value = globalFeeData.dsu.hostel_attached_ac;
-                document.getElementById('a_dsu_one_time_app').value = globalFeeData.dsu.one_time_app;
-                document.getElementById('a_dsu_one_time_adm').value = globalFeeData.dsu.one_time_adm;
-                document.getElementById('a_dsu_one_time_est').value = globalFeeData.dsu.one_time_est;
-                document.getElementById('a_dsu_one_time_reg').value = globalFeeData.dsu.one_time_reg;
-            } else if (uni === 'kalasalingam') {
-                document.getElementById('adminKalasalingamView').style.display = 'block';
-                const config = globalFeeData.kalasalingam || defaultKalasalingamFeeData;
-                
-                document.getElementById('a_k_eng_g1_t').value = config.eng_group1_tuition;
-                document.getElementById('a_k_eng_g1_m').value = config.eng_group1_misc;
-                document.getElementById('a_k_eng_g2_t').value = config.eng_group2_tuition;
-                document.getElementById('a_k_eng_g2_m').value = config.eng_group2_misc;
-                document.getElementById('a_k_eng_g3_t').value = config.eng_group3_tuition;
-                document.getElementById('a_k_eng_g3_m').value = config.eng_group3_misc;
-                document.getElementById('a_k_barch_t').value = config.barch_tuition;
-                document.getElementById('a_k_barch_m').value = config.barch_misc;
-                document.getElementById('a_k_ship_t').value = config.ship_tuition;
-                document.getElementById('a_k_ship_m').value = config.ship_misc;
-                
-                document.getElementById('a_k_nursing_t').value = config.nursing_tuition;
-                document.getElementById('a_k_nursing_m').value = config.nursing_misc;
-                document.getElementById('a_k_physio_t').value = config.physio_tuition;
-                document.getElementById('a_k_physio_m').value = config.physio_misc;
-                document.getElementById('a_k_allied_y13_t').value = config.allied_y1_3_tuition;
-                document.getElementById('a_k_allied_y4_t').value = config.allied_y4_tuition;
-                document.getElementById('a_k_allied_m').value = config.allied_misc;
-                
-                document.getElementById('a_k_agri_t').value = config.agri_tuition;
-                document.getElementById('a_k_agri_m').value = config.agri_misc;
-                document.getElementById('a_k_law5_t').value = config.law_5yr_tuition;
-                document.getElementById('a_k_law5_m').value = config.law_5yr_misc;
-                document.getElementById('a_k_law3_t').value = config.law_3yr_tuition;
-                document.getElementById('a_k_law3_m').value = config.law_3yr_misc;
-                document.getElementById('a_k_forensic_ug_t').value = config.forensic_ug_tuition;
-                document.getElementById('a_k_forensic_ug_m').value = config.forensic_ug_misc;
-                document.getElementById('a_k_forensic_pg_t').value = config.forensic_pg_tuition;
-                document.getElementById('a_k_forensic_pg_m').value = config.forensic_pg_misc;
-                
-                document.getElementById('a_k_arts_g1_t').value = config.arts_group1_tuition;
-                document.getElementById('a_k_arts_g1_m').value = config.arts_group1_misc;
-                document.getElementById('a_k_arts_g2_t').value = config.arts_group2_tuition;
-                document.getElementById('a_k_arts_g2_m').value = config.arts_group2_misc;
-                document.getElementById('a_k_viscom_t').value = config.viscom_tuition;
-                document.getElementById('a_k_viscom_m').value = config.viscom_misc;
-                document.getElementById('a_k_arts_g3_t').value = config.arts_group3_tuition;
-                document.getElementById('a_k_arts_g3_m').value = config.arts_group3_misc;
-                document.getElementById('a_k_catering_t').value = config.catering_tuition;
-                document.getElementById('a_k_catering_m').value = config.catering_misc;
-                document.getElementById('a_k_catering_u').value = config.catering_uniform;
-                
-                document.getElementById('a_k_mtech_t').value = config.mtech_tuition;
-                document.getElementById('a_k_mtech_m').value = config.mtech_misc;
-                document.getElementById('a_k_mbamca_t').value = config.mba_mca_tuition;
-                document.getElementById('a_k_mbamca_m').value = config.mba_mca_misc;
-                document.getElementById('a_k_pgarts_t').value = config.pg_arts_tuition;
-                document.getElementById('a_k_pgarts_m').value = config.pg_arts_misc;
-                document.getElementById('a_k_msc_csds_t').value = config.msc_cs_ds_tuition;
-                document.getElementById('a_k_msc_csds_m').value = config.msc_cs_ds_misc;
-                document.getElementById('a_k_bedship_t').value = config.bed_ship_tuition;
-                document.getElementById('a_k_bedship_m').value = config.bed_ship_misc;
-                document.getElementById('a_k_aero_t').value = config.aero_aviation_tuition;
-                document.getElementById('a_k_aero_m').value = config.aero_aviation_misc;
-                document.getElementById('a_k_bbaaviation_t').value = config.bba_aviation_tuition;
-                document.getElementById('a_k_bbaaviation_m').value = config.bba_aviation_misc;
-                document.getElementById('a_k_mbaaviation_t').value = config.mba_aviation_tuition;
-                document.getElementById('a_k_mbaaviation_m').value = config.mba_aviation_misc;
-                
-                document.getElementById('a_k_app_domestic').value = config.app_domestic;
-                document.getElementById('a_k_app_nri').value = config.app_nri;
-            }
-
-            document.getElementById('a_whatsapp').value = globalFeeData.bharath.whatsapp || "+917397549343";
-            
-            renderAdminApplications();
-        }
-
-        async function saveAdminFees() {
-            const btn = document.querySelector('button[onclick="saveAdminFees()"]');
-            let ogHtml = "Save Changes";
-            if (btn) {
-                ogHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading & Saving (this may take a minute)...';
-                btn.disabled = true;
-            }
-
-            try {
-                const uni = document.getElementById('adminUniSelect').value;
-
-                if (uni === 'bharath') {
-                    globalFeeData.bharath.cse["90"] = parseInt(document.getElementById('a_cse_90').value) || 0;
-                    globalFeeData.bharath.cse["70"] = parseInt(document.getElementById('a_cse_70').value) || 0;
-                    globalFeeData.bharath.cse["60"] = parseInt(document.getElementById('a_cse_60').value) || 0;
-                    globalFeeData.bharath.cse["50"] = parseInt(document.getElementById('a_cse_50').value) || 0;
-                    globalFeeData.bharath.cse["below"] = parseInt(document.getElementById('a_cse_below').value) || 0;
-
-                    globalFeeData.bharath.cse_spec["90"] = parseInt(document.getElementById('a_cses_90').value) || 0;
-                    globalFeeData.bharath.cse_spec["70"] = parseInt(document.getElementById('a_cses_70').value) || 0;
-                    globalFeeData.bharath.cse_spec["60"] = parseInt(document.getElementById('a_cses_60').value) || 0;
-                    globalFeeData.bharath.cse_spec["50"] = parseInt(document.getElementById('a_cses_50').value) || 0;
-                    globalFeeData.bharath.cse_spec["below"] = parseInt(document.getElementById('a_cses_below').value) || 0;
-
-                    let i = 0;
-                    for (let course in globalFeeData.bharath.other) {
-                        globalFeeData.bharath.other[course] = parseInt(document.getElementById(`a_other_${i}`).value) || 0;
-                        i++;
-                    }
-                } else if (uni === 'mgr') {
-                    Object.keys(globalFeeData.mgr).forEach((course, idx) => {
-                        const c = globalFeeData.mgr[course];
-                        c['Slot A'].i = parseInt(document.getElementById(`m_a_i_${idx}`).value) || null;
-                        c['Slot A'].ii = parseInt(document.getElementById(`m_a_ii_${idx}`).value) || null;
-                        c['Slot A'].schlI = parseInt(document.getElementById(`m_a_si_${idx}`).value) || null;
-                        c['Slot A'].schlII = parseInt(document.getElementById(`m_a_sii_${idx}`).value) || null;
-                        
-                        c['Slot B'].i = parseInt(document.getElementById(`m_b_i_${idx}`).value) || null;
-                        c['Slot B'].ii = parseInt(document.getElementById(`m_b_ii_${idx}`).value) || null;
-                        c['Slot B'].schlI = parseInt(document.getElementById(`m_b_si_${idx}`).value) || null;
-                        c['Slot B'].schlII = parseInt(document.getElementById(`m_b_sii_${idx}`).value) || null;
-                    });
-                } else if (uni === 'ganpat') {
-                    globalFeeData.ganpat.set1Yearly75 = parseInt(document.getElementById('a_g_set1_75').value) || 0;
-                    globalFeeData.ganpat.set1YearlyBelow = parseInt(document.getElementById('a_g_set1_below').value) || 0;
-                    globalFeeData.ganpat.set2Yearly75 = parseInt(document.getElementById('a_g_set2_75').value) || 0;
-                    globalFeeData.ganpat.set2YearlyBelow = parseInt(document.getElementById('a_g_set2_below').value) || 0;
-                } else if (uni === 'dsu') {
-                    globalFeeData.dsu = {
-                        groupA_full: parseInt(document.getElementById('a_dsu_groupA_full').value) || 0,
-                        groupA_90: parseInt(document.getElementById('a_dsu_groupA_90').value) || 0,
-                        groupA_80: parseInt(document.getElementById('a_dsu_groupA_80').value) || 0,
-                        groupA_70: parseInt(document.getElementById('a_dsu_groupA_70').value) || 0,
-                        groupA_below: parseInt(document.getElementById('a_dsu_groupA_below').value) || 0,
-                        groupB_fee: parseInt(document.getElementById('a_dsu_groupB_fee').value) || 0,
-                        hostel_common: parseInt(document.getElementById('a_dsu_hostel_common').value) || 0,
-                        hostel_common_ac: parseInt(document.getElementById('a_dsu_hostel_common_ac').value) || 0,
-                        hostel_attached: parseInt(document.getElementById('a_dsu_hostel_attached').value) || 0,
-                        hostel_attached_ac: parseInt(document.getElementById('a_dsu_hostel_attached_ac').value) || 0,
-                        one_time_app: parseInt(document.getElementById('a_dsu_one_time_app').value) || 0,
-                        one_time_adm: parseInt(document.getElementById('a_dsu_one_time_adm').value) || 0,
-                        one_time_est: parseInt(document.getElementById('a_dsu_one_time_est').value) || 0,
-                        one_time_reg: parseInt(document.getElementById('a_dsu_one_time_reg').value) || 0
-                    };
-                } else if (uni === 'kalasalingam') {
-                    globalFeeData.kalasalingam = {
-                        eng_group1_tuition: parseInt(document.getElementById('a_k_eng_g1_t').value) || 0,
-                        eng_group1_misc: parseInt(document.getElementById('a_k_eng_g1_m').value) || 0,
-                        eng_group2_tuition: parseInt(document.getElementById('a_k_eng_g2_t').value) || 0,
-                        eng_group2_misc: parseInt(document.getElementById('a_k_eng_g2_m').value) || 0,
-                        eng_group3_tuition: parseInt(document.getElementById('a_k_eng_g3_t').value) || 0,
-                        eng_group3_misc: parseInt(document.getElementById('a_k_eng_g3_m').value) || 0,
-                        barch_tuition: parseInt(document.getElementById('a_k_barch_t').value) || 0,
-                        barch_misc: parseInt(document.getElementById('a_k_barch_m').value) || 0,
-                        ship_tuition: parseInt(document.getElementById('a_k_ship_t').value) || 0,
-                        ship_misc: parseInt(document.getElementById('a_k_ship_m').value) || 0,
-                        
-                        nursing_tuition: parseInt(document.getElementById('a_k_nursing_t').value) || 0,
-                        nursing_misc: parseInt(document.getElementById('a_k_nursing_m').value) || 0,
-                        physio_tuition: parseInt(document.getElementById('a_k_physio_t').value) || 0,
-                        physio_misc: parseInt(document.getElementById('a_k_physio_m').value) || 0,
-                        allied_y1_3_tuition: parseInt(document.getElementById('a_k_allied_y13_t').value) || 0,
-                        allied_y4_tuition: parseInt(document.getElementById('a_k_allied_y4_t').value) || 0,
-                        allied_misc: parseInt(document.getElementById('a_k_allied_m').value) || 0,
-                        
-                        agri_tuition: parseInt(document.getElementById('a_k_agri_t').value) || 0,
-                        agri_misc: parseInt(document.getElementById('a_k_agri_m').value) || 0,
-                        law_5yr_tuition: parseInt(document.getElementById('a_k_law5_t').value) || 0,
-                        law_5yr_misc: parseInt(document.getElementById('a_k_law5_m').value) || 0,
-                        law_3yr_tuition: parseInt(document.getElementById('a_k_law3_t').value) || 0,
-                        law_3yr_misc: parseInt(document.getElementById('a_k_law3_m').value) || 0,
-                        forensic_ug_tuition: parseInt(document.getElementById('a_k_forensic_ug_t').value) || 0,
-                        forensic_ug_misc: parseInt(document.getElementById('a_k_forensic_ug_m').value) || 0,
-                        forensic_pg_tuition: parseInt(document.getElementById('a_k_forensic_pg_t').value) || 0,
-                        forensic_pg_misc: parseInt(document.getElementById('a_k_forensic_pg_m').value) || 0,
-                        
-                        arts_group1_tuition: parseInt(document.getElementById('a_k_arts_g1_t').value) || 0,
-                        arts_group1_misc: parseInt(document.getElementById('a_k_arts_g1_m').value) || 0,
-                        arts_group2_tuition: parseInt(document.getElementById('a_k_arts_g2_t').value) || 0,
-                        arts_group2_misc: parseInt(document.getElementById('a_k_arts_g2_m').value) || 0,
-                        viscom_tuition: parseInt(document.getElementById('a_k_viscom_t').value) || 0,
-                        viscom_misc: parseInt(document.getElementById('a_k_viscom_m').value) || 0,
-                        arts_group3_tuition: parseInt(document.getElementById('a_k_arts_g3_t').value) || 0,
-                        arts_group3_misc: parseInt(document.getElementById('a_k_arts_g3_m').value) || 0,
-                        catering_tuition: parseInt(document.getElementById('a_k_catering_t').value) || 0,
-                        catering_misc: parseInt(document.getElementById('a_k_catering_m').value) || 0,
-                        catering_uniform: parseInt(document.getElementById('a_k_catering_u').value) || 0,
-                        
-                        mtech_tuition: parseInt(document.getElementById('a_k_mtech_t').value) || 0,
-                        mtech_misc: parseInt(document.getElementById('a_k_mtech_m').value) || 0,
-                        mba_mca_tuition: parseInt(document.getElementById('a_k_mbamca_t').value) || 0,
-                        mba_mca_misc: parseInt(document.getElementById('a_k_mbamca_m').value) || 0,
-                        pg_arts_tuition: parseInt(document.getElementById('a_k_pgarts_t').value) || 0,
-                        pg_arts_misc: parseInt(document.getElementById('a_k_pgarts_m').value) || 0,
-                        msc_cs_ds_tuition: parseInt(document.getElementById('a_k_msc_csds_t').value) || 0,
-                        msc_cs_ds_misc: parseInt(document.getElementById('a_k_msc_csds_m').value) || 0,
-                        bed_ship_tuition: parseInt(document.getElementById('a_k_bedship_t').value) || 0,
-                        bed_ship_misc: parseInt(document.getElementById('a_k_bedship_m').value) || 0,
-                        aero_aviation_tuition: parseInt(document.getElementById('a_k_aero_t').value) || 0,
-                        aero_aviation_misc: parseInt(document.getElementById('a_k_aero_m').value) || 0,
-                        bba_aviation_tuition: parseInt(document.getElementById('a_k_bbaaviation_t').value) || 0,
-                        bba_aviation_misc: parseInt(document.getElementById('a_k_bbaaviation_m').value) || 0,
-                        mba_aviation_tuition: parseInt(document.getElementById('a_k_mbaaviation_t').value) || 0,
-                        mba_aviation_misc: parseInt(document.getElementById('a_k_mbaaviation_m').value) || 0,
-                        
-                        app_domestic: parseInt(document.getElementById('a_k_app_domestic').value) || 0,
-                        app_nri: parseInt(document.getElementById('a_k_app_nri').value) || 0
-                    };
-                }
-
-                globalFeeData.bharath.whatsapp = document.getElementById('a_whatsapp').value;
-                currentFees = globalFeeData.bharath; // Keep currentFees synced for WA backward compatibility
-                await database.ref('adminFeeData').set(globalFeeData);
-                
-                const msg = document.getElementById('adminSuccessMsg');
-                msg.style.display = 'block';
-                setTimeout(() => msg.style.display = 'none', 3000);
-                
-                updateWhatsAppLinks();
-                renderAdminPanel(); // re-render to update the labels
-            } catch (err) {
-                console.error("Error saving admin fees: ", err);
-                alert("Failed to save due to database or network issue.");
-            } finally {
-                if (btn) {
-                    btn.innerHTML = ogHtml;
-                    btn.disabled = false;
+                if (shieldIcon) {
+                    shieldIcon.className = "fa-solid fa-user-shield";
                 }
             }
-        }
+        });
 
         function updateWhatsAppLinks() {
-            const waNum = currentFees.whatsapp || "+917397549343";
+            const doubtMsg = encodeURIComponent("Hello Disha Education Consultancy, I have a doubt regarding the application form. Please help me.");
             const floatBtn = document.getElementById('waFloat');
-            if (floatBtn) floatBtn.href = `https://api.whatsapp.com/send?phone=${waNum}`;
+            if (floatBtn) {
+                floatBtn.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${doubtMsg}`;
+            }
             const ctaBtn = document.getElementById('waBtn');
-            if (ctaBtn) ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${waNum}`, '_blank');
+            if (ctaBtn) {
+                ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${doubtMsg}`, '_blank');
+            }
         }
 
         // --- Core UI & Logic ---
@@ -2281,7 +1765,7 @@
                     lblTuition = `Tuition Fee (Sem 1: ₹${sem1.toLocaleString('en-IN')} + Sem 2: ₹${sem2.toLocaleString('en-IN')})`;
                     lblAdmission = 'Application Fee (Non-Refundable)';
                     totalFeeDiscount = 20000;
-                } else if (feeDetails && feeDetails.i === null) {
+                } else {
                     feeNotification.style.display = 'block';
                     feeNotification.style.backgroundColor = '#fee2e2';
                     feeNotification.style.color = '#b91c1c';
@@ -2536,7 +2020,14 @@
         }
 
         function changeStep(direction) {
-            if (direction === 1 && !validateStep(currentStep)) return;
+            if (direction === 1) {
+                showErrors[currentStep] = true;
+                if (!validateStep(currentStep)) return;
+            } else {
+                hideErrors();
+                showErrors[currentStep] = false;
+                showErrors[currentStep - 1] = false;
+            }
             if (currentStep === 3 && direction === 1) collectLeadData();
             if (currentStep === 4 && direction === 1) saveData();
             currentStep += direction;
@@ -2557,11 +2048,12 @@
             };
             
             const phoneKey = lead.phone || ('anon_' + lead.timestamp);
-            database.ref('collectedLeads/' + phoneKey).set(lead);
+            set(ref(database, 'collectedLeads/' + phoneKey), lead);
         }
 
         function validateStep(step) {
             hideErrors();
+            if (!showErrors[step]) return true;
             let isValid = true;
             if (step === 1) {
                 const uniVal = document.getElementById('university').value;
@@ -2739,6 +2231,10 @@
                     warningEl.style.display = 'none';
                 }
             }
+
+            if (showErrors[3]) {
+                validateStep(3);
+            }
         }
 
         function saveData() {
@@ -2816,49 +2312,93 @@
         function previewImage(input, imgId) {
             const file = input.files[0];
             const img = document.getElementById(imgId);
-            if (file) {
+            
+            if (!file) {
+                if (img) {
+                    img.style.display = 'none';
+                    img.src = '';
+                }
+                return;
+            }
+
+            const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+
+            if (!allowedMimeTypes.includes(file.type) && !allowedExtensions.exec(file.name)) {
+                alert("Invalid file format! Please upload only PDFs or images (.jpg, .jpeg, .png).");
+                input.value = ''; // Reset input selection
+                if (img) {
+                    img.style.display = 'none';
+                    img.src = '';
+                }
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert("File size exceeds 5MB. Please upload a file under 5MB.");
+                input.value = '';
+                if (img) {
+                    img.style.display = 'none';
+                    img.src = '';
+                }
+                return;
+            }
+
+            if (file.type === 'application/pdf') {
+                // PDF display placeholder (SVG PDF icon)
+                img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="%23ef4444"><path d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 60.8-27.3-11.9-10.3-23-22-32.4-35.4zm34.3-157c-1.5-6.5-5.1-17.4-8.8-17.4-4 0-5.6 10.4-3.5 24.8 3 20.6 8.2 46.4 12.3 70.7 2.1-26.2 1.6-61.6 0-78.1zM384 128v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64c0-35.3 28.7-64 64-64h192l128 128zm-32 8c0-2-1-3.8-2.5-5L242.5 13.5c-1.2-1.5-3-2.5-5-2.5H64c-17.7 0-32 14.3-32 32v384c0 17.7 14.3 32 32 32h256c17.7 0 32-14.3 32-32V136zM116.1 411.3c-12.7 0-25-10.7-25-24.2 0-21.7 29.2-46.7 64-62.7 1.4-1 2.9-1.9 4.3-2.8-8-22.5-12.7-48.8-13.7-75.8-10.7 4.9-28.5 12.5-48.1 12.5-12.6 0-22.3-5.2-22.3-17.5 0-19.1 24.6-26.3 54.3-26.3 11.2 0 21.8 1.4 30.5 3.5 11.6-26.6 22.9-63.1 27-96.1 1.7-13.9 6.2-28.3 18.5-28.3 16.3 0 16.1 24.2 12.1 47-4.1 23.3-10.5 48.7-15.3 71.9 8.7 15.4 20.3 32.2 33.9 49.3 25.1-11.4 53.7-21.8 73.7-21.8 15.4 0 27.2 8.3 27.2 23.2 0 25.2-38.5 34.3-73.6 34.3-14.4 0-28.1-1.6-40.1-4.4-23.3 14.1-51.1 31.4-74.1 42.8-3.7 1.7-7.2 3.3-10.7 5-8.4 12.2-19.3 24.5-30 24.5zM264.4 353c-1.7-1-3.6-2.1-5.5-3.1 7.2-.6 14.2-1 20.8-1 14.2 0 18.9 4.9 14.7 10.6-2.6 3.5-9.6 4.3-30 6.5zm-162.7 34.1c0 7.3 6.4 10 11.6 10 9.8 0 18.6-8.7 25.5-21.1-12.5 4.3-37.1 11.1-37.1 11.1z"/></svg>';
+                img.style.display = 'block';
+            } else {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     img.src = e.target.result;
                     img.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
-            } else {
-                img.style.display = 'none';
-                img.src = '';
             }
         }
 
         async function compressImage(file) {
             return new Promise((resolve) => {
                 if (!file) return resolve(null);
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800;
-                        const MAX_HEIGHT = 800;
-                        let width = img.width;
-                        let height = img.height;
+                if (file.type === 'application/pdf') {
+                    // PDF bypass image compression, resolve raw data URL
+                    const reader = new FileReader();
+                    reader.onload = (event) => resolve(event.target.result);
+                    reader.readAsDataURL(file);
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800;
+                            const MAX_HEIGHT = 800;
+                            let width = img.width;
+                            let height = img.height;
 
-                        if (width > height) {
-                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                        } else {
-                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                        }
+                            if (width > height) {
+                                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                            } else {
+                                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                            }
 
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.6));
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', 0.6));
+                        };
+                        img.onerror = () => {
+                            resolve(event.target.result); // Fallback
+                        };
+                        img.src = event.target.result;
                     };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
+                }
             });
         }
+
 
         async function submitApplication(e) {
             e.preventDefault();
@@ -2888,21 +2428,72 @@
                 university: userData.university,
             };
 
-            appData.cert_aadhar = await compressImage(document.getElementById('app_cert_aadhar').files[0]);
-            appData.cert_ssc = await compressImage(document.getElementById('app_cert_ssc').files[0]);
-            appData.cert_inter = await compressImage(document.getElementById('app_cert_inter').files[0]);
+            // Smart University prefix mapping
+            let prefix = 'UN';
+            const uniVal = appData.university;
+            if (uniVal === 'Bharath University') prefix = 'BH';
+            else if (uniVal === 'Mgr University') prefix = 'MG';
+            else if (uniVal === 'Ganpat University') prefix = 'GA';
+            else if (uniVal === 'Dhanalakshmi Srinivasan University') prefix = 'DS';
+            else if (uniVal === 'Kalasalingam Academy of Research and Education (Deemed to be University)') prefix = 'KL';
+
+            // Date mapping for year and short month
+            const currentDate = new Date();
+            const year2 = String(currentDate.getFullYear()).slice(-2);
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const month3 = months[currentDate.getMonth()];
 
             try {
-                await database.ref('adminApplicationsData/' + appData.id).set(appData);
-                document.getElementById('appSuccessMsg').style.display = 'block';
-                e.target.reset();
-                document.querySelectorAll('.preview-img').forEach(img => { img.style.display = 'none'; img.src = ''; });
-                setTimeout(() => {
-                    document.getElementById('appSuccessMsg').style.display = 'none';
-                    closeApplicationForm();
-                }, 3000);
+                // Sequential Counter atomic transaction
+                let nextNum = 1;
+                try {
+                    const counterRef = doc(db, 'counters', 'applications');
+                    nextNum = await runTransaction(db, async (transaction) => {
+                        const counterDoc = await transaction.get(counterRef);
+                        let counts = {};
+                        if (counterDoc.exists()) {
+                            counts = counterDoc.data() || {};
+                        }
+                        const currentCount = counts[prefix] || 0;
+                        const incrementedCount = currentCount + 1;
+                        counts[prefix] = incrementedCount;
+                        transaction.set(counterRef, counts, { merge: true });
+                        return incrementedCount;
+                    });
+                } catch (transactionErr) {
+                    console.error("Counter transaction failed, using local/random counter", transactionErr);
+                    nextNum = Math.floor(Math.random() * 100) + 1;
+                }
+
+                const paddedCounter = String(nextNum).padStart(3, '0');
+                const generatedID = `${prefix}${year2}${month3}${paddedCounter}`;
+                appData.appId = generatedID;
+
+                console.log("Saving application document to Firestore with ID: " + generatedID);
+                await addDoc(collection(db, 'applications'), appData);
+                console.log("Firestore document saved successfully.");
+                
+                // Hide inputs layout
+                document.getElementById('formFieldsContainer').style.display = 'none';
+                
+                // Hide Cancel button in header
+                const cancelBtn = document.querySelector('#applicationFormView .application-header .btn');
+                if (cancelBtn) cancelBtn.style.display = 'none';
+                
+                // Set Application ID on Success Card
+                document.getElementById('successAppId').textContent = generatedID;
+                
+                // Set up WhatsApp redirect button
+                const docMsg = encodeURIComponent(`Hello Disha Education Consultancy, My Application Number is: ${generatedID}. I am sending my required documents (Aadhar, 10th Memo, Inter Memo) attached below for verification. Please process my application.`);
+                document.getElementById('successWaBtn').onclick = () => {
+                    window.open(`https://api.whatsapp.com/send?phone=${dynamicDocNum}&text=${docMsg}`, '_blank');
+                };
+
+                // Show Success Card
+                document.getElementById('successCardContainer').style.display = 'block';
+
             } catch (err) {
-                alert("Storage limit exceeded or database error. Please contact admin.");
+                alert("Database submission failed. Please verify your connection and try again.");
                 console.error(err);
             } finally {
                 btn.innerHTML = ogText;
@@ -2910,108 +2501,32 @@
             }
         }
 
-        // --- Admin App Viewer Logic ---
-        function renderAdminApplications() {
-            const table = document.getElementById('applicationsTable');
-            table.innerHTML = '<tr><th>Student Name</th><th>Stream/Branch</th><th>Date</th><th>Action</th></tr>';
-            
-            database.ref('adminApplicationsData').once('value').then((snapshot) => {
-                const apps = [];
-                snapshot.forEach(child => { apps.push(child.val()); });
-                
-                const selectedVal = document.getElementById('adminUniSelect').value;
-                let targetUni = '';
-                if (selectedVal === 'bharath') targetUni = 'Bharath University';
-                else if (selectedVal === 'mgr') targetUni = 'Mgr University';
-                else if (selectedVal === 'ganpat') targetUni = 'Ganpat University';
-                else if (selectedVal === 'dsu') targetUni = 'Dhanalakshmi Srinivasan University';
-                else if (selectedVal === 'kalasalingam') targetUni = 'Kalasalingam Academy of Research and Education (Deemed to be University)';
-
-                const filteredApps = apps.filter(app => {
-                    if (!app.university) return true; // fallback for older entries
-                    return app.university === targetUni;
-                });
-
-                if(filteredApps.length === 0) {
-                    table.innerHTML += '<tr><td colspan="4" style="text-align:center;">No applications submitted yet.</td></tr>';
-                    return;
-                }
-
-                filteredApps.forEach(app => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${app.name}</td>
-                        <td>${app.stream}</td>
-                        <td>${app.date}</td>
-                        <td>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button class="btn btn-next" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="viewAppDetails(${app.id})">View Details</button>
-                                <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background-color: #ef4444; color: white; border: none; border-radius: 0.5rem; cursor: pointer;" title="Delete Application" onclick="deleteApplication(${app.id})"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    `;
-                    table.appendChild(tr);
-                });
-            });
-        }
-
-        function deleteApplication(id) {
-            if (confirm('Are you sure you want to delete this student application? This action cannot be undone.')) {
-                database.ref('adminApplicationsData/' + id).remove().then(() => {
-                    renderAdminApplications();
-                });
+            function resetFormStateAndClose() {
+                // Reset form fields
+                document.getElementById('studentAppForm').reset();
+                // Reset UI displays
+                document.getElementById('formFieldsContainer').style.display = 'block';
+                document.getElementById('successCardContainer').style.display = 'none';
+                const cancelBtn = document.querySelector('#applicationFormView .application-header .btn');
+                if (cancelBtn) cancelBtn.style.display = 'block';
+                closeApplicationForm();
             }
-        }
+            window.resetFormStateAndClose = resetFormStateAndClose;
 
-        function viewAppDetails(id) {
-            database.ref('adminApplicationsData/' + id).once('value').then(snapshot => {
-                const app = snapshot.val();
-                if (!app) return;
+        // Expose functions to the window scope for inline HTML event handlers
+        window.setStream = setStream;
+        window.openApplicationForm = openApplicationForm;
+        window.changeStep = changeStep;
+        window.closeApplicationForm = closeApplicationForm;
+        window.handleStateChange = handleStateChange;
+        window.handleUniversityChange = handleUniversityChange;
+        window.handleCourseChange = handleCourseChange;
+        window.saveData = saveData;
+        window.previewImage = previewImage;
+        window.submitApplication = submitApplication;
+        window.calculatePercentage = calculatePercentage;
 
-                let detailsHtml = '';
-                const fields = [
-                    {k: 'name', l: 'Name'}, {k: 'fname', l: "Father's Name"}, {k: 'mname', l: "Mother's Name"},
-                    {k: 'blood', l: 'Blood Group'}, {k: 'dob', l: 'DOB'}, {k: 'stream', l: 'Stream'},
-                    {k: 'scontact', l: 'Student Contact'}, {k: 'pcontact', l: 'Parent Contact'}, {k: 'email', l: 'Email'},
-                    {k: 'aadhar', l: 'Aadhar No'}, {k: 'community', l: 'Community'}, {k: 'pincode', l: 'Pincode'},
-                    {k: 'address', l: 'Address'}, {k: 'totalFee', l: 'Total Estimated Fee (₹)'}
-                ];
-                
-                fields.forEach(f => {
-                    detailsHtml += `<div><strong>${f.l}:</strong> <br>${app[f.k] || '-'}</div>`;
-                });
-                document.getElementById('appDetailsContent').innerHTML = detailsHtml;
 
-                let certsHtml = '';
-                if (app.cert_aadhar) certsHtml += `<div style="text-align: center;"><p>Aadhar</p><img src="${app.cert_aadhar}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-                if (app.cert_ssc) certsHtml += `<div style="text-align: center;"><p>SSC Memo</p><img src="${app.cert_ssc}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-                if (app.cert_inter) certsHtml += `<div style="text-align: center;"><p>Inter Memo</p><img src="${app.cert_inter}" style="max-width: 100%; max-height: 200px; border: 1px solid var(--border-color); border-radius: 4px;"></div>`;
-                
-                document.getElementById('appDetailsCerts').innerHTML = certsHtml || '<p style="color: var(--text-light);">No certificates uploaded.</p>';
-
-                document.getElementById('current_app_id').value = app.id;
-                document.getElementById('app_remark1').value = app.remark1 || '';
-                document.getElementById('app_remark2').value = app.remark2 || '';
-
-                document.getElementById('appDetailsModal').style.display = 'flex';
-            });
-        }
-
-        function saveAppRemarks() {
-            const id = parseInt(document.getElementById('current_app_id').value);
-            database.ref('adminApplicationsData/' + id).update({
-                remark1: document.getElementById('app_remark1').value,
-                remark2: document.getElementById('app_remark2').value
-            }).then(() => {
-                const msg = document.getElementById('appRemarkSuccess');
-                msg.style.display = 'inline-block';
-                setTimeout(() => msg.style.display = 'none', 3000);
-            });
-        }
-
-        function closeAppDetails() {
-            document.getElementById('appDetailsModal').style.display = 'none';
-        }
 
 
     </script>

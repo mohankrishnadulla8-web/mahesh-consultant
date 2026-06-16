@@ -2,6 +2,12 @@
   "database": {
     "rules": "database.rules.json"
   },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
   "hosting": {
     "public": ".",
     "ignore": [
@@ -10,6 +16,14 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/disha-private-mgmt-92f7k",
+        "destination": "/admin.html"
+      },
+      {
+        "source": "/disha-secure-admin",
+        "destination": "/admin.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"

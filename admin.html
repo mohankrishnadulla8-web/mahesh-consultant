@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disha Education Consultancy – Secure Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --primary-accent: #3b82f6;
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            --danger-color: #ef4444;
+            --danger-gradient: linear-gradient(135deg, #ef4444, #b91c1c);
+            --success-color: #10b981;
+            --success-gradient: linear-gradient(135deg, #10b981, #047857);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-outfit: 'Outfit', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-inter);
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-input);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-accent);
+        }
+
+        /* --- Loading Overlay --- */
+        #authLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(59, 130, 246, 0.1);
+            border-top: 4px solid var(--primary-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Login Section --- */
+        #loginContainer {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: radial-gradient(circle at 10% 20%, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.9) 90%);
+        }
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 450px;
+            padding: 3rem 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .login-logo {
+            font-size: 2.5rem;
+            color: var(--primary-accent);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        .login-card h2 {
+            font-family: var(--font-outfit);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-family: var(--font-inter);
+            transition: var(--transition-smooth);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-outfit);
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.6);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        .btn-secondary {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: #475569;
+        }
+        .btn-danger {
+            background: var(--danger-gradient);
+            box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(239, 68, 68, 0.6);
+        }
+        .btn-success {
+            background: var(--success-gradient);
+            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.6);
+        }
+        .error-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: left;
+        }
+
+        /* --- Dashboard Shell --- */
+        #dashboardContainer {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            flex-direction: row;
+        }
+        
+        /* Sidebar Layout */
+        aside {
+            width: 280px;
+            background-color: #0f172a;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .aside-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+        .aside-header i {
+            font-size: 1.75rem;
+            color: var(--primary-accent);
+        }
+        .aside-header h1 {
+            font-family: var(--font-outfit);
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            background: linear-gradient(to right, #ffffff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+        .nav-item button {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-radius: 0.75rem;
+            font-family: var(--font-outfit);
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: left;
+        }
+        .nav-item button:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+        }
+        .nav-item.active button {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 12px 0 rgba(59, 130, 246, 0.25);
+        }
+        .aside-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        .user-email {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Main Content Container */
+        main {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+            max-width: 100%;
+        }
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .page-title h2 {
+            font-family: var(--font-outfit);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .page-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Tab Content Panel */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Cards and Layout Blocks */
+        .dashboard-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        /* Tables & Lists UI */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #111827;
+            color: var(--text-muted);
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Form Layout Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal Panel overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            font-family: var(--font-outfit);
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Application details layouts */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .details-field {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+        }
+        .details-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+        .details-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        
+        .remarks-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .remarks-section h4 {
+            font-family: var(--font-outfit);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Certificate Preview Area */
+        .certs-container {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+        .certs-container h4 {
+            font-family: var(--font-outfit);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .cert-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .cert-card p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .cert-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .cert-placeholder {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 0.5rem;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+        }
+        .cert-placeholder i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .cert-placeholder.pdf i {
+            color: var(--danger-color);
+        }
+
+        /* Fee config university editor UI */
+        .uni-tab-container {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        .uni-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.25rem;
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+        .uni-tab-btn:hover {
+            color: var(--text-main);
+        }
+        .uni-tab-btn.active {
+            color: var(--primary-accent);
+            border-bottom-color: var(--primary-accent);
+        }
+        .uni-pane {
+            display: none;
+        }
+        .uni-pane.active {
+            display: block;
+        }
+        .fee-slab-group {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .fee-slab-title {
+            font-family: var(--font-outfit);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-accent);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-accent);
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transform: translateY(150%);
+            transition: var(--transition-smooth);
+        }
+        .toast.show {
+            transform: translateY(0);
+        }
+        .toast.success {
+            border-left-color: var(--success-color);
+        }
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+
+        /* Keyframe animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            #dashboardContainer {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .aside-header {
+                margin-bottom: 1.5rem;
+            }
+            .nav-menu {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            .nav-item button {
+                padding: 0.6rem 1rem;
+                white-space: nowrap;
+            }
+            .aside-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-top: none;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border-color);
+                margin-top: 0.5rem;
+            }
+            .user-info {
+                margin-bottom: 0;
+            }
+            main {
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 640px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .page-actions {
+                width: 100%;
+            }
+            .modal-card {
+                padding: 0.5rem;
+            }
+            .modal-body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Indicator -->
+    <div id="authLoader">
+        <div class="spinner"></div>
+        <p style="font-family: var(--font-outfit); font-weight: 500; font-size: 1.1rem; color: var(--text-muted);">Authenticating session...</p>
+    </div>
+
+    <!-- Login Authentication Gate -->
+    <div id="loginContainer">
+        <div class="login-card">
+            <i class="fa-solid fa-shield-halved login-logo"></i>
+            <h2>Secure Admin Login</h2>
+            <p>Disha Education Consultancy Portal</p>
+            <div id="loginError" class="error-banner"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="admin@disha.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-lock-open"></i> Authenticate Credentials</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Portal -->
+    <div id="dashboardContainer">
+        
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="aside-header">
+                <i class="fa-solid fa-user-gear"></i>
+                <h1>Disha Admin</h1>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="applications">
+                    <button onclick="switchTab('applications')"><i class="fa-solid fa-folder-open"></i> Applications</button>
+                </li>
+                <li class="nav-item" data-tab="leads">
+                    <button onclick="switchTab('leads')"><i class="fa-solid fa-users"></i> Collected Leads</button>
+                </li>
+                <li class="nav-item" data-tab="fee-configs">
+                    <button onclick="switchTab('fee-configs')"><i class="fa-solid fa-sliders"></i> Fee Configurations</button>
+                </li>
+                <li class="nav-item" data-tab="whatsapp">
+                    <button onclick="switchTab('whatsapp')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Settings</button>
+                </li>
+            </ul>
+
+            <div class="aside-footer">
+                <div class="user-info">
+                    <span class="user-email" id="adminEmail">-</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+                <button class="btn btn-danger" onclick="handleLogout()" style="padding: 0.6rem 1rem; font-size: 0.9rem;"><i class="fa-solid fa-power-off"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Viewport -->
+        <main>
+            
+            <!-- APPLICATIONS TAB -->
+            <div id="tab-applications" class="tab-panel active">
+                
+
+
+                <div class="page-header">
+                    <div class="page-title">
+                        <h2>Submitted Applications</h2>
+                        <p>Review and manage B.Tech student applications</p>
+                    </div>
+                    <div class="page-actions">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select id="appUniFilter" onchange="renderApplications()" style="min-width: 200px;">
+                                <option value="all">All Universities</option>
+                                <option value="bharath">Bharath University</option>
+                                <option value="mgr">Mgr University</option>
+                                <option value="ganpat">Ganpat University</option>
+                                <option value="dsu">Dhanalakshmi Srinivasan University</option>
+                                <option value="kalasalingam">Kalasalingam Academy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="table-responsive">
+                        <table id="applicationsTable">
+                            <thead>
+                                <tr>
+                                    <th>Application ID</th>
+                                    <th>Student Name</th>
+                                    <th>University</th>
+                                    <th>Stream/Branch</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsBody">
+                                <!-- Dynamic entries -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEADS TAB -->
+            <div id="tab-leads" class="tab-panel">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h2>Collected Leads</h2>
+                        <p>Students who calculated eligibility in the last 24h</p>
+                    </div>
+                    <div class="page-actions">
+                        <input type="text" id="leadSearchInput" oninput="renderLeads()" placeholder="Search name or phone..." style="background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 1rem; border-radius: 0.75rem; font-size: 0.9rem; width: 220px;">
+                        <button class="btn btn-success" onclick="exportLeadsToCSV()" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="table-responsive">
+                        <table id="leadsTable">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Phone Number</th>
+                                    <th>University</th>
+                                    <th>Course Preference</th>
+                                    <th>Percentage</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsBody">
+                                <!-- Dynamic entries -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEE CONFIGURATIONS TAB -->
+            <div id="tab-fee-configs" class="tab-panel">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h2>Fee Configurations</h2>
+                        <p>Configure fee structures, PCM slabs, and hostel charges across universities</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" onclick="resetToDefaults()" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;"><i class="fa-solid fa-arrow-rotate-left"></i> Restore Defaults</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <!-- University Selector Tabs -->
+                    <div class="uni-tab-container">
+                        <button class="uni-tab-btn active" data-uni="bharath" onclick="switchUniPane('bharath')">Bharath University</button>
+                        <button class="uni-tab-btn" data-uni="mgr" onclick="switchUniPane('mgr')">MGR University</button>
+                        <button class="uni-tab-btn" data-uni="ganpat" onclick="switchUniPane('ganpat')">Ganpat University</button>
+                        <button class="uni-tab-btn" data-uni="dsu" onclick="switchUniPane('dsu')">DSU</button>
+                        <button class="uni-tab-btn" data-uni="kalasalingam" onclick="switchUniPane('kalasalingam')">Kalasalingam University</button>
+                    </div>
+
+                    <form id="feeConfigForm" onsubmit="saveFeeConfigs(event)">
+                        
+                        <!-- BHARATH PANE -->
+                        <div id="pane-bharath" class="uni-pane active">
+                            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">Bharath University Fee Configurations</h3>
+                            
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">CSE Tuition Slabs (Based on PCM %)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>90% - 100% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_cse_90" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>70% - 89.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_cse_70" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>60% - 69.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_cse_60" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>50% - 59.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_cse_50" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Below 50% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_cse_below" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">CSE Specialization Tuition Slabs (Based on PCM %)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>90% - 100% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_csespec_90" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>70% - 89.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_csespec_70" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>60% - 69.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_csespec_60" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>50% - 59.99% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_csespec_50" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Below 50% PCM Fee (₹)</label>
+                                        <input type="number" id="bh_csespec_below" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Other Engineering & UG Programs (Flat Annual Fee)</div>
+                                <div class="form-grid" id="bharathOtherContainer">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MGR PANE -->
+                        <div id="pane-mgr" class="uni-pane">
+                            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">MGR University Slot & Course Fee Matrix</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Configure Sem 1, Sem 2, and Scholarship Sem 1 & 2 rates for both Slot A and Slot B.</p>
+                            
+                            <div id="mgrConfigContainer">
+                                <!-- Loaded dynamically for all courses -->
+                            </div>
+                        </div>
+
+                        <!-- GANPAT PANE -->
+                        <div id="pane-ganpat" class="uni-pane">
+                            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">Ganpat University IBM Set 1 & Set 2 Tuition Rates</h3>
+                            
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Set 1 Courses (IBM Specialties)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>PCM >= 75% Yearly Fee (₹)</label>
+                                        <input type="number" id="gp_set1_75" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PCM < 75% Yearly Fee (₹)</label>
+                                        <input type="number" id="gp_set1_below" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Set 2 Courses (Regular & Other Collaborations)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>PCM >= 75% Yearly Fee (₹)</label>
+                                        <input type="number" id="gp_set2_75" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PCM < 75% Yearly Fee (₹)</label>
+                                        <input type="number" id="gp_set2_below" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DSU PANE -->
+                        <div id="pane-dsu" class="uni-pane">
+                            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">Dhanalakshmi Srinivasan University (DSU) Configurations</h3>
+                            
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Group A Courses Tuition Slabs (Based on PCM %)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Base / Full Fee (₹)</label>
+                                        <input type="number" id="dsu_groupA_full" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>>= 90% PCM Fee (₹)</label>
+                                        <input type="number" id="dsu_groupA_90" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>80% - 89.99% PCM Fee (₹)</label>
+                                        <input type="number" id="dsu_groupA_80" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>70% - 79.99% PCM Fee (₹)</label>
+                                        <input type="number" id="dsu_groupA_70" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Below 70% PCM Fee (₹)</label>
+                                        <input type="number" id="dsu_groupA_below" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Group B Courses (Flat Fee) & Miscellaneous Fees</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Group B Flat Tuition (₹)</label>
+                                        <input type="number" id="dsu_groupB" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>One-Time Application Fee (₹)</label>
+                                        <input type="number" id="dsu_one_app" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>One-Time Admission Fee (₹)</label>
+                                        <input type="number" id="dsu_one_adm" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>One-Time Establishment Fee (₹)</label>
+                                        <input type="number" id="dsu_one_est" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>One-Time Registration Fee (₹)</label>
+                                        <input type="number" id="dsu_one_reg" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">DSU Hostel Room Type Charges (Annual)</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Common Bathroom (Non-AC) (₹)</label>
+                                        <input type="number" id="dsu_hostel_common" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Common Bathroom with AC (₹)</label>
+                                        <input type="number" id="dsu_hostel_common_ac" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Attached Bathroom (Non-AC) (₹)</label>
+                                        <input type="number" id="dsu_hostel_attached" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Attached Bathroom with AC (₹)</label>
+                                        <input type="number" id="dsu_hostel_attached_ac" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KALASALINGAM PANE -->
+                        <div id="pane-kalasalingam" class="uni-pane">
+                            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-outfit);">Kalasalingam University Fee Configurations</h3>
+                            
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Engineering Group Tuition + Misc Structures</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Group 1 (CSE, AI&DS, IT) Tuition (₹)</label>
+                                        <input type="number" id="ks_g1_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group 1 Misc Fee (₹)</label>
+                                        <input type="number" id="ks_g1_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group 2 (ECE, Biotech) Tuition (₹)</label>
+                                        <input type="number" id="ks_g2_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group 2 Misc Fee (₹)</label>
+                                        <input type="number" id="ks_g2_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group 3 (Other Engg) Tuition (₹)</label>
+                                        <input type="number" id="ks_g3_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group 3 Misc Fee (₹)</label>
+                                        <input type="number" id="ks_g3_m" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Special & Allied Programs Tuition + Misc Structures</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>B.Arch Tuition (₹)</label>
+                                        <input type="number" id="ks_barch_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Arch Misc (₹)</label>
+                                        <input type="number" id="ks_barch_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Tech CSE - SHIP Tuition (₹)</label>
+                                        <input type="number" id="ks_ship_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Tech CSE - SHIP Misc (₹)</label>
+                                        <input type="number" id="ks_ship_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc Nursing Tuition (₹)</label>
+                                        <input type="number" id="ks_nursing_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc Nursing Misc (₹)</label>
+                                        <input type="number" id="ks_nursing_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BPT Physiotherapy Tuition (₹)</label>
+                                        <input type="number" id="ks_physio_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BPT Physiotherapy Misc (₹)</label>
+                                        <input type="number" id="ks_physio_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Allied Health Years 1-3 Tuition (₹)</label>
+                                        <input type="number" id="ks_allied1_3_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Allied Health Year 4 Tuition (₹)</label>
+                                        <input type="number" id="ks_allied4_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Allied Health Misc (₹)</label>
+                                        <input type="number" id="ks_allied_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc (Hons) Agriculture Tuition (₹)</label>
+                                        <input type="number" id="ks_agri_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc (Hons) Agriculture Misc (₹)</label>
+                                        <input type="number" id="ks_agri_m" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fee-slab-group">
+                                <div class="fee-slab-title">Other Courses & One-Time Kit Processing</div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Law 5-Year Tuition (₹)</label>
+                                        <input type="number" id="ks_law5_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Law 5-Year Misc (₹)</label>
+                                        <input type="number" id="ks_law5_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Law 3-Year Tuition (₹)</label>
+                                        <input type="number" id="ks_law3_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Law 3-Year Misc (₹)</label>
+                                        <input type="number" id="ks_law3_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Forensic UG Tuition (₹)</label>
+                                        <input type="number" id="ks_forensic_ug_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Forensic UG Misc (₹)</label>
+                                        <input type="number" id="ks_forensic_ug_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Forensic PG Tuition (₹)</label>
+                                        <input type="number" id="ks_forensic_pg_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Forensic PG Misc (₹)</label>
+                                        <input type="number" id="ks_forensic_pg_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 1 Tuition (₹)</label>
+                                        <input type="number" id="ks_arts1_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 1 Misc (₹)</label>
+                                        <input type="number" id="ks_arts1_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 2 Tuition (₹)</label>
+                                        <input type="number" id="ks_arts2_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 2 Misc (₹)</label>
+                                        <input type="number" id="ks_arts2_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc Viscom Tuition (₹)</label>
+                                        <input type="number" id="ks_viscom_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Sc Viscom Misc (₹)</label>
+                                        <input type="number" id="ks_viscom_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 3 Tuition (₹)</label>
+                                        <input type="number" id="ks_arts3_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arts Group 3 Misc (₹)</label>
+                                        <input type="number" id="ks_arts3_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Catering Science Tuition (₹)</label>
+                                        <input type="number" id="ks_catering_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Catering Uniform Kit (₹)</label>
+                                        <input type="number" id="ks_catering_kit" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Catering Misc (₹)</label>
+                                        <input type="number" id="ks_catering_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>M.Tech Tuition (₹)</label>
+                                        <input type="number" id="ks_mtech_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>M.Tech Misc (₹)</label>
+                                        <input type="number" id="ks_mtech_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MBA / MCA Tuition (₹)</label>
+                                        <input type="number" id="ks_mbamca_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MBA / MCA Misc (₹)</label>
+                                        <input type="number" id="ks_mbamca_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PG Arts & Science Tuition (₹)</label>
+                                        <input type="number" id="ks_pgarts_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PG Arts & Science Misc (₹)</label>
+                                        <input type="number" id="ks_pgarts_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>M.Sc CS / DS Tuition (₹)</label>
+                                        <input type="number" id="ks_msc_csds_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>M.Sc CS / DS Misc (₹)</label>
+                                        <input type="number" id="ks_msc_csds_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Ed / SHIP Tuition (₹)</label>
+                                        <input type="number" id="ks_bed_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>B.Ed / SHIP Misc (₹)</label>
+                                        <input type="number" id="ks_bed_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Aero Aviation Tuition (₹)</label>
+                                        <input type="number" id="ks_aero_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Aero Aviation Misc (₹)</label>
+                                        <input type="number" id="ks_aero_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BBA Aviation Tuition (₹)</label>
+                                        <input type="number" id="ks_bba_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>BBA Aviation Misc (₹)</label>
+                                        <input type="number" id="ks_bba_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MBA Aviation Tuition (₹)</label>
+                                        <input type="number" id="ks_mba_av_t" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MBA Aviation Misc (₹)</label>
+                                        <input type="number" id="ks_mba_av_m" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Application Processing Fee (₹)</label>
+                                        <input type="number" id="ks_app_processing" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem; text-align: right;">
+                            <button type="submit" class="btn btn-primary" style="width: 250px;"><i class="fa-solid fa-save"></i> Save Configurations</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- WHATSAPP SETTINGS TAB -->
+            <div id="tab-whatsapp" class="tab-panel">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h2>WhatsApp Settings</h2>
+                        <p>Configure the phone numbers for doubts routing and document submission</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card" style="max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 2rem;">
+                    <form id="whatsappSettingsForm" onsubmit="saveWhatsAppSettings(event)">
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="settingDoubtNum" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; display: block; color: var(--text-muted);">Steps 1–4 Doubt Handling Number (with country code, e.g. 917397549343)</label>
+                            <input type="text" id="settingDoubtNum" placeholder="917397549343" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: 0.75rem; background: var(--bg-input); color: var(--text-main);">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="settingDocNum" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; display: block; color: var(--text-muted);">Final Step Document Collection Number (with country code, e.g. 919440662754)</label>
+                            <input type="text" id="settingDocNum" placeholder="919440662754" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: 0.75rem; background: var(--bg-input); color: var(--text-main);">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;"><i class="fa-solid fa-save"></i> Save Settings</button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Application Details Modal Overlay -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalStudentName">Student Application Details</h3>
+                <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalAppId">
+                <div class="details-grid" id="modalDetailsGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+                
+                <div class="remarks-section">
+                    <h4>Administrative Remarks</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="modalRemark1">Admin Remark 1 (Internal Status/Notes)</label>
+                            <input type="text" id="modalRemark1" placeholder="Enter remark/notes here...">
+                        </div>
+                        <div class="form-group">
+                            <label for="modalRemark2">Admin Remark 2 (Payment/Follow-up)</label>
+                            <input type="text" id="modalRemark2" placeholder="Enter follow-up details here...">
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+                        <span id="remarkSaveSuccess" style="color: var(--success-color); font-size: 0.9rem; align-self: center; display: none;"><i class="fa-solid fa-circle-check"></i> Remarks updated!</span>
+                        <button class="btn btn-success" onclick="saveModalRemarks()" style="width: 200px;"><i class="fa-solid fa-save"></i> Save Remarks</button>
+                    </div>
+                </div>
+
+                <div class="certs-container">
+                    <h4>Uploaded Certifications</h4>
+                    <div class="certs-grid" id="modalCertsGrid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div class="toast" id="toastNotification">
+        <i class="fa-solid fa-circle-info" id="toastIcon"></i>
+        <span id="toastMessage">Action performed successfully.</span>
+    </div>
+
+    <!-- 404 Disguise -->
+    <div id="notFoundContainer" style="display: none; min-height: 100vh; width: 100%; align-items: center; justify-content: center; padding: 2rem; background-color: var(--bg-dark); font-family: var(--font-inter); text-align: center;">
+        <div style="max-width: 500px; padding: 3rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); width: 100%;">
+            <div style="font-size: 5rem; font-weight: 800; color: var(--danger-color); line-height: 1; margin-bottom: 1.5rem; font-family: var(--font-outfit);">404</div>
+            <h2 style="font-family: var(--font-outfit); font-size: 1.75rem; font-weight: 700; color: var(--text-main); margin-bottom: 1rem;">Page Not Found</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+            <a href="/" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--primary-gradient); padding: 0.85rem 2rem; border-radius: 0.75rem; color: white; font-family: var(--font-outfit); font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.4); transition: var(--transition-smooth);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px 0 rgba(59, 130, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px 0 rgba(59, 130, 246, 0.4)';">
+                <i class="fa-solid fa-house"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Firebase App Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        (function() {
+            const secretPath = "/disha-private-mgmt-92f7k";
+            if (window.location.pathname === secretPath) {
+                // Initialize modules loader
+                document.getElementById('authLoader').style.display = 'flex';
+                document.getElementById('loginContainer').style.display = 'flex';
+                
+                // Dynamically import / lazy load admin-lazy.js script code
+                const script = document.createElement('script');
+                script.src = "/admin-lazy.js";
+                script.defer = true;
+                document.body.appendChild(script);
+            } else {
+                // Completely hide admin visual elements and show 404 disguise
+                document.getElementById('authLoader').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboardContainer').style.display = 'none';
+                
+                document.getElementById('notFoundContainer').style.display = 'flex';
+            }
+        })();
+    </script>
+</body>
+</html>

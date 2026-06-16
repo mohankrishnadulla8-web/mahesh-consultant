@@ -21,10 +21,6 @@
         "destination": "/admin.html"
       },
       {
-        "source": "/disha-secure-admin",
-        "destination": "/admin.html"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }

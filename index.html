@@ -767,6 +767,12 @@
                                 <i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i> Chat on WhatsApp
                             </a>
                         </div>
+                        <!-- Direct WhatsApp Apply Button (hidden by default) -->
+                        <div id="bscBaWaApplyContainer" style="display: none; margin-top: 0.75rem; border-top: 1px dashed #bbf7d0; padding-top: 0.75rem;">
+                            <a href="#" target="_blank" id="bscBaWaApplyBtn" class="btn" style="background-color: #25d366; color: white; width: 100%; padding: 0.85rem; font-size: 1.05rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; border-radius: 0.5rem; cursor: pointer; text-decoration: none; transition: background 0.3s ease;" onmouseover="this.style.backgroundColor='#20ba56'" onmouseout="this.style.backgroundColor='#25d366'">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> Connect on WhatsApp to Apply
+                            </a>
+                        </div>
                     </div>
 
                     <div class="form-group" id="specialization-group" style="display: none;">
@@ -1369,6 +1375,7 @@
             if (bscBaCheckbox) {
                 bscBaCheckbox.addEventListener('change', () => {
                     updateWhatsAppLinks();
+                    handleBscBaCheckboxToggle();
                 });
             }
         });
@@ -1656,9 +1663,30 @@
                 noticeLink.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`;
             }
 
+            const applyBtn = document.getElementById('bscBaWaApplyBtn');
+            if (applyBtn) {
+                applyBtn.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`;
+            }
+
             const ctaBtn = document.getElementById('waBtn');
             if (ctaBtn) {
                 ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`, '_blank');
+            }
+        }
+
+        function handleBscBaCheckboxToggle() {
+            const checkbox = document.getElementById('bscBaCheckbox');
+            const isChecked = checkbox ? checkbox.checked : false;
+            
+            const btnNext = document.getElementById('btnNext');
+            const applyContainer = document.getElementById('bscBaWaApplyContainer');
+            
+            if (isChecked) {
+                if (btnNext) btnNext.style.display = 'none';
+                if (applyContainer) applyContainer.style.display = 'block';
+            } else {
+                if (btnNext) btnNext.style.display = 'flex';
+                if (applyContainer) applyContainer.style.display = 'none';
             }
         }
 
@@ -1683,6 +1711,7 @@
 
             if (currentStep === 1) {
                 btnPrev.style.display = 'none';
+                handleBscBaCheckboxToggle();
             } else if (currentStep < totalSteps) {
                 btnPrev.style.display = 'flex';
                 btnContainer.style.display = 'flex';

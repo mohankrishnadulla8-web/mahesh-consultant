@@ -753,6 +753,22 @@
                         <div class="error-message" id="err-course" style="display: none;">Please select a course.</div>
                     </div>
 
+                    <!-- B.Sc/B.A Special Course Inquiry Notice Box -->
+                    <div class="course-notice-box" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; font-size: 0.9rem; color: #166534;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="bscBaCheckbox" style="width: auto !important; height: auto !important; margin: 0; cursor: pointer;">
+                            <label for="bscBaCheckbox" style="display: inline-block !important; margin-bottom: 0 !important; cursor: pointer; color: #166534; font-weight: 500; font-size: 0.9rem; user-select: none;">
+                                I am specifically looking for B.Sc or B.A courses.
+                            </label>
+                        </div>
+                        <div style="margin-top: 0.75rem; font-size: 0.85rem; border-top: 1px dashed #bbf7d0; padding-top: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+                            <span>Need guidance? Contact us:</span>
+                            <a href="#" target="_blank" id="noticeWaLink" style="color: #15803d; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="form-group" id="specialization-group" style="display: none;">
                         <label for="specialization">Select Specialization <span style="color:red">*</span></label>
                         <select id="specialization">
@@ -1347,6 +1363,14 @@
             updateUI();
             updateWhatsAppLinks();
             setupValidationListeners();
+
+            // Real-time checkbox listener for B.Sc/B.A inquiry
+            const bscBaCheckbox = document.getElementById('bscBaCheckbox');
+            if (bscBaCheckbox) {
+                bscBaCheckbox.addEventListener('change', () => {
+                    updateWhatsAppLinks();
+                });
+            }
         });
 
         function setupValidationListeners() {
@@ -1613,14 +1637,28 @@
         });
 
         function updateWhatsAppLinks() {
-            const doubtMsg = encodeURIComponent("Hello Disha Education Consultancy, I have a doubt regarding the application form. Please help me.");
+            const checkbox = document.getElementById('bscBaCheckbox');
+            const isChecked = checkbox ? checkbox.checked : false;
+
+            const standardMsg = "Hi Disha Education Consultancy, I have a doubt regarding admissions. Please help me.";
+            const customMsg = "Hi Disha Education Consultancy, I am visiting your website and I am looking for details regarding B.Sc / B.A course admissions.";
+
+            const activeMsg = isChecked ? customMsg : standardMsg;
+            const encodedMsg = encodeURIComponent(activeMsg);
+
             const floatBtn = document.getElementById('waFloat');
             if (floatBtn) {
-                floatBtn.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${doubtMsg}`;
+                floatBtn.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`;
             }
+
+            const noticeLink = document.getElementById('noticeWaLink');
+            if (noticeLink) {
+                noticeLink.href = `https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`;
+            }
+
             const ctaBtn = document.getElementById('waBtn');
             if (ctaBtn) {
-                ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${doubtMsg}`, '_blank');
+                ctaBtn.onclick = () => window.open(`https://api.whatsapp.com/send?phone=${dynamicDoubtNum}&text=${encodedMsg}`, '_blank');
             }
         }
 
